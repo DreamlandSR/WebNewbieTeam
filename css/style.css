@@ -29,6 +29,7 @@ body {
   left: 0;
   width: 100%; /* Lebar penuh */
   font-weight: 500;
+  height: 50px;
 }
 
 .site {
@@ -43,11 +44,15 @@ body {
 
 .site ul {
   display: flex;
-  align-items: center; /* Vertikal center */
+  align-items: center;
   gap: 2rem;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.site a {
+  font-size: 12px;
 }
 
 .site ul li a {
@@ -68,14 +73,12 @@ body {
   border-bottom: 1px solid orangered; /* Border saat hover */
 }
 
-
-
-.header img {
+/* .header img {
   height: 40px;
-}
+} */
 
 .header .menu-icon {
-  font-size: 12px;
+  font-size: 18px;
 }
 
 .text-elearning {
@@ -83,13 +86,22 @@ body {
   justify-content: center;
   display: flex;
   padding: 15 0 15 15px;
+  font-size: 12px;
 }
 
 .logo {
   justify-content: center;
   display: flex;
   margin-right: auto;
-  margin-left: 25px;
+  margin-left: 20px;
+  align-items: center;
+  max-width: 100%; /* Lebar maksimal gambar tidak lebih dari lebar container */
+  height: auto; /* Tinggi menyesuaikan proporsi */
+}
+
+.logo img {
+  width: auto;
+  height: 28px;
 }
 
 .header .login-button {
@@ -98,6 +110,7 @@ body {
   border-radius: 5px;
   text-decoration: none;
   color: #000;
+  font-size: 12px;
 }
 
 .h1-content {
@@ -157,39 +170,48 @@ body {
 
 #inti {
   font-size: 24px;
-  margin-bottom: 40px; /* Jarak bawah lebih besar untuk memberi ruang ke elemen di bawahnya */
 }
 
 .text-overlay p {
-  font-size: 18px;
-  margin-top: 20px; /* Menambah jarak atas jika ingin menambah jarak dari p ke elemen di atasnya */
+  font-size: 14px;
+  margin-top: 15px;
   font-weight: 200;
   margin-bottom: 40px;
 }
 
 .cursor {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 200;
   padding: 15px;
   outline: 2px solid rgb(255, 255, 255);
   color: #fff;
+  border-radius: 5px;
+  padding: 10px;
 }
 
+.cursor:hover {
+  text-decoration: none;
+  color:tomato;
+}
 .text-container h1 {
   font-weight: 700;
   text-align: center;
   justify-items: center;
   margin-top: 50px;
+  font-size: 24px;
 }
 
 .text-container p {
   font-weight: 400;
   text-align: center;
   justify-items: center;
+  font-size: 14px;
 }
 
 .container {
-  width: 450px;
+  max-width: 100%;
+  height: auto;
+  width: 400px;
   margin: 50px;
   justify-content: space-between;
 }
@@ -332,11 +354,13 @@ a:link {
 
 .contact-info {
   text-align: right;
-  margin-right: 50px;
+  margin-right: 20px;
 }
 
 .contact-info p {
   margin: 5px 0;
+  font-weight: 200;
+  
 }
 
 .contact-info i {
@@ -350,8 +374,12 @@ a:link {
   text-align: center;
 }
 
-.school-info p {
+.contact-info img {
   margin-left: 20px;
+}
+
+.school-info p {
+  margin: 20px;
 }
 
 .school-info img {
