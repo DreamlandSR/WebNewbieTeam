@@ -13,6 +13,7 @@ body {
 body {
   font-family: "Poppins", sans-serif;
 }
+
 /* Header */
 
 .header {
@@ -248,6 +249,10 @@ body {
   background: #004a8f;
 }
 
+.content-box.color-effect-1  h3 {
+  font-size: 24px;
+}
+
 .box-icon i {
   display: inline-block;
   font-size: 0;
@@ -335,6 +340,118 @@ a:link {
   text-decoration: none;
 }
 
+/* container pengertian */
+
+.container-pengertian {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  background-color:#798dc5;
+}
+.text-pengertian {
+  max-width: 50%;
+}
+.text-pengertian h1 {
+  font-weight: 600;
+  font-size: 36px;
+  color: #dfdfdf;
+  margin: 0;
+}
+.text-pengertian p {
+  text-align: justify;
+  margin-top: 30px;
+  font-size: 18px;
+  color: #ffffff;
+  line-height: 1.6;
+}
+.button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px 30px;
+  background-color: #00BFA6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 25px;
+}
+.image-content {
+  position: relative;
+}
+.image-content img {
+  border-radius: 50%;
+  
+  width: 400px;
+  height: auto;
+}
+.image-content .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 10px solid #1A3D7C;
+}
+
+/* panduan */
+
+.body-panduan {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.header-panduan {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 60px 0 40px 0;
+}
+.highlight {
+  background-color: #00c4cc;
+  color: #ffffff;
+  padding: 0 5px;
+}
+.container-panduan {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+.kartu {
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.kartu h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+.kartu p {
+  font-size: 1em;
+  color: #333333;
+  margin: 0 0 20px 0;
+}
+.kartu button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.kartu button:hover {
+  background-color: #0056b3;
+}
+
+/* footer */
+
 .footer {
   background-color: #004a8f;
   color: #fff;
@@ -346,6 +463,10 @@ a:link {
   box-sizing: border-box;
   position: relative; /* Agar footer tetap berada di bawah konten */
   bottom: 0;
+}
+
+#footer-contact {
+  font-weight: 700;
 }
 
 .footer img {
@@ -380,6 +501,7 @@ a:link {
 
 .school-info p {
   margin: 20px;
+  font-weight: 700;
 }
 
 .school-info img {
