@@ -35,8 +35,8 @@ body {
 
 .site {
   display: flex;
-  align-items: center; /* Vertikal center */
-  justify-content: space-evenly; /* Horizontal spacing */
+  align-items: center;
+  justify-content: center;
   text-align: center;
   margin-right: 2rem;
   gap: 15px;
@@ -50,6 +50,7 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap; /* Agar item bisa turun ke bawah */
 }
 
 .site a {
@@ -192,8 +193,10 @@ body {
 
 .cursor:hover {
   text-decoration: none;
-  color:tomato;
+  color: tomato;
 }
+
+/* fitur web */
 .text-container h1 {
   font-weight: 700;
   text-align: center;
@@ -249,7 +252,7 @@ body {
   background: #004a8f;
 }
 
-.content-box.color-effect-1  h3 {
+.content-box.color-effect-1 h3 {
   font-size: 24px;
 }
 
@@ -343,56 +346,109 @@ a:link {
 /* container pengertian */
 
 .container-pengertian {
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 50px;
-  background-color:#798dc5;
+  background-color: #798dc5;
+  flex-wrap: wrap; /* Agar elemen bisa menyesuaikan di layar lebih kecil */
 }
+
 .text-pengertian {
   max-width: 50%;
+  flex: 1;
+  margin-bottom: 20px;
 }
+
 .text-pengertian h1 {
   font-weight: 600;
   font-size: 36px;
-  color: #dfdfdf;
+  color: #fff9f9;
   margin: 0;
 }
+
 .text-pengertian p {
-  text-align: justify;
   margin-top: 30px;
   font-size: 18px;
   color: #ffffff;
   line-height: 1.6;
 }
+
 .button {
   display: inline-block;
   margin-top: 20px;
   padding: 15px 30px;
-  background-color: #00BFA6;
+  background-color: #007bff;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   border-radius: 25px;
 }
+
 .image-content {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .image-content img {
   border-radius: 50%;
-  
   width: 400px;
   height: auto;
+  object-fit: cover;
 }
+
 .image-content .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  border: 10px solid #1A3D7C;
+  border-radius: 50%; /* Sama dengan gambar agar overlay mengikuti bentuk lingkaran */
+  border: 10px solid #1a3d7c;
+  pointer-events: none; /* Agar overlay tidak mengganggu interaksi dengan gambar */
+}
+
+/* Responsif untuk tablet */
+@media (max-width: 768px) {
+  .text-pengertian {
+    max-width: 100%;
+    text-align: center;
+  }
+  .text-pengertian h1 {
+    font-size: 28px;
+  }
+  .text-pengertian p {
+    font-size: 16px;
+  }
+  .image-content {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  .image-content img {
+    width: 300px; /* Ukuran gambar lebih kecil pada tablet */
+  }
+}
+
+/* Responsif untuk smartphone */
+@media (max-width: 480px) {
+  .text-pengertian h1 {
+    font-size: 24px;
+  }
+  .text-pengertian p {
+    font-size: 14px;
+  }
+  .button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  .image-content img {
+    width: 250px; /* Ukuran gambar lebih kecil pada smartphone */
+  }
 }
 
 /* panduan */
@@ -481,7 +537,6 @@ a:link {
 .contact-info p {
   margin: 5px 0;
   font-weight: 200;
-  
 }
 
 .contact-info i {
@@ -507,4 +562,92 @@ a:link {
 .school-info img {
   justify-content: center;
   align-items: center;
+}
+
+/* responsif */
+/* Responsif untuk tablet */
+@media (max-width: 768px) {
+  .site ul {
+    flex-direction: row; 
+    gap: 10px; /* Jarak antar elemen */
+    margin-right: 10px;
+  }
+
+  .site {
+    margin-right: 0;
+  }
+
+  .container {
+    width: 100%;
+    margin: 20px auto; /* Atur margin untuk tengah */
+  }
+  .header .login-button {
+    font-size: 10px;
+    padding: 5px;
+  }
+  .image-gallery {
+    height: 50vh; /* Atur tinggi agar lebih sesuai pada tablet */
+  }
+}
+
+/* Responsif untuk smartphone */
+@media (max-width: 480px) {
+  .text-pengertian h1 {
+    font-size: 20px;
+  }
+  .text-pengertian p {
+    font-size: 12px;
+  }
+  .header {
+    flex-direction: row;
+    align-items: center;
+  }
+  .header .menu-icon {
+    display: block; /* Tampilkan menu icon */
+  }
+  .site ul {
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Sesuaikan lebar */
+    margin-right: 10px;
+  }
+
+  .site a {
+    font-size: 14px; /* Sesuaikan ukuran font */
+  }
+
+  .site ul li {
+    width: 100%; /* Agar elemen menu mengambil lebar penuh */
+  }
+  .logo img {
+    height: 20px;
+  }
+  .image-content img {
+    width: 200px;
+  }
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+  .container-panduan {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .kartu {
+    width: 100%; /* Agar kartu menyesuaikan lebar layar */
+    padding: 15px;
+  }
+  .content-box {
+    height: auto; /* Agar tinggi menyesuaikan konten */
+    padding: 20px 10px;
+  }
+  .image-gallery {
+    height: 50vh; /* Sesuaikan tinggi gambar agar tidak memenuhi seluruh layar */
+  }
+  .text-overlay h1 {
+    font-size: 16px;
+  }
+  .text-overlay p {
+    font-size: 12px;
+  }
 }
