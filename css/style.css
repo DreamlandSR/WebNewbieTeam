@@ -569,7 +569,7 @@ a:link {
 @media (max-width: 768px) {
   .site ul {
     flex-direction: row; 
-    gap: 10px; /* Jarak antar elemen */
+    gap: 10px; 
     margin-right: 10px;
   }
 
@@ -579,18 +579,19 @@ a:link {
 
   .container {
     width: 100%;
-    margin: 20px auto; /* Atur margin untuk tengah */
+    margin: 20px auto; 
   }
   .header .login-button {
     font-size: 10px;
     padding: 5px;
   }
   .image-gallery {
-    height: 50vh; /* Atur tinggi agar lebih sesuai pada tablet */
+    height: 50vh; 
   }
 }
 
-/* Responsif untuk smartphone */
+/* responsif layar hp */
+
 @media (max-width: 480px) {
   .text-pengertian h1 {
     font-size: 20px;
@@ -603,24 +604,28 @@ a:link {
     align-items: center;
   }
   .header .menu-icon {
-    display: block; /* Tampilkan menu icon */
+    display: block; 
   }
   .site ul {
     align-items: center;
     text-align: center;
-    width: 100%; /* Sesuaikan lebar */
+    width: 100%; 
     margin-right: 10px;
   }
 
+  .text-elearning {
+    font-size: 8px;
+  }
+
   .site a {
-    font-size: 14px; /* Sesuaikan ukuran font */
+    font-size: 8px; 
   }
 
   .site ul li {
-    width: 100%; /* Agar elemen menu mengambil lebar penuh */
+    width: 100%;
   }
   .logo img {
-    height: 20px;
+    height: 12px;
   }
   .image-content img {
     width: 200px;
@@ -634,15 +639,15 @@ a:link {
     gap: 20px;
   }
   .kartu {
-    width: 100%; /* Agar kartu menyesuaikan lebar layar */
+    width: 100%; 
     padding: 15px;
   }
   .content-box {
-    height: auto; /* Agar tinggi menyesuaikan konten */
+    height: auto; 
     padding: 20px 10px;
   }
   .image-gallery {
-    height: 50vh; /* Sesuaikan tinggi gambar agar tidak memenuhi seluruh layar */
+    height: 50vh; 
   }
   .text-overlay h1 {
     font-size: 16px;
