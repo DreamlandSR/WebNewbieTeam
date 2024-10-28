@@ -2,8 +2,8 @@
 session_start();
 $host = 'localhost';
 $db   = 'e_learning';
-$user = 'root'; // Sesuaikan dengan username database Anda
-$pass = ''; // Sesuaikan dengan password MySQL Anda
+$user = 'root'; 
+$pass = ''; 
 
 $conn = new mysqli($host, $user, $pass, $db);
 
@@ -15,9 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Cek apakah kedua field telah diisi
     if (isset($_POST['nama']) && isset($_POST['password'])) {
         $nama = $conn->real_escape_string($_POST['nama']);
-        $password = $_POST['password']; // Jangan escape password di sini karena akan diverifikasi
+        $password = $_POST['password']; 
         
-        // Query untuk cek username
+        //cek username
         $sql = "SELECT * FROM users WHERE nama='$nama'";
         $result = $conn->query($sql);
 
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Ambil data user
             $user = $result->fetch_assoc();
 
-            // Verifikasi password menggunakan password_verify()
+            // Verifikasi password 
             if (password_verify($password, $user['password'])) {
                 // Simpan nama dan sebagai ke session
                 $_SESSION['nama'] = $user['nama'];
@@ -33,13 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 // Redirect berdasarkan "sebagai"
                 if ($user['sebagai'] === 'admin') {
-                    header("Location: admin.html"); // Halaman untuk admin
+                    header("Location: admin.html");
                 } else if ($user['sebagai'] === 'guru') {
-                    header("Location: guru.html"); // Halaman untuk guru
+                    header("Location: guru.html");
                 } else if ($user['sebagai'] === 'siswa') {
-                    header("Location: siswa.html"); // Halaman untuk siswa
+                    header("Location: siswa.html");
                 } else {
-                    header("Location: login.html?error=unknown_sebagai"); // Jika "sebagai" tidak diketahui
+                    header("Location: login.html?error=unknown_sebagai");
                 }
                 exit();
             } else {

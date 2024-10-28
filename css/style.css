@@ -413,44 +413,6 @@ a:link {
   pointer-events: none; /* Agar overlay tidak mengganggu interaksi dengan gambar */
 }
 
-/* Responsif untuk tablet */
-@media (max-width: 768px) {
-  .text-pengertian {
-    max-width: 100%;
-    text-align: center;
-  }
-  .text-pengertian h1 {
-    font-size: 28px;
-  }
-  .text-pengertian p {
-    font-size: 16px;
-  }
-  .image-content {
-    max-width: 100%;
-    margin-top: 20px;
-  }
-  .image-content img {
-    width: 300px; /* Ukuran gambar lebih kecil pada tablet */
-  }
-}
-
-/* Responsif untuk smartphone */
-@media (max-width: 480px) {
-  .text-pengertian h1 {
-    font-size: 24px;
-  }
-  .text-pengertian p {
-    font-size: 14px;
-  }
-  .button {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-  .image-content img {
-    width: 250px; /* Ukuran gambar lebih kecil pada smartphone */
-  }
-}
-
 /* panduan */
 
 .body-panduan {
@@ -567,6 +529,7 @@ a:link {
 /* responsif */
 /* Responsif untuk tablet */
 @media (max-width: 768px) {
+  
   .site ul {
     flex-direction: row; 
     gap: 10px; 
@@ -593,6 +556,15 @@ a:link {
 /* responsif layar hp */
 
 @media (max-width: 480px) {
+
+    .image-gallery img {
+      width: 100%;
+      height: auto; /* Gambar menyesuaikan tinggi berdasarkan lebar */
+    }
+    .image-gallery {
+      height: auto; /* Kontainer menyesuaikan tinggi berdasarkan konten */
+    }
+  
   .text-pengertian h1 {
     font-size: 20px;
   }
@@ -604,7 +576,7 @@ a:link {
     align-items: center;
   }
   .header .menu-icon {
-    display: block; 
+    display: inline; 
   }
   .site ul {
     align-items: center;

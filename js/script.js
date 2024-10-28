@@ -10,7 +10,19 @@ function toggleDropdown() {
     var role = document.getElementById("role").value;
     if (role === "pilih peran") {
         alert("Silakan pilih peran sebelum mendaftar.");
-        return false; // Mencegah form dikirim
+        return false;
     }
     return true; // Lanjutkan pengiriman form jika valid
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const menuIcon = document.querySelector('.header .menu-icon');
+  const sidebar = document.querySelector('.sidebar');
+
+  console.log(menuIcon, sidebar);
+
+  menuIcon.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+  });
+});
+

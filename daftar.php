@@ -54,7 +54,7 @@ $stmt->bind_param("ssss", $nama, $hashedPassword, $role, $email);
 
     if ($stmt->execute()) {
         // Redirect ke halaman login setelah pendaftaran berhasil
-        header("Location: login1.php");
+        header("Location: login.html");
         exit(); // Pastikan untuk keluar setelah redirect
     } else {
         echo "Pendaftaran Gagal: " . $stmt->error;
