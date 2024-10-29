@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4": {
+            "NewbieTeam\\App\\": "src/",
+            "Tests\\": "Tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.4"
+    }
+}
