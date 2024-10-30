@@ -10,39 +10,73 @@ body {
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  position: fixed;
+  justify-content: space-between;
+  padding: 0 ;
+  border-bottom: 1px solid #ccc;
+  position: sticky;
   top: 0;
+  background-color: #ffffff;
+  z-index: 3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   left: 0;
-  right: 0;
-  z-index: 3; /* Supaya header berada di atas sidebar */
+  width: 100%; /* Lebar penuh */
+  font-weight: 500;
+  height: 50px;
 }
 
-.header {
+/* .header {
   font-size: 24px;
   cursor: pointer;
-}
+} */
+
 .header .title {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
+  margin-left: 0;
 }
-.header .logout {
-  font-size: 14px;
-  padding: 5px 10px;
+.logout {
+  margin-left: auto;
   border: 1px solid #000;
+  padding: 5px 10px;
   border-radius: 5px;
-  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  font-size: 12px;
+  margin-right: 10px;
 }
+
+.text-elearning {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 15 0 15 15px;
+  font-size: 12px;
+}
+
+.logo {
+  justify-content: center;
+  display: flex;
+  flex-grow: 1;
+  margin-right: auto;
+  margin-left: 20px;
+  align-items: center;
+  max-width: 100%; /* Lebar maksimal gambar tidak lebih dari lebar container */
+  height: auto; /* Tinggi menyesuaikan proporsi */
+}
+
+.logo img {
+  width: auto;
+  height: 28px;
+}
+
 .sidebar {
+  height: auto;
   width: 200px;
   background-color: #013c74;
   color: #fff;
   position: fixed;
-  top: 60px;
+  top: 50px;
   bottom: 0;
   padding-top: 20px;
   transition: transform 0.3s ease; /* Animasi untuk sidebar */
@@ -86,8 +120,8 @@ body {
   width: 100%;
   max-width: 980px;
   height: 100%;
-  max-height: 100px;
-  margin-top: 60px;
+  max-height: 150px;
+  margin-top: 0;
 }
 .profile-card .profile-info {
   display: flex;
@@ -119,6 +153,7 @@ body {
   gap: 20px; 
   width: 100%;
   height: auto;
+  flex-wrap: wrap;
 }
 
 .stats-akun {
