@@ -18,11 +18,14 @@ function toggleDropdown() {
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
+  const content = document.querySelector('.content'); // Menangkap elemen konten
 
   console.log(menuIcon, sidebar);
 
   menuIcon.addEventListener('click', () => {
-      sidebar.classList.toggle('hidden');
+    // Toggle kelas untuk sidebar dan konten
+    sidebar.classList.toggle('sidebar-expanded');
+    content.classList.toggle('sidebar-expanded-content');
   });
 });
 

@@ -22,7 +22,7 @@ class ComposerStaticInitee67736c95bda895c33d8c366a0dff8e
         ),
         'N' => 
         array (
-            'NewbieTeam\\App\\' => 15,
+            'NewbieTeam\\' => 11,
         ),
         'D' => 
         array (
@@ -39,7 +39,7 @@ class ComposerStaticInitee67736c95bda895c33d8c366a0dff8e
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
-        'NewbieTeam\\App\\' => 
+        'NewbieTeam\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

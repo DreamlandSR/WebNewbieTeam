@@ -1,7 +1,11 @@
 {
     "autoload": {
         "psr-4": {
-            "NewbieTeam\\App\\": "src/",
+            "NewbieTeam\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Tests\\": "Tests/"
         }
     },

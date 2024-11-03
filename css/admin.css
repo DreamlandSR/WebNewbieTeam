@@ -1,8 +1,9 @@
 * {
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
@@ -23,6 +24,7 @@ body {
   width: 100%; /* Lebar penuh */
   font-weight: 500;
   height: 50px;
+  
 }
 
 /* .header {
@@ -35,29 +37,32 @@ body {
   font-weight: bold;
   margin-left: 0;
 }
+
 .logout {
   margin-left: auto;
   border: 1px solid #000;
   padding: 5px 10px;
   border-radius: 5px;
-  text-decoration: none;
-  color: #000;
+  text-decoration: none; /* Menghapus garis bawah */
+  color: #000; /* Warna teks */
   font-size: 12px;
   margin-right: 10px;
+  display: inline-block; /* Supaya tampak seperti tombol */
 }
 
 .text-elearning {
+  align-items: center;
   text-align: center;
   justify-content: center;
   display: flex;
-  padding: 15 0 15 15px;
+  padding: 10px;
   font-size: 12px;
 }
 
 .logo {
+  margin-left: 0;
   justify-content: center;
   display: flex;
-  flex-grow: 1;
   margin-right: auto;
   margin-left: 20px;
   align-items: center;
@@ -70,6 +75,12 @@ body {
   height: 28px;
 }
 
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
 .sidebar {
   height: auto;
   width: 200px;
@@ -79,20 +90,32 @@ body {
   top: 50px;
   bottom: 0;
   padding-top: 20px;
-  transition: transform 0.3s ease; /* Animasi untuk sidebar */
-  transform: translateX(0); /* Posisi default */
-  z-index: 2; 
+  transition: transform 0.3s ease, width 0.3s ease; /* Animasi untuk transformasi dan lebar */
+  transform: translateX(0);
+  z-index: 2;
 }
 
+.content {
+  margin-left: 200px; /* Pastikan hanya ada satu deklarasi */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Animasi untuk konten */
+}
+
+/* Menampilkan sidebar dengan animasi */
+.sidebar.sidebar-expanded {
+  transform: translateX(-100%); /* Tidak perlu mengubah posisi saat diperluas */
+}
+
+/* Menggunakan transform untuk menyembunyikan sidebar */
 .sidebar.hidden {
-  transform: translateX(-100%); /* Sidebar tersembunyi */
+  transform: translateX(-100%); /* Sidebar tersembunyi dengan transisi */
 }
 
-.menu-icon {
-  font-size: 24px;
-  cursor: pointer;
-  padding: 10px;
+/* Konten bergeser ke kiri saat sidebar menyembunyikan */
+.content.sidebar-expanded-content {
+  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
+
 
 .sidebar a {
   display: block;
@@ -103,11 +126,7 @@ body {
 .sidebar a:hover {
   background-color: #0055a5;
 }
-.content {
-  margin-left: 200px;
-  padding: 20px;
-  top: 30px;
-}
+
 .profile-card {
   display: flex;
   justify-content: space-between;
@@ -118,9 +137,9 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   width: 100%;
-  max-width: 980px;
+  max-width: 1280px;
   height: 100%;
-  max-height: 150px;
+  max-height: 300px;
   margin-top: 0;
 }
 .profile-card .profile-info {
@@ -146,6 +165,7 @@ body {
   cursor: pointer;
 }
 
+
 .stats {
   display: flex;
   justify-content: space-between;
@@ -162,8 +182,11 @@ body {
 }
 
 .stats .stat-card {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -191,10 +214,20 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
-  width: 100%;
-  width: 980px;
+  width: 100%; /* Mengisi seluruh lebar layar */
+  max-width: 1280px; /* Batas maksimal lebar di layar besar */
   height: auto;
 }
+
+@media (max-width: 480px) {
+  .admin-menu {
+      padding: 15px;
+      width: 90%; /* Lebar elemen menjadi 90% dari layar untuk memberi sedikit padding */
+      padding: 10px; /* Mengurangi padding pada layar kecil */
+      margin-bottom: 20px; /* Mengurangi margin bawah */
+    }
+}
+
 .admin-menu .menu-title {
   font-weight: bold;
   margin-bottom: 10px;
@@ -268,3 +301,4 @@ body {
   justify-content: center;
   align-items: center;
 }
+

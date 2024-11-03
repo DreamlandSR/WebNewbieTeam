@@ -1,3 +1,24 @@
+<?php
+session_start();
+require_once "Auth.php";
+require_once "dbconfig.php"; 
+
+$user = new Auth();
+// Cek status login user
+if (!$user->isLoggedIn()) {  
+    header("location: login.php"); //Redirect ke halaman login  
+    exit; // Tambahkan exit setelah header
+}
+
+// Ambil data user saat ini
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
+}
+
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -14,16 +35,23 @@
         <script src="js/script.js" defer></script>
     </head>
   <body>
-    <div class="sidebar">
-      <a href="#" class="active"><i class="fas fa-bars"></i></a>
-      <a href="admin.html"><i class="bi bi-house-fill"></i> Dashboard</a>
-      <a href="daftar.html"><i class="bi bi-person-fill-add"></i> Daftar akun</a>
-      <a href="profile.html"><i class="bi bi-person-fill"></i> Profile</a>
-      <a href="panduan.html"><i class="bi bi-bookmark-fill"></i> Panduan</a>
-      <!-- <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
+  <div class="header">
+        <div class="logo">
+            <i class="fas fa-bars menu-icon"></i>
+            <img src="Foto/smk7 jember.png" alt="School Logo" />
+            <span class="text-elearning">E-Learning</span>
+            <a href="logout.php"><div class="logout">Keluar</div></a>
+        </div>
+    </div>
+  <div class="sidebar">
+        <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
+        <a href="profile.html"><i class="bi bi-person-fill"></i> Profile</a>
+        <a href="panduan.html"><i class="fas fa-book"></i> Panduan</a>
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
         Kelas
         <i class="fas fa-caret-down"> </i>
-      </a> -->
+      </a>
       <div class="dropdown" id="dropdown">
         <a href="materi_dosen.html"> Matematika </a>
         <a href="#"> Penjaskes </a>
@@ -31,15 +59,11 @@
         <a href="#"> B.Inggris </a>
       </div>
     </div>
-    <div class="header">
-      <h1>E - Learning</h1>
-      <button>Keluar</button>
-    </div>
     <div class="content">
       <div class="profile-card">
         <div class="info">
-          <h2>Ryan Adi Saputra</h2>
-          <p>Multimedia - 1</p>
+        <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
+        <div class="role"><?php echo htmlspecialchars($currentUser['sebagai']); ?></div>
         </div>
         <a href="profile.html"><button>Profile</button></a>
       </div>

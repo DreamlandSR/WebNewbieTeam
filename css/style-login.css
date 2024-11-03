@@ -46,8 +46,11 @@ body {
 }
 
 .input-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
   text-align: left;
+  position: relative;
 }
 
 .input-group label {
@@ -57,28 +60,25 @@ body {
 }
 
 .input-group input {
-  width: 60%;
+  width: 60%; /* Sesuaikan agar memenuhi lebar kontainer */
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.input-group .error_msg {
-  font-size: 15px;
-  color: #f44336;
-  display: none;
+  font-size: 16px;
 }
 
 .show-password {
+  position:absolute;
+  top: 55%;
+  right: 200px;
   cursor: pointer;
   color: #007bff;
   font-size: 12px;
-  margin-top: 5px;
 }
 
 .forgot-password {
   margin: 20px 0;
   text-align: left;
+  font-size: 14px;
 }
 
 .forgot-password a {
@@ -90,6 +90,7 @@ body {
   font-size: 12px;
   color: #666;
 }
+
 
 button {
   background-color: #00477b;
