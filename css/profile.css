@@ -1,36 +1,139 @@
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
 }
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: white;
+  justify-content: space-between;
+  padding: 0 ;
   border-bottom: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  left: 0;
+  width: 100%; /* Lebar penuh */
+  font-weight: 500;
+  height: 50px;
+  
 }
-.header .menu-icon {
-  font-size: 24px;
-}
+
 .header .title {
   font-size: 18px;
   font-weight: bold;
+  margin-left: 0;
 }
-.header .logout-button {
-  padding: 5px 10px;
+
+.logout {
+  margin-left: auto;
   border: 1px solid #000;
-  background-color: white;
-  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none; /* Menghapus garis bawah */
+  color: #000; /* Warna teks */
+  font-size: 12px;
+  margin-right: 20px;
+  display: inline-block; /* Supaya tampak seperti tombol */
 }
+
+.text-elearning {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.logo {
+  margin-left: 0;
+  justify-content: center;
+  display: flex;
+  margin-right: auto;
+  margin-left: 20px;
+  align-items: center;
+  max-width: 100%; /* Lebar maksimal gambar tidak lebih dari lebar container */
+  height: auto; /* Tinggi menyesuaikan proporsi */
+}
+
+.logo img {
+  width: auto;
+  height: 28px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.sidebar {
+  height: auto;
+  width: 200px;
+  background-color: #013c74;
+  color: #fff;
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  padding-top: 20px;
+  transition: transform 0.3s ease, width 0.3s ease; /* Animasi untuk transformasi dan lebar */
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.content {
+  margin-left: 200px; /* Pastikan hanya ada satu deklarasi */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Animasi untuk konten */
+}
+
+/* Menampilkan sidebar dengan animasi */
+.sidebar.sidebar-expanded {
+  transform: translateX(-100%); /* Tidak perlu mengubah posisi saat diperluas */
+}
+
+/* Menggunakan transform untuk menyembunyikan sidebar */
+.sidebar.hidden {
+  transform: translateX(-100%); /* Sidebar tersembunyi dengan transisi */
+}
+
+/* Konten bergeser ke kiri saat sidebar menyembunyikan */
+.content.sidebar-expanded-content {
+  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
+}
+
+
+.sidebar a {
+  display: block;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  background-color: #0055a5;
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 50px);
+  transition: transform 0.3s ease; /* Gunakan transform untuk animasi yang lebih halus */
+  margin-left: 200px; /* Awalnya diatur agar container berada di posisi normal */
 }
+
+.container.sidebar-shifted-right {
+  transform: translateX(-200px); /* Geser container ke kiri saat sidebar disembunyikan */
+}
+
+
 .card {
   background-color: white;
   padding: 20px;
@@ -41,6 +144,8 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+
 .card h2 {
   color: #003366;
   margin-bottom: 20px;

@@ -19,13 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
   const content = document.querySelector('.content'); // Menangkap elemen konten
-
-  console.log(menuIcon, sidebar);
+  const container = document.querySelector('.container');
+  console.log(menuIcon, sidebar, container);
 
   menuIcon.addEventListener('click', () => {
     // Toggle kelas untuk sidebar dan konten
     sidebar.classList.toggle('sidebar-expanded');
     content.classList.toggle('sidebar-expanded-content');
+    container.classList.toggle('sidebar-shifted-right');
   });
 });
 

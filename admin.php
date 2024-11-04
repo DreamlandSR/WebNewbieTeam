@@ -38,12 +38,11 @@ if (!$currentUser) {
     </div>
     <a href="logout.php" class="logout">Keluar</a>
 </div>
-
     <div class="sidebar">
         <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
         <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
-        <a href="profile.html"><i class="bi bi-person-fill"></i> Profile</a>
-        <a href="panduan.html"><i class="fas fa-book"></i> Panduan</a>
+        <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
+        <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
     </div>
     <div class="content">
         <div class="profile-card">

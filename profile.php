@@ -1,14 +1,38 @@
+<?php
+session_start();
+require_once "Auth.php";
+require_once "dbconfig.php"; 
+
+$user = new Auth();
+// Cek status login user
+if (!$user->isLoggedIn()) {  
+    header("location: login.php"); //Redirect ke halaman login  
+    exit; // Tambahkan exit setelah header
+}
+?>
+
 <html>
   <head>
     <title>Data Diri</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/profile.css">
   </head>
   <body>
-    <div class="header">
-      <i class="fas fa-bars menu-icon"> </i>
-      <div class="title">E - SMK 7 JEMBER</div>
-      <button class="logout-button">Keluar</button>
+  <div class="header">
+    <div class="logo">
+        <i class="fas fa-bars menu-icon"></i>
+        <img src="Foto/smk7 jember.png" alt="School Logo" />
+        <span class="text-elearning">E-Learning</span>
+    </div>
+    <a href="logout.php" class="logout">Keluar</a>
+  </div>
+  <div class="sidebar">
+        <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
+        <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
+        <a href="panduan.html"><i class="fas fa-book"></i> Panduan</a>
     </div>
     <div class="container">
       <div class="card">
@@ -62,5 +86,6 @@
         </div>
       </div>
     </div>
+  <script src="js/script.js"></script>    
   </body>
 </html>
