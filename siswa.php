@@ -31,23 +31,21 @@ if (!$currentUser) {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
         <!-- Custom CSS -->
         <link rel="stylesheet" href="css/siswa.css">
-        <!-- Custom JS -->
-        <script src="js/script.js" defer></script>
     </head>
   <body>
   <div class="header">
-        <div class="logo">
-            <i class="fas fa-bars menu-icon"></i>
-            <img src="Foto/smk7 jember.png" alt="School Logo" />
-            <span class="text-elearning">E-Learning</span>
-            <a href="logout.php"><div class="logout">Keluar</div></a>
-        </div>
+    <div class="logo">
+        <i class="fas fa-bars menu-icon"></i>
+        <img src="Foto/smk7 jember.png" alt="School Logo" />
+        <span class="text-elearning">E-Learning</span>
     </div>
-  <div class="sidebar">
+    <a href="logout.php" class="logout">Keluar</a>
+</div>
+    <div class="sidebar">
         <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
-        <a href="profile.html"><i class="bi bi-person-fill"></i> Profile</a>
-        <a href="panduan.html"><i class="fas fa-book"></i> Panduan</a>
+        <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender</a>
+        <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
+        <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
         Kelas
         <i class="fas fa-caret-down"> </i>
@@ -60,13 +58,16 @@ if (!$currentUser) {
       </div>
     </div>
     <div class="content">
-      <div class="profile-card">
-        <div class="info">
-        <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
-        <div class="role"><?php echo htmlspecialchars($currentUser['sebagai']); ?></div>
+    <div class="profile-card">
+            <div class="profile-info">
+                <i class="fas fa-user-circle profile-icon"></i>
+                <div class="profile-text">
+                    <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
+                    <div class="role"><?php echo htmlspecialchars($currentUser['sebagai']); ?></div>
+                </div>
+            </div>
+            <button class="profile-button">Profile</button>
         </div>
-        <a href="profile.html"><button>Profile</button></a>
-      </div>
       <div class="grid-container">
         <div class="card">
           <a href="materi."><h3>Matematika</h3></a>
@@ -102,5 +103,6 @@ if (!$currentUser) {
         </div>
       </div>
     </div>
+    <script src="js/script.js"></script>
   </body>
 </html>

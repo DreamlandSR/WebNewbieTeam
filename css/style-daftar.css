@@ -57,7 +57,7 @@ body {
 .btn-submit {
     width: 100%;
     padding: 10px;
-    background-color: #003366;
+    background-color: #154ABC;
     color: white;
     border: none;
     border-radius: 5px;
@@ -67,11 +67,11 @@ body {
 }
 
 .btn-submit:hover {
-    background-color: #0055a5;
+    background-color: #2f6ffa;
 }
 
 footer {
-    background-color: #003366;
+    background-color: #154ABC;
     color: white;
     padding: 20px 0;
     width: 100%;

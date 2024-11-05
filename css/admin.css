@@ -79,7 +79,7 @@ body {
 .sidebar {
   height: auto;
   width: 200px;
-  background-color: #013c74;
+  background-color: #154ABC;
   color: #fff;
   position: fixed;
   top: 50px;
@@ -88,12 +88,6 @@ body {
   transition: transform 0.3s ease, width 0.3s ease; /* Animasi untuk transformasi dan lebar */
   transform: translateX(0);
   z-index: 2;
-}
-
-.content {
-  margin-left: 200px; /* Pastikan hanya ada satu deklarasi */
-  padding: 20px;
-  transition: margin-left 0.3s ease; /* Animasi untuk konten */
 }
 
 /* Menampilkan sidebar dengan animasi */
@@ -119,7 +113,13 @@ body {
 }
 
 .sidebar a:hover {
-  background-color: #0055a5;
+  background-color: #4680fd;
+}
+
+.content {
+  margin-left: 200px; /* Pastikan hanya ada satu deklarasi */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Animasi untuk konten */
 }
 
 .profile-card {
@@ -152,7 +152,7 @@ body {
   font-weight: bold;
 }
 .profile-card .profile-button {
-  background-color: #004a8f;
+  background-color: #154ABC;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -231,7 +231,7 @@ body {
   margin-bottom: 20px;
 }
 .admin-menu .menu-button {
-  background-color: #004a8f;
+  background-color: #154ABC;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -242,7 +242,7 @@ body {
 /* footer */
 
 .footer {
-  background-color: #004a8f;
+  background-color: #154ABC;
   color: #fff;
   padding: 20px;
   display: flex;
