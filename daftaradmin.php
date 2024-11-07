@@ -72,7 +72,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style-daftar.css">
+    <link rel="stylesheet" href="css/daftaradmin.css">
 </head>
 <body>
 <div class="header">
@@ -91,21 +91,33 @@ $conn->close();
     </div>
     <div class="container">
         <div class="register-box">
-            <h2>Daftar</h2>
-            <p>Daftar untuk akun Siswa, Guru, dan Admin</p>
-            <form action="daftar.php" method="POST" onsubmit="redirectToRolePage(event)">
+            <h2>Daftar Akun Admin</h2>
+            <form action="daftar.php" method="POST">
                 <div class="input-group">
-                    <select id="role" name="role" required>
-                        <option value="">pilih peran</option>
-                        <option value="guru">Guru</option>
-                        <option value="siswa">Siswa</option>
-                        <option value="admin">admin</option>
-                    </select>
+                    <label for="nama">Nama</label>
+                    <input type="text" id="nama" name="nama" placeholder="Masukkan nama anda" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirm-password">Ulangi password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required>
+                </div>
+                <div class="input-group">
+                    <label for="role">Role User</label>
+                    <input type="text" id="roleUser" name="role" placeholder="Masukkan role anda" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Masukkan email anda" required>
                 </div>
                 <button type="submit" class="btn-submit">Daftar</button>
             </form>
         </div>
     </div>
+    
     <div class="footer">
         <div class="school-info">
           <img src="Foto/smk7 jember.png" alt="School Emblem" />

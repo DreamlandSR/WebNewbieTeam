@@ -29,7 +29,7 @@ body {
     width: 100%; /* Lebar penuh */
     font-weight: 500;
     height: 50px;
-    
+    margin-bottom: 100px;
   }
   
   .header .title {
@@ -123,6 +123,7 @@ body {
     background-color: #4680fd;
   }
 
+
 .container {
     display: flex;
     justify-content: center;
@@ -130,37 +131,30 @@ body {
     height: 100vh;
 }
 
+.container.sidebar-expanded-content {
+  margin-left: 200px; /* Geser konten ke kanan jika sidebar aktif */
+}
+
 .register-box {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 500px;
-    width: 100%;
-    height: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 800px; /* Lebar maksimum yang lebih besar */
+  min-width: 400px; /* Menetapkan lebar minimum */
+  height: auto;
+  margin: 50px;
+  transition: width 0.3s ease;
 }
-
-.register-box p {
-    margin: 10px 20px;
-    text-align: center;
-    position: relative; /* Agar pseudo-element diposisikan relatif ke elemen ini */
-    padding-bottom: 15px;
-}
-
-.register-box p::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%; /* Memulai dari tengah elemen */
-    transform: translateX(-50%); /* Memindahkan ke kiri agar berada di tengah */
-    width: 120%; /* Ubah sesuai panjang border yang diinginkan */
-    border-bottom: 1px solid #ccc;
-}
-
 
 .register-box h2 {
     text-align: center;
+    margin-bottom: 20px;
     font-size: 24px;
+    border-bottom: 1px solid #ccc;
+    position: relative; /* Agar pseudo-element diposisikan relatif ke elemen ini */
+    padding-bottom: 15px;
 }
 
 .input-group {
@@ -197,7 +191,10 @@ body {
     background-color: #2f6ffa;
 }
 
+
+/* Footer biasa */
 .footer {
+  margin-top: 100px;
   background-color: #0a3aa2;
   color: #fff;
   padding: 20px;

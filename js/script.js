@@ -18,15 +18,36 @@ function toggleDropdown() {
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
-  const content = document.querySelector('.content'); // Menangkap elemen konten
   const container = document.querySelector('.container');
-  console.log(menuIcon, sidebar, container);
+  const footer = document.querySelector('.footer');
+  const registerBox = document.querySelector('.register-box');  // Perbaikan selector
 
+  console.log(menuIcon, sidebar, container, footer, registerBox);
+  
   menuIcon.addEventListener('click', () => {
     // Toggle kelas untuk sidebar dan konten
     sidebar.classList.toggle('sidebar-expanded');
-    content.classList.toggle('sidebar-expanded-content');
-    container.classList.toggle('sidebar-shifted-right');
+    container.classList.toggle('sidebar-expanded-content');
+    footer.classList.toggle('footer-active'); 
+    registerBox.classList.toggle('sidebar-expanded-content');  // Perbaikan selector
   });
 });
 
+
+//fungsi memilih value untuk daftar
+
+function redirectToRolePage(event) {
+  event.preventDefault();
+
+  const role = document.getElementById("role").value;
+
+  if (role === "guru") {
+    window.location.href = "daftarguru.php"; // Sesuaikan URL untuk halaman guru
+} else if (role === "siswa") {
+    window.location.href = "daftarsiswa.php"; // Sesuaikan URL untuk halaman siswa
+} else if (role === "admin") {
+    window.location.href = "daftaradmin.php"; // Sesuaikan URL untuk halaman admin
+} else {
+  alert ("Silahkan pilih role untuk daftar");
+}
+}
