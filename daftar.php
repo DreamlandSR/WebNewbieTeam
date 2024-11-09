@@ -1,67 +1,3 @@
-<?php
-session_start();
-
-// Koneksi ke database
-$host = 'localhost';
-$db   = 'e_learning';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-
-// Cek koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-// Mengambil data dari form dengan pengecekan isset
-$nama = isset($_POST["nama"]) ? $_POST["nama"] : '';
-$password = isset($_POST["password"]) ? $_POST["password"] : '';
-$confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
-$role = isset($_POST["role"]) ? $_POST["role"] : '';
-$email = isset($_POST["email"]) ? $_POST["email"] : '';
-
-// Validasi ketika error
-$errors = [];
-
-if (empty($nama)) {
-    $errors[] = "Nama tidak boleh kosong";
-}
-if (empty($password) || strlen($password) < 6) {
-    $errors[] = "Password harus minimal 6 karakter";
-}
-if ($password !== $confirm_password) {
-    $errors[] = "Password dan Ulangi Password tidak cocok";
-}
-if (empty($role)) {
-    $errors[] = "Silakan pilih peran";
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Email tidak valid";
-}
-
-// Jika ada error, tampilkan pesan error
-if (!empty($errors)) {
-    // foreach ($errors as $error) {
-    //     echo "<p style='color:red;'>$error</p>";
-    // }
-} else {
-    // Menyiapkan dan mengeksekusi pernyataan
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (nama, password, sebagai, email) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nama, $hashedPassword, $role, $email);
-
-    if ($stmt->execute()) {
-        // Redirect ke halaman login setelah pendaftaran berhasil
-        header("Location: login.php?status=success");
-        exit(); // Pastikan untuk keluar setelah redirect
-    } else {
-        header("Location: daftar.php?status=fail");
-    }
-    $stmt->close();
-}
-
-$conn->close();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +9,7 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/style-daftar.css">
+    <script src="js/script.js"></script>
 </head>
 <body>
 <div class="header">
@@ -90,21 +27,25 @@ $conn->close();
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
     </div>
     <div class="container">
-        <div class="register-box">
-            <h2>Daftar</h2>
-            <p>Daftar untuk akun Siswa, Guru, dan Admin</p>
-            <form action="daftar.php" method="POST" onsubmit="redirectToRolePage(event)">
-                <div class="input-group">
-                    <select id="role" name="role" required>
-                        <option value="">pilih peran</option>
-                        <option value="guru">Guru</option>
-                        <option value="siswa">Siswa</option>
-                        <option value="admin">admin</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">Daftar</button>
-            </form>
-        </div>
+    <div class="register-box">
+    <h2>Daftar</h2>
+    <p>Daftar untuk akun Siswa, Guru, dan Admin</p>
+    <form action="daftar.php" method="POST" onsubmit="redirectToRolePage(event)">
+    <div class="input-group">
+        <label for="role">Role User</label>
+        <select id="role" name="role" onchange="updateRoleUser()" required>
+            <option value="">Pilih peran</option>
+            <option value="admin">Admin</option>
+            <option value="guru">Guru</option>
+            <option value="siswa">Siswa</option>
+        </select>
+    </div>
+    <input type="hidden" id="roleUser" name="role_user" />
+    <button type="submit" class="btn-submit">Daftar</button>
+</form>
+
+
+</div>
     </div>
     <div class="footer">
         <div class="school-info">
@@ -119,6 +60,5 @@ $conn->close();
         </div>
       </div>
     </footer>
-    <script src="js/script.js"></script>
 </body>
 </html>

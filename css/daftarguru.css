@@ -29,7 +29,7 @@ body {
     width: 100%; /* Lebar penuh */
     font-weight: 500;
     height: 50px;
-    margin-bottom: 100px;
+    margin-bottom: 200px;
   }
   
   .header .title {
@@ -197,7 +197,7 @@ body {
 
 /* Footer biasa */
 .footer {
-  margin-top: 100px;
+  margin-top: 200px;
   background-color: #0a3aa2;
   color: #fff;
   padding: 20px;

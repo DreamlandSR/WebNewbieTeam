@@ -105,6 +105,10 @@ body {
   margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
 
+.content.sidebar-expanded-container {
+  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
+}
+
 .sidebar a {
   display: block;
   padding: 15px 20px;

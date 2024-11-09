@@ -18,36 +18,56 @@ function toggleDropdown() {
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
+  const content = document.querySelector('.content');
   const container = document.querySelector('.container');
   const footer = document.querySelector('.footer');
   const registerBox = document.querySelector('.register-box');  // Perbaikan selector
-
-  console.log(menuIcon, sidebar, container, footer, registerBox);
+  console.log(menuIcon, sidebar, content, container, footer, registerBox);
   
   menuIcon.addEventListener('click', () => {
     // Toggle kelas untuk sidebar dan konten
     sidebar.classList.toggle('sidebar-expanded');
-    container.classList.toggle('sidebar-expanded-content');
+    content.classList.toggle('sidebar-expanded-content'); 
+    container.classList.toggle('sidebar-expanded-container');
     footer.classList.toggle('footer-active'); 
-    registerBox.classList.toggle('sidebar-expanded-content');  // Perbaikan selector
+    registerBox.classList.toggle('register-box');  // Perbaikan selector
   });
 });
 
+//option value daftar
+// Fungsi untuk memperbarui nilai role_user di input hidden berdasarkan pilihan dropdown
+function updateRoleUser() {
+  const roleSelect = document.getElementById("role");
+  const selectedRole = roleSelect.value;
+  const roleUserInput = document.getElementById("roleUser");
 
-//fungsi memilih value untuk daftar
+  // Update value input hidden dengan nilai role yang dipilih
+  roleUserInput.value = selectedRole;
+}
 
+// Fungsi untuk menangani redirect berdasarkan role yang dipilih
 function redirectToRolePage(event) {
-  event.preventDefault();
+  event.preventDefault(); // Mencegah pengiriman formulir langsung
 
-  const role = document.getElementById("role").value;
+  const selectedRole = document.getElementById("role").value;
+  const roleUserInput = document.getElementById("roleUser");
 
-  if (role === "guru") {
-    window.location.href = "daftarguru.php"; // Sesuaikan URL untuk halaman guru
-} else if (role === "siswa") {
-    window.location.href = "daftarsiswa.php"; // Sesuaikan URL untuk halaman siswa
-} else if (role === "admin") {
-    window.location.href = "daftaradmin.php"; // Sesuaikan URL untuk halaman admin
-} else {
-  alert ("Silahkan pilih role untuk daftar");
+  // Pastikan role dipilih, jika tidak beri peringatan
+  if (!selectedRole) {
+      alert("Silakan pilih role terlebih dahulu!");
+      return;
+  }
+
+  // Update nilai roleUserInput untuk memastikan data terkirim
+  roleUserInput.value = selectedRole;
+
+  // Redirect berdasarkan role yang dipilih
+  if (selectedRole === "admin") {
+      window.location.href = "daftaradmin.php?role=" + selectedRole;
+  } else if (selectedRole === "guru") {
+      window.location.href = "daftarguru.php?role=" + selectedRole; // Halaman daftar untuk guru
+  } else if (selectedRole === "siswa") {
+      window.location.href = "daftarsiswa.php?role=" + selectedRole; // Halaman daftar untuk siswa
+  }
 }
-}
+  

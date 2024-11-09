@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 $nama = isset($_POST["nama"]) ? $_POST["nama"] : '';
 $password = isset($_POST["password"]) ? $_POST["password"] : '';
 $confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
-$role = isset($_POST["role_user"]) ? $_POST["role_user"] : '';
+$role = isset($_POST["role"]) ? $_POST["role"] : '';
 $email = isset($_POST["email"]) ? $_POST["email"] : '';
 
 // Validasi ketika error
@@ -47,18 +47,16 @@ if (!empty($errors)) {
 } else {
     // Menyiapkan dan mengeksekusi pernyataan
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (nama, password, role_user, email) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO users (nama, password, sebagai, email) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $nama, $hashedPassword, $role, $email);
 
     if ($stmt->execute()) {
-        header("Location: prosesdaftar.php?status=success");
-        exit();
+        // Redirect ke halaman login setelah pendaftaran berhasil
+        header("Location: login.php?status=success");
+        exit(); // Pastikan untuk keluar setelah redirect
     } else {
-        echo "Error: " . $stmt->error; // Tampilkan error untuk debugging
         header("Location: daftar.php?status=fail");
-        exit();
     }
-    
     $stmt->close();
 }
 
@@ -74,7 +72,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/daftaradmin.css">
+    <link rel="stylesheet" href="css/daftarguru.css">
 </head>
 <body>
 <div class="header">
@@ -93,7 +91,7 @@ $conn->close();
     </div>
     <div class="container">
         <div class="register-box">
-            <h2>Daftar Akun Admin</h2>
+            <h2>Daftar Akun Guru</h2>
             <form action="daftar.php" method="POST">
                 <div class="input-group">
                     <label for="nama">Nama</label>
@@ -109,12 +107,19 @@ $conn->close();
                 </div>
                 <div class="input-group">
                     <label for="role">Role User</label>
-                    <input type="text" id="roleUser" name="role_user" value="admin" placeholder="Role user" readonly>
+                    <input type="text" id="roleUser" name="role" placeholder="Masukkan role anda" required>
                 </div>
-
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Masukkan email anda" required>
+                </div>
+                <div class="input-group">
+                    <label for="nomorInduk">NIP</label>
+                    <input type="number" id="nomorInduk" name="nomorInduk" placeholder="Masukkan NISN anda" required>
+                </div>
+                <div class="input-group">
+                    <label for="telp">No.Telp</label>
+                    <input type="number" id="telp" name="telp" placeholder="Masukkan Nomor Telepon anda" required>
                 </div>
                 <button type="submit" class="btn-submit">Daftar</button>
             </form>
@@ -137,3 +142,6 @@ $conn->close();
     <script src="js/script.js"></script>
 </body>
 </html>
+
+
+<input type="file">
