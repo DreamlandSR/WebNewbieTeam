@@ -1,77 +1,113 @@
 <?php
 session_start();
+require_once 'dbconfig.php';
 
-// Koneksi ke database
-$host = 'localhost';
-$db   = 'e_learning';
-$user = 'root';
-$pass = '';
+$db = new Database();
+$conn = $db->getConnection();
 
-$conn = new mysqli($host, $user, $pass, $db);
+// Mengecek apakah form telah dikirim
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Mengambil data dari form
+    $nama = isset($_POST["nama"]) ? trim($_POST["nama"]) : '';
+    $password = isset($_POST["password"]) ? $_POST["password"] : '';
+    $confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
+    $role = isset($_POST["role_user"]) ? $_POST["role_user"] : '';
+    $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
+    $nisn = isset($_POST["nisn"]) ? $_POST["nisn"] : '';
+    $telp = isset($_POST["telp"]) ? $_POST["telp"] : '';
 
-// Cek koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-// Mengambil data dari form dengan pengecekan isset
-$nama = isset($_POST["nama"]) ? $_POST["nama"] : '';
-$password = isset($_POST["password"]) ? $_POST["password"] : '';
-$confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
-$role = isset($_POST["role"]) ? $_POST["role"] : '';
-$email = isset($_POST["email"]) ? $_POST["email"] : '';
+    // Validasi data
+    $errors = [];
 
-// Validasi ketika error
-$errors = [];
-
-if (empty($nama)) {
-    $errors[] = "Nama tidak boleh kosong";
-}
-if (empty($password) || strlen($password) < 6) {
-    $errors[] = "Password harus minimal 6 karakter";
-}
-if ($password !== $confirm_password) {
-    $errors[] = "Password dan Ulangi Password tidak cocok";
-}
-if (empty($role)) {
-    $errors[] = "Silakan pilih peran";
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Email tidak valid";
-}
-
-// Jika ada error, tampilkan pesan error
-if (!empty($errors)) {
-    // foreach ($errors as $error) {
-    //     echo "<p style='color:red;'>$error</p>";
-    // }
-} else {
-    // Menyiapkan dan mengeksekusi pernyataan
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (nama, password, sebagai, email) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nama, $hashedPassword, $role, $email);
-
-    if ($stmt->execute()) {
-        // Redirect ke halaman login setelah pendaftaran berhasil
-        header("Location: login.php?status=success");
-        exit(); // Pastikan untuk keluar setelah redirect
-    } else {
-        header("Location: daftar.php?status=fail");
+    if (empty($nama)) {
+        $errors[] = "Nama tidak boleh kosong !";
     }
-    $stmt->close();
-}
+    if (empty($password) || strlen($password) < 6) {
+        $errors[] = "Password harus minimal 6 karakter";
+    }
+    if ($password !== $confirm_password) {
+        $errors[] = "Password dan Ulangi Password tidak cocok";
+    }
+    if (empty($role)) {
+        $errors[] = "Silakan pilih role";
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email tidak valid atau kosong";
+    }
+    if (empty($nisn)) {
+        $errors[] = "NISN tidak boleh kosong !";
+    }
+    if (empty($telp)) {
+        $errors[] = "Nomor Telepon tidak boleh kosong !";
+    }
 
-$conn->close();
+    // Cek apakah email sudah terdaftar
+    if (empty($errors)) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        $emailCount = $stmt->fetchColumn();
+
+        if ($emailCount > 0) {
+            // Jika email sudah terdaftar, tambahkan error
+            $errors[] = "Email sudah digunakan !";
+        }
+    }
+
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        header("Location: daftarsiswa.php");
+        exit();
+    } else {
+        // Jika tidak ada error, hash password dan simpan ke database
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Menggunakan prepared statement dengan PDO
+        $sql = "INSERT INTO siswa (nama, password, email, role_user, nisn, telp) VALUES (:nama, :password, :email, :role_user, :nisn, :telp)";
+        $stmt = $conn->prepare($sql);
+
+        // Bind parameters
+        $stmt->bindValue(':nama', $nama, PDO::PARAM_STR);
+        $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':role_user', $role, PDO::PARAM_STR);
+        $stmt->bindValue(':nisn', $nisn, PDO::PARAM_STR);
+        $stmt->bindValue(':telp', $telp, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            $_SESSION['user_info'] = [
+                'nama' => $nama,
+                'password' => $password,
+                'email' => $email,
+                'role_user' => $role
+            ];
+            header("Location: prosesdaftar.php?status=success");
+            exit();
+        } else {
+            $errorInfo = $stmt->errorInfo(); // Mendapatkan informasi error
+            $_SESSION['errors'] = ["Error: Gagal menyimpan data. " . $errorInfo[2]];
+            header("Location: daftarsiswa.php");
+            exit();
+        }        
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - SMK Negeri 7 Jember</title>
+    <!-- icon, font dll -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <!-- boostrap alert -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    <!-- css, js dll -->
     <link rel="stylesheet" href="css/daftarsiswa.css">
 </head>
 <body>
@@ -92,7 +128,17 @@ $conn->close();
     <div class="container">
         <div class="register-box">
             <h2>Daftar Akun Siswa</h2>
-            <form action="daftar.php" method="POST">
+            <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
+                <div class="alert alert-danger alert-custom" role="alert">
+                        <?php 
+                            foreach ($_SESSION['errors'] as $error) {
+                                echo "<li>$error</li>";
+                            }
+                            unset($_SESSION['errors']); // Hapus pesan error setelah ditampilkan
+                        ?>
+                </div>
+            <?php endif; ?>
+            <form action="daftarsiswa.php" method="POST">
                 <div class="input-group">
                     <label for="nama">Nama</label>
                     <input type="text" id="nama" name="nama" placeholder="Masukkan nama anda" required>
@@ -106,16 +152,16 @@ $conn->close();
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required>
                 </div>
                 <div class="input-group">
-                    <label for="role">Role User</label>
-                    <input type="text" id="roleUser" name="role" placeholder="Masukkan role anda" required>
+                    <label for="role_user">Role User</label>
+                    <input type="text" id="role_user" name="role_user" value="siswa" readonly>
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Masukkan email anda" required>
                 </div>
                 <div class="input-group">
-                    <label for="nomorInduk">NISN</label>
-                    <input type="number" id="nomorInduk" name="nomorInduk" placeholder="Masukkan NISN anda" required>
+                    <label for="nisn">NISN</label>
+                    <input type="number" id="nisn" name="nisn" placeholder="Masukkan NISN anda" required>
                 </div>
                 <div class="input-group">
                     <label for="telp">No.Telp</label>

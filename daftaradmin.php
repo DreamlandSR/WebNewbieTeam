@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Cek apakah email sudah terdaftar
     if (empty($errors)) {
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM admins WHERE email = :email");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
         

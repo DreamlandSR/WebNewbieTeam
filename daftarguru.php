@@ -34,16 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Email tidak valid atau kosong";
     }
-    if (empty($nip) || !filter_var($nip, FILTER_VALIDATE_EMAIL)) {
+    if (empty($nip)) {
         $errors[] = "NIP tidak boleh kosong !";
     }
-    if (empty($telp) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (empty($telp)) {
         $errors[] = "Nomor Telepon tidak boleh kosong !";
     }
 
     // Cek apakah email sudah terdaftar
     if (empty($errors)) {
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM guru WHERE email = :email");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
         
@@ -55,44 +55,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Jika ada error, simpan ke session dan kembali ke halaman daftaradmin.php
+    // Jika ada error, simpan ke session dan kembali ke halaman daftarguru.php
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-        header("Location: daftaradmin.php");
+        header("Location: daftarguru.php");
         exit();
     } else {
         // Jika tidak ada error, hash password dan simpan ke database
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         
         // Menggunakan prepared statement dengan PDO
-        $sql = "INSERT INTO guru (nama, password, role_user, email) VALUES (:nama, :password, :role_user, :email)";
+        $sql = "INSERT INTO guru (nama, password, email, role_user, nip, telp) VALUES (:nama, :password, :email, :role_user, :nip, :telp)";
         $stmt = $conn->prepare($sql);
 
         // Bind parameters
         $stmt->bindValue(':nama', $nama, PDO::PARAM_STR);
         $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
-        $stmt->bindValue(':role_user', $role, PDO::PARAM_STR);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':role_user', $role, PDO::PARAM_STR);
+        $stmt->bindValue(':nip', $nip, PDO::PARAM_STR);
+        $stmt->bindValue(':telp', $telp, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            // Menyimpan data ke session setelah berhasil menyimpan data
             $_SESSION['user_info'] = [
                 'nama' => $nama,
                 'password' => $password,
                 'email' => $email,
                 'role_user' => $role
             ];
-            header("Location: prosesdaftar.php?status=success"); // Berhasil, arahkan ke prosesdaftar.php
+            header("Location: prosesdaftar.php?status=success");
             exit();
         } else {
-            $_SESSION['errors'] = ["Error: Gagal menyimpan data"];
-            header("Location: daftaradmin.php");
+            $errorInfo = $stmt->errorInfo(); // Mendapatkan informasi error
+            $_SESSION['errors'] = ["Error: Gagal menyimpan data. " . $errorInfo[2]];
+            header("Location: daftarguru.php");
             exit();
-        }
+        }        
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,10 +101,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - SMK Negeri 7 Jember</title>
+    <!-- font, icon, dll -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <!-- Boostrap alert -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    <!-- koneksi css, js, dll -->
     <link rel="stylesheet" href="css/daftarguru.css">
 </head>
 <body>
@@ -124,7 +129,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="register-box">
             <h2>Daftar Akun Guru</h2>
-            <form action="daftar.php" method="POST">
+            <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
+                <div class="alert alert-danger alert-custom" role="alert">
+                        <?php 
+                            foreach ($_SESSION['errors'] as $error) {
+                                echo "<li>$error</li>";
+                            }
+                            unset($_SESSION['errors']); // Hapus pesan error setelah ditampilkan
+                        ?>
+                </div>
+            <?php endif; ?>
+            <form action="daftarguru.php" method="POST">
                 <div class="input-group">
                     <label for="nama">Nama</label>
                     <input type="text" id="nama" name="nama" placeholder="Masukkan nama anda" required>
@@ -138,16 +153,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required>
                 </div>
                 <div class="input-group">
-                    <label for="role">Role User</label>
-                    <input type="text" id="roleUser" name="role" placeholder="Masukkan role anda" required>
+                    <label for="role_user">Role User</label>
+                    <input type="text" id="role_user" name="role_user" value="guru" readonly>
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Masukkan email anda" required>
                 </div>
                 <div class="input-group">
-                    <label for="nomorInduk">NIP</label>
-                    <input type="number" id="nomorInduk" name="nomorInduk" placeholder="Masukkan NISN anda" required>
+                    <label for="nip">NIP</label>
+                    <input type="number" id="nip" name="nip" placeholder="Masukkan NISN anda" required>
                 </div>
                 <div class="input-group">
                     <label for="telp">No.Telp</label>

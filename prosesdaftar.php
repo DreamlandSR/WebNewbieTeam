@@ -7,7 +7,7 @@ if (isset($_SESSION['user_info'])) {
     unset($_SESSION['user_info']); // Menghapus data setelah ditampilkan
 } else {
     // Redirect jika tidak ada data
-    header("Location: daftaradmin.php");
+    header("Location: daftar.php");
     exit();
 }
 ?>
