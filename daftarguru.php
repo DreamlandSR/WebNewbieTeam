@@ -1,67 +1,99 @@
 <?php
 session_start();
+require_once 'dbconfig.php';
 
-// Koneksi ke database
-$host = 'localhost';
-$db   = 'e_learning';
-$user = 'root';
-$pass = '';
+$db = new Database();
+$conn = $db->getConnection();
 
-$conn = new mysqli($host, $user, $pass, $db);
+// Mengecek apakah form telah dikirim
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Mengambil data dari form
+    $nama = isset($_POST["nama"]) ? trim($_POST["nama"]) : '';
+    $password = isset($_POST["password"]) ? $_POST["password"] : '';
+    $confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
+    $role = isset($_POST["role_user"]) ? $_POST["role_user"] : '';
+    $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
+    $nip = isset($_POST["nip"]) ? $_POST["nip"] : '';
+    $telp = isset($_POST["telp"]) ? $_POST["telp"] : '';
 
-// Cek koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-// Mengambil data dari form dengan pengecekan isset
-$nama = isset($_POST["nama"]) ? $_POST["nama"] : '';
-$password = isset($_POST["password"]) ? $_POST["password"] : '';
-$confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
-$role = isset($_POST["role"]) ? $_POST["role"] : '';
-$email = isset($_POST["email"]) ? $_POST["email"] : '';
+    // Validasi data
+    $errors = [];
 
-// Validasi ketika error
-$errors = [];
-
-if (empty($nama)) {
-    $errors[] = "Nama tidak boleh kosong";
-}
-if (empty($password) || strlen($password) < 6) {
-    $errors[] = "Password harus minimal 6 karakter";
-}
-if ($password !== $confirm_password) {
-    $errors[] = "Password dan Ulangi Password tidak cocok";
-}
-if (empty($role)) {
-    $errors[] = "Silakan pilih peran";
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Email tidak valid";
-}
-
-// Jika ada error, tampilkan pesan error
-if (!empty($errors)) {
-    // foreach ($errors as $error) {
-    //     echo "<p style='color:red;'>$error</p>";
-    // }
-} else {
-    // Menyiapkan dan mengeksekusi pernyataan
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (nama, password, sebagai, email) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nama, $hashedPassword, $role, $email);
-
-    if ($stmt->execute()) {
-        // Redirect ke halaman login setelah pendaftaran berhasil
-        header("Location: login.php?status=success");
-        exit(); // Pastikan untuk keluar setelah redirect
-    } else {
-        header("Location: daftar.php?status=fail");
+    if (empty($nama)) {
+        $errors[] = "Nama tidak boleh kosong !";
     }
-    $stmt->close();
-}
+    if (empty($password) || strlen($password) < 6) {
+        $errors[] = "Password harus minimal 6 karakter";
+    }
+    if ($password !== $confirm_password) {
+        $errors[] = "Password dan Ulangi Password tidak cocok";
+    }
+    if (empty($role)) {
+        $errors[] = "Silakan pilih role";
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email tidak valid atau kosong";
+    }
+    if (empty($nip) || !filter_var($nip, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "NIP tidak boleh kosong !";
+    }
+    if (empty($telp) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Nomor Telepon tidak boleh kosong !";
+    }
 
-$conn->close();
+    // Cek apakah email sudah terdaftar
+    if (empty($errors)) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM guru WHERE email = :email");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        $emailCount = $stmt->fetchColumn();
+
+        if ($emailCount > 0) {
+            // Jika email sudah terdaftar, tambahkan error
+            $errors[] = "Email sudah digunakan !";
+        }
+    }
+
+    // Jika ada error, simpan ke session dan kembali ke halaman daftaradmin.php
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        header("Location: daftaradmin.php");
+        exit();
+    } else {
+        // Jika tidak ada error, hash password dan simpan ke database
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Menggunakan prepared statement dengan PDO
+        $sql = "INSERT INTO guru (nama, password, role_user, email) VALUES (:nama, :password, :role_user, :email)";
+        $stmt = $conn->prepare($sql);
+
+        // Bind parameters
+        $stmt->bindValue(':nama', $nama, PDO::PARAM_STR);
+        $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindValue(':role_user', $role, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            // Menyimpan data ke session setelah berhasil menyimpan data
+            $_SESSION['user_info'] = [
+                'nama' => $nama,
+                'password' => $password,
+                'email' => $email,
+                'role_user' => $role
+            ];
+            header("Location: prosesdaftar.php?status=success"); // Berhasil, arahkan ke prosesdaftar.php
+            exit();
+        } else {
+            $_SESSION['errors'] = ["Error: Gagal menyimpan data"];
+            header("Location: daftaradmin.php");
+            exit();
+        }
+    }
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

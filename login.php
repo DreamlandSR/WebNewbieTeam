@@ -17,7 +17,7 @@ if ($auth->isLoggedIn()) {
     $user = $auth->getCurrentUser();
 
     // Redirect berdasarkan role
-    switch ($user['sebagai']) {
+    switch ($user['role_user']) {
         case 'admin':
             header("Location: admin.php");
             exit();
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Periksa apakah $user bukan null
         if ($user) {
             // Redirect berdasarkan role
-            switch ($user['sebagai']) {
+            switch ($user['role_user']) {
                 case 'admin':
                     header("Location: admin.php");
                     break;
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     break;
                 default:
                     // Tangani role yang tidak dikenal
-                    header("Location: login.php?error=unknown_sebagai");
+                    header("Location: login.php?error=unknown_role");
                     exit();
             }
             exit(); // Tambahkan exit setelah redirect

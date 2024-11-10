@@ -21,7 +21,7 @@ class Auth {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['nama'] = $user['nama'];
-            $_SESSION['sebagai'] = $user['sebagai'];
+            $_SESSION['role_user'] = $user['role_user'];
             return true;
         } else {
             $this->error = "Nama atau password salah";
@@ -40,14 +40,14 @@ class Auth {
     
     
 
-    public function getUsersebagai() {
-        return isset($_SESSION['sebagai']) ? $_SESSION['sebagai'] : null;
+    public function getUserRole() {
+        return isset($_SESSION['role_user']) ? $_SESSION['role_user'] : null;
     }
 
     public function getCurrentUser() {
         if ($this->isLoggedIn()) {
             try {
-                $stmt = $this->db->prepare("SELECT id, nama, email, sebagai FROM users WHERE id = :id");
+                $stmt = $this->db->prepare("SELECT id, nama, email, role_user FROM users WHERE id = :id");
                 $stmt->bindParam(":id", $_SESSION['id']);
                 $stmt->execute();
                 return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -71,13 +71,13 @@ class Auth {
     }
 
     // Fungsi untuk memeriksa akses berdasarkan sebagai
-    public function checkAccess($allowed_sebagai = []) {
+    public function checkAccess($allowed_role = []) {
         if (!$this->isLoggedIn()) {
             return false;
         }
 
-        $sebagai = $this->getUsersebagai();
-        return in_array($sebagai, $allowed_sebagai);
+        $role = $this->getUserRole();
+        return in_array($role, $allowed_role);
     }
 }
 ?>

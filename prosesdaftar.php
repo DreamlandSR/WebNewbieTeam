@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+// Mengecek apakah data user_info ada di session
+if (isset($_SESSION['user_info'])) {
+    $user_info = $_SESSION['user_info'];
+    unset($_SESSION['user_info']); // Menghapus data setelah ditampilkan
+} else {
+    // Redirect jika tidak ada data
+    header("Location: daftaradmin.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -43,13 +57,12 @@
   </svg>
   <div>Selamat proses daftar User berhasil!</div>
 </div>
-
-        <div class="user-info">
-            <div class="info-item"><span>Username</span> : Ahmad Hidayat</div>
-            <div class="info-item1"><span>Password</span> : Ahmad111</div>
-            <div class="info-item"><span>Email</span> : AhmadGANZ@gmail.com</div>
-            <div class="info-item1"><span>Level User</span> : Admin</div>
-        </div>
+<div class="user-info">
+    <div class="info-item"><span>Username</span> : <?php echo htmlspecialchars($user_info['nama']); ?></div>
+    <div class="info-item1"><span>Password</span> : <?php echo '********'; ?></div> 
+    <div class="info-item"><span>Email</span> : <?php echo htmlspecialchars($user_info['email']); ?></div>
+    <div class="info-item1"><span>Level User</span> : <?php echo htmlspecialchars($user_info['role_user']); ?></div>
+</div>
         <button class="back-button">Kembali</button>
       </div>
     </div>

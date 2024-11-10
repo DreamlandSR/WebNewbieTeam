@@ -139,14 +139,20 @@ body {
   margin-left: 200px; /* Geser konten ke kanan jika sidebar aktif */
 }
 
+.alert-custom {
+  font-size: 16px; /* Ukuran font lebih kecil */
+  padding: 10px 15px; /* Padding lebih kecil */
+  margin-bottom: 15px; /* Jarak antara alert dan elemen lain */
+  width: 100%;
+}
+
+
 .register-box {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  width: 100%;
-  max-width: 800px; /* Lebar maksimum yang lebih besar */
-  min-width: 600px; /* Menetapkan lebar minimum */
+  width: 600px;
   height: auto;
   margin: 50px;
   transition: width 0.3s ease;
