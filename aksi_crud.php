@@ -76,4 +76,80 @@ if(isset($_POST['bhapus'])) {
     }
 }
 
+//aksi crud guru untuk admin
+
+//Uji jika tombol simpan di klik
+if(isset($_POST['bsimpanguru'])) {
+
+    //persiapan simpan data baru 
+    $simpan = mysqli_query($koneksi, "INSERT INTO guru (nip, nama_guru, no_hp, mata_pelajaran, email)
+                                       VALUES ('$_POST[tnip]',
+                                               '$_POST[tnamaguru]',
+                                               '$_POST[tnohp]',
+                                               '$_POST[tmatapelajaran]',
+                                               '$_POST[temail]')");
+    //jika simpan sukses
+    if($simpan){
+        echo "<script>
+               alert('Simpan data Sukses!');
+               document.location='index_crud.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Simpan data Gagal!');
+               document.location='index_crud.php'; 
+              </script>";
+    }
+}
+
+
+//Uji jika tombol ubah di klik
+if(isset($_POST['bubahguru'])) {
+
+    //persiapan ubah data
+    $ubah = mysqli_query($koneksi, "UPDATE guru SET
+                                                        nip = '$_POST[tnip]',
+                                                        nama_guru = '$_POST[tnama_guru]',
+                                                        no_hp = '$_POST[tnohp]',
+                                                        mata_pelajaran = '$_POST[tmatapelajaran]',
+                                                        email = '$_POST[temail]'
+                                                    WHERE id_guru = '$_POST[id_guru]' 
+                                                        ");
+
+
+    //jika ubah sukses
+    if($ubah){
+        echo "<script>
+               alert('Update data Sukses!');
+               document.location='index_crud.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Update data Gagal!');
+               document.location='index_crud.php'; 
+              </script>";
+    }
+}
+
+//Uji jika tombol hapus di klik
+if(isset($_POST['bhapusguru'])) {
+
+    //persiapan hapus data
+    $hapus = mysqli_query($koneksi, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
+
+    //jika hapus sukses
+    if($hapus){
+        echo "<script>
+               alert('Hapus data Sukses!');
+               document.location='index_crud.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Hapus data Gagal!');
+               document.location='index_crud.php'; 
+              </script>";
+    }
+}
+
+
 ?>
