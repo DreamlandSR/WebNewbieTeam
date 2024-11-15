@@ -188,7 +188,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
     <script src="js/script.js"></script>
 </body>
-</html>
-
-
-<input type="file">
+</html> 

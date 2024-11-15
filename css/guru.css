@@ -13,7 +13,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 ;
+  padding: 0;
   border-bottom: 1px solid #ccc;
   position: sticky;
   top: 0;
@@ -24,7 +24,6 @@ body {
   width: 100%; /* Lebar penuh */
   font-weight: 500;
   height: 50px;
-  
 }
 
 .header .title {
@@ -79,7 +78,7 @@ body {
 .sidebar {
   height: auto;
   width: 200px;
-  background-color: #154ABC;
+  background-color: #154abc;
   color: #fff;
   position: fixed;
   top: 50px;
@@ -111,10 +110,6 @@ body {
   margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
 
-.content.sidebar-expanded-container {
-  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
-}
-
 .sidebar a {
   display: block;
   padding: 15px 20px;
@@ -128,7 +123,7 @@ body {
 
 .dropdown {
   display: none;
-  background-color: #154ABC;
+  background-color: #154abc;
 }
 
 .dropdown.active {
@@ -145,6 +140,11 @@ body {
   display: block;
 }
 
+.content {
+  margin-left: 200px;
+  padding: 20px;
+}
+
 .profile-card {
   display: flex;
   justify-content: space-between;
@@ -157,32 +157,46 @@ body {
   width: 100%;
   max-width: 1280px;
   height: 100%;
-  max-height: 300px;
+  max-height: 350px;
+  min-height: 150px;
   margin-top: 0;
 }
+
 .profile-card .profile-info {
   display: flex;
   align-items: center;
 }
+
 .profile-card .profile-info .profile-icon {
   font-size: 50px;
   margin-right: 20px;
 }
+
 .profile-card .profile-info .profile-text {
   font-size: 18px;
 }
+
+.profile-text .name {
+  font-size: 24px;
+  font-weight: 100;
+}
+
+.role {
+  font-weight: 300;
+}
+
 .profile-card .profile-info .profile-text .name {
   font-weight: bold;
 }
+
 .profile-card .profile-button {
-  background-color: #154ABC;
+  background-color: #154abc;
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
 
 .stats {
   display: flex;
@@ -226,46 +240,68 @@ body {
   font-size: 24px;
   font-weight: bold;
 }
-.admin-menu {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  width: 100%; /* Mengisi seluruh lebar layar */
-  max-width: 1280px; /* Batas maksimal lebar di layar besar */
-  height: auto;
-}
 
-@media (max-width: 480px) {
-  .admin-menu {
-      padding: 15px;
-      width: 90%; /* Lebar elemen menjadi 90% dari layar untuk memberi sedikit padding */
-      padding: 10px; /* Mengurangi padding pada layar kecil */
-      margin-bottom: 20px; /* Mengurangi margin bawah */
-    }
-}
-
-.admin-menu .menu-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-.admin-menu .menu-description {
+.card, .second-card {
+  background-color: rgb(255, 255, 255);
+  padding: 0;
   margin-bottom: 20px;
-}
-.admin-menu .menu-button {
-  background-color: #154ABC;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border: 1px solid #cacaca;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px; /* Sesuaikan tinggi minimal sesuai kebutuhan */
 }
 
-/* footer */
+.card h3,
+.second-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: white;
+  background-color: #154abc;
+  padding: 10px;
+}
+.card ul,
+.second-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.card ul li,
+.second-card ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  margin-left: 10px;
+}
+
+.card ul li:last-child,
+.second-card ul li:last-child {
+  border-bottom: none;
+}
+
+.card ul li i,
+.second-card ul li i {
+  margin-right: 10px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.class-title {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.heading i {
+  margin-right: 5px;
+}
 
 .footer {
-  background-color: #154ABC;
+  background-color: #0a3aa2;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -319,4 +355,3 @@ body {
   justify-content: center;
   align-items: center;
 }
-

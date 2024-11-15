@@ -22,7 +22,7 @@ if ($auth->isLoggedIn()) {
             header("Location: admin.php");
             exit();
         case 'guru':
-            header("Location: guru.php");
+            header("Location: guru/guru.php");
             exit();
         case 'siswa':
             header("Location: siswa.php");
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     header("Location: admin.php");
                     break;
                 case 'guru':
-                    header("Location: guru.php");
+                    header("Location: guru/guru.php");
                     break;
                 case 'siswa':
                     header("Location: siswa.php");

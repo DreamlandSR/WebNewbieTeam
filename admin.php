@@ -43,6 +43,16 @@ if (!$currentUser) {
         <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
+        Tabel Master
+        <i class="fas fa-caret-down"> </i>
+      </a>
+      <div class="dropdown" id="dropdown">
+        <a href="materi_dosen.html"> Siswa </a>
+        <a href="#"> Pendidik </a>
+        <a href="#"> Kelas </a>
+        <a href="mapel.php"> Materi </a>
+    </div>
     </div>
     <div class="content">
         <div class="profile-card">

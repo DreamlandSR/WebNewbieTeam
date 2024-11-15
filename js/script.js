@@ -1,4 +1,4 @@
-
+//dropdown pada sidebbar
 function toggleDropdown() {
     var dropdown = document.getElementById("dropdown");
     var dropdownBtn = document.getElementById("dropdown-btn");
@@ -15,6 +15,7 @@ function toggleDropdown() {
     return true; // Lanjutkan pengiriman form jika valid
 }
 
+//pada saat content sidebar menghilang atau tidak
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
@@ -70,4 +71,33 @@ function redirectToRolePage(event) {
       window.location.href = "daftarsiswa.php?role=" + selectedRole; // Halaman daftar untuk siswa
   }
 }
-  
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const fadeInElements = document.querySelectorAll(".fade-in");
+
+  function checkVisibility() {
+      const windowHeight = window.innerHeight;
+
+      fadeInElements.forEach((el) => {
+          const elementTop = el.getBoundingClientRect().top;
+
+          if (elementTop < windowHeight - 50) {
+              el.classList.add("visible");
+          }
+      });
+  }
+
+  let isScrolling = false;
+  window.addEventListener("scroll", function() {
+      if (!isScrolling) {
+          isScrolling = true;
+          window.requestAnimationFrame(function() {
+              checkVisibility();
+              isScrolling = false;
+          });
+      }
+  });
+
+  checkVisibility(); // Memanggil saat pertama kali untuk memuat elemen yang sudah terlihat
+});

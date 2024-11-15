@@ -157,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
-    
     <div class="footer">
         <div class="school-info">
           <img src="Foto/smk7 jember.png" alt="School Emblem" />

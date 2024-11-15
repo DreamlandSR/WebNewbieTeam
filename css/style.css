@@ -1,4 +1,5 @@
-* {
+*, html {
+  scroll-behavior: smooth;
   box-sizing: border-box;
 }
 html, body {
@@ -11,7 +12,7 @@ html, body {
 
 body {
   font-family: "Poppins", sans-serif;
-}
+} 
 
 /* Header */
 
@@ -248,7 +249,7 @@ body {
 }
 
 .content-box.color-effect-1 {
-  background: #004a8f;
+  background: #154ABC;
 }
 
 .content-box.color-effect-1 h3 {
@@ -318,7 +319,7 @@ body {
 
 .content-box:hover .box-icon-effect-1a .box-icon i {
   background: #fff;
-  color: #004a8f;
+  color: #154ABC;
 }
 
 .content-box:hover .box-icon-effect-1a .box-icon i:after {
@@ -379,12 +380,18 @@ a:link {
   display: inline-block;
   margin-top: 20px;
   padding: 15px 30px;
-  background-color: #007bff;
+  background-color:#154ABC;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   border-radius: 25px;
+}
+
+.button:hover {
+  color: #fff;
+  background-color: #1e5ee9;
+  text-decoration: none;
 }
 
 .image-content {
@@ -455,7 +462,7 @@ a:link {
   margin: 0 0 20px 0;
 }
 .kartu button {
-  background-color: #007bff;
+  background-color: #154ABC;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -464,13 +471,13 @@ a:link {
   cursor: pointer;
 }
 .kartu button:hover {
-  background-color: #0056b3;
+  background-color: #1e5ee9;
 }
 
 /* footer */
 
 .footer {
-  background-color: #004a8f;
+  background-color: #154ABC;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -627,3 +634,6 @@ a:link {
     font-size: 12px;
   }
 }
+
+
+

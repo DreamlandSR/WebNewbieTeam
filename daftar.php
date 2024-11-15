@@ -43,8 +43,6 @@
     <input type="hidden" id="roleUser" name="role_user" />
     <button type="submit" class="btn-submit">Daftar</button>
 </form>
-
-
 </div>
     </div>
     <div class="footer">

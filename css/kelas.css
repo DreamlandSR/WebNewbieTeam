@@ -1,0 +1,156 @@
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  left: 0;
+  width: 100%; /* Lebar penuh */
+  font-weight: 500;
+  height: 50px;
+}
+
+.header .title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 0;
+}
+
+.logout {
+  margin-left: auto;
+  border: 1px solid #000;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none; /* Menghapus garis bawah */
+  color: #000; /* Warna teks */
+  font-size: 12px;
+  margin-right: 10px;
+  display: inline-block; /* Supaya tampak seperti tombol */
+}
+
+.text-elearning {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.logo {
+  margin-left: 0;
+  justify-content: center;
+  display: flex;
+  margin-right: auto;
+  margin-left: 20px;
+  align-items: center;
+  max-width: 100%; /* Lebar maksimal gambar tidak lebih dari lebar container */
+  height: auto; /* Tinggi menyesuaikan proporsi */
+}
+
+.logo img {
+  width: auto;
+  height: 28px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.container {
+  padding: 20px;
+}
+.course-header {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.course-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+.course-header .teacher-info {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.course-header .teacher-info i {
+  margin-right: 10px;
+}
+.course-header .breadcrumb {
+  margin-top: 10px;
+  color: #666;
+}
+.course-header .breadcrumb a {
+  color: #007bff;
+  text-decoration: none;
+}
+.course-header .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.actions button {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.actions button i {
+  margin-right: 10px;
+}
+.week {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.week h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.week a {
+  color: #007bff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.week a i {
+  margin-right: 10px;
+  color: #28a745;
+}

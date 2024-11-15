@@ -1,17 +1,19 @@
 * {
-  box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
+
 body {
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
 }
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 ;
+  padding: 0;
   border-bottom: 1px solid #ccc;
   position: sticky;
   top: 0;
@@ -22,7 +24,6 @@ body {
   width: 100%; /* Lebar penuh */
   font-weight: 500;
   height: 50px;
-  
 }
 
 .header .title {
@@ -39,7 +40,7 @@ body {
   text-decoration: none; /* Menghapus garis bawah */
   color: #000; /* Warna teks */
   font-size: 12px;
-  margin-right: 20px;
+  margin-right: 10px;
   display: inline-block; /* Supaya tampak seperti tombol */
 }
 
@@ -77,7 +78,7 @@ body {
 .sidebar {
   height: auto;
   width: 200px;
-  background-color: #154ABC;
+  background-color: #154abc;
   color: #fff;
   position: fixed;
   top: 50px;
@@ -109,24 +110,42 @@ body {
   margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
 
-
 .sidebar a {
   display: block;
   padding: 15px 20px;
   color: #fff;
   text-decoration: none;
 }
+
 .sidebar a:hover {
   background-color: #4680fd;
+}
+
+.dropdown {
+  display: none;
+  background-color: #154abc;
+}
+
+.dropdown.active {
+  display: block;
+}
+
+.dropdown a {
+  padding-left: 40px;
+}
+.dropdown-btn {
+  cursor: pointer;
+}
+.dropdown-btn.active + .dropdown {
+  display: block;
 }
 
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 100px);
   transition: transform 0.3s ease; /* Gunakan transform untuk animasi yang lebih halus */
-  margin-left: 200px; /* Awalnya diatur agar container berada di posisi normal */
 }
 
 .container.sidebar-shifted-right {

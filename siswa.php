@@ -63,7 +63,7 @@ if (!$currentUser) {
                 <i class="fas fa-user-circle profile-icon"></i>
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
-                    <div class="role"><?php echo htmlspecialchars($currentUser['sebagai']); ?></div>
+                    <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
                 </div>
             </div>
             <button class="profile-button">Profile</button>
