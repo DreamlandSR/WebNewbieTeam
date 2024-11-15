@@ -92,12 +92,12 @@ if(isset($_POST['bsimpanguru'])) {
     if($simpan){
         echo "<script>
                alert('Simpan data Sukses!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }else{
         echo "<script>
                alert('Simpan data Gagal!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }
 }
@@ -121,12 +121,12 @@ if(isset($_POST['bubahguru'])) {
     if($ubah){
         echo "<script>
                alert('Update data Sukses!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }else{
         echo "<script>
                alert('Update data Gagal!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }
 }
@@ -141,12 +141,12 @@ if(isset($_POST['bhapusguru'])) {
     if($hapus){
         echo "<script>
                alert('Hapus data Sukses!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }else{
         echo "<script>
                alert('Hapus data Gagal!');
-               document.location='index_crud.php'; 
+               document.location='crudguru_admin.php'; 
               </script>";
     }
 }
