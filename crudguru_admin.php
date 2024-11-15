@@ -80,7 +80,7 @@ include "koneksi_crud.php";
                                 </div>
 
                                 <form method="POST" action="aksi_crud.php">
-                                    <input type="hidden" name="id_siswa" value="<?=$data['id_guru']?>">
+                                    <input type="hidden" name="id_guru" value="<?=$data['id_guru']?>">
 
                                     <div class="modal-body">
 

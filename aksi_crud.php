@@ -109,7 +109,7 @@ if(isset($_POST['bubahguru'])) {
     //persiapan ubah data
     $ubah = mysqli_query($koneksi, "UPDATE guru SET
                                                         nip = '$_POST[tnip]',
-                                                        nama_guru = '$_POST[tnama_guru]',
+                                                        nama_guru = '$_POST[tnamaguru]',
                                                         no_hp = '$_POST[tnohp]',
                                                         mata_pelajaran = '$_POST[tmatapelajaran]',
                                                         email = '$_POST[temail]'
