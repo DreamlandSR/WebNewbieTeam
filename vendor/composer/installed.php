@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c0518cd49953be6cd319a8d60445277f3bf36c8a',
+        'reference' => '098c8781a5c9e763ebd53f86f5a61ffce301243c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c0518cd49953be6cd319a8d60445277f3bf36c8a',
+            'reference' => '098c8781a5c9e763ebd53f86f5a61ffce301243c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -54,6 +54,15 @@
             'install_path' => __DIR__ . '/../phar-io/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.9.2',
+            'version' => '6.9.2.0',
+            'reference' => 'a7b17b42fa4887c92146243f3d2f4ccb962af17c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'phpunit/php-code-coverage' => array(
             'pretty_version' => '11.0.7',

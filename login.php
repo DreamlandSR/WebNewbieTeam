@@ -19,13 +19,13 @@ if ($auth->isLoggedIn()) {
     // Redirect berdasarkan role
     switch ($user['role_user']) {
         case 'admin':
-            header("Location: admin.php");
+            header("Location: admin/admin.php");
             exit();
         case 'guru':
             header("Location: guru/guru.php");
             exit();
         case 'siswa':
-            header("Location: siswa.php");
+            header("Location: siswa/siswa.php");
             exit();
     }
 }
@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirect berdasarkan role
             switch ($user['role_user']) {
                 case 'admin':
-                    header("Location: admin.php");
+                    header("Location: admin/admin.php");
                     break;
                 case 'guru':
                     header("Location: guru/guru.php");
                     break;
                 case 'siswa':
-                    header("Location: siswa.php");
+                    header("Location: siswa/siswa.php");
                     break;
                 default:
                     // Tangani role yang tidak dikenal
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <span class="show-password" onclick="togglePassword()">Show</span>
                 </div>
                 <div class="forgot-password">
-                    <a href="#">Lupa Nama siswa atau password?</a>
+                    <a href="forgot_password.php">Lupa Nama siswa atau password?</a>
                     <p>Kuki harus diaktifkan pada browser anda</p>
                 </div>
                 <button type="submit" class="btn_input" id="submit" name="kirim">Masuk</button>

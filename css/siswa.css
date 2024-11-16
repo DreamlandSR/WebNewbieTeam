@@ -199,7 +199,6 @@ body {
   .dropdown {
     display: none;
     background-color: #154ABC;
-    padding-left: 20px;
 }
 
 .dropdown.active {

@@ -1,9 +1,71 @@
 <?php
+// Panggil Koneksi Database
+include "dbconfig.php";
 
-//Panggil Koneksi Database
-include "koneksi_crud.php";
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
 
+// Tambahkan logika CRUD di sini
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        if (isset($_POST['bsimpanguru'])) {
+            // Simpan data
+            $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
+                      VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':nip', $_POST['tnip']);
+            $stmt->bindParam(':nama', $_POST['tnamaguru']);
+            $stmt->bindParam(':no_hp', $_POST['tnohp']);
+            $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
+            $stmt->bindParam(':email', $_POST['temail']);
+            $stmt->execute();
+            echo "<script>
+                   alert('Simpan data Guru Sukses!');
+                   document.location='crudguru_admin.php';
+                  </script>";
+        } elseif (isset($_POST['bubahguru'])) {
+            // Ubah data
+            $sql = "UPDATE guru SET
+                        nip = :nip,
+                        nama = :nama,
+                        no_hp = :no_hp,
+                        mata_pelajaran = :mata_pelajaran,
+                        email = :email
+                    WHERE id_guru = :id_guru";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':nip', $_POST['tnip']);
+            $stmt->bindValue(':nama', $_POST['tnamaguru']);
+            $stmt->bindValue(':no_hp', $_POST['tnohp']);
+            $stmt->bindValue(':mata_pelajaran', $_POST['tmatapelajaran']);
+            $stmt->bindValue(':email', $_POST['temail']);
+            $stmt->bindValue(':id_guru', $_POST['id_guru']);
+            $stmt->execute();
+            echo "<script>
+                   alert('Update data Sukses!');
+                   document.location='crudguru_admin.php';
+                  </script>";
+        } elseif (isset($_POST['bhapusguru'])) {
+            // Hapus data
+            $query = "DELETE FROM guru WHERE id_guru = :id_guru";
+            $stmt = $conn->prepare($query);
+            $stmt->bindValue(':id_guru', $_POST['id_guru']);
+            $stmt->execute();
+            echo "<script>
+                   alert('Hapus data Sukses!');
+                   document.location='crudguru_admin.php';
+                  </script>";
+        }
+    } catch (PDOException $e) {
+        echo "<script>
+               alert('Operasi Gagal: " . $e->getMessage() . "');
+               document.location='crudguru_admin.php';
+              </script>";
+    }
+}
 ?>
+
+
 
 <!doctype html>
 <html lang="en">
@@ -49,14 +111,16 @@ include "koneksi_crud.php";
 
                         //persiapan menampilkan data
                         $no = 1;
-                        $tampil = mysqli_query($koneksi, "SELECT * FROM guru ORDER BY id_guru DESC");
-                             while($data = mysqli_fetch_array($tampil)):
+                            $query = $conn->prepare("SELECT * FROM guru ORDER BY id_guru DESC");
+                        $query->execute();
+                        while ($data = $query->fetch(PDO::FETCH_ASSOC)):
+                        
                     ?>
 
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><?= $data['nip' ]  ?></td>
-                        <td><?= $data['nama_guru']?></td>
+                        <td><?= $data['nama']?></td>
                         <td><?= $data['no_hp']?></td>
                         <td><?= $data['mata_pelajaran']?></td>
                         <td><?= $data['email']?></td>
@@ -79,7 +143,7 @@ include "koneksi_crud.php";
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="aksi_crud.php">
+                                <form method="POST" action="crudguru_admin.php">
                                     <input type="hidden" name="id_guru" value="<?=$data['id_guru']?>">
 
                                     <div class="modal-body">
@@ -93,7 +157,7 @@ include "koneksi_crud.php";
                                         <div class="mb-3">
                                             <label class="form-label">Nama Lengkap</label>
                                             <input type="text" class="form-control" name="tnamaguru"
-                                                value="<?= $data['nama_guru']?>"
+                                                value="<?= $data['nama']?>"
                                                 placeholder="Masukkan Nama Lengkap Anda!" required>
                                         </div>
 
@@ -149,14 +213,14 @@ include "koneksi_crud.php";
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="aksi_crud.php">
+                                <form method="POST" action="crudguru_admin.php">
                                     <input type="hidden" name="id_guru" value="<?=$data['id_guru']?>">
 
                                     <div class="modal-body">
 
                                         <h5 class="text-center">Apakah Anda yakin akan menghapus data ini?<br>
                                             <span class="text-danger"><?= $data['nip']?> -
-                                                <?= $data['nama_guru']?></span>
+                                                <?= $data['nama']?></span>
                                         </h5>
 
                                     </div>
@@ -189,7 +253,7 @@ include "koneksi_crud.php";
                                     aria-label="Close"></button>
                             </div>
 
-                            <form method="POST" action="aksi_crud.php">
+                            <form method="POST" action="crudguru_admin.php">
                                 <div class="modal-body">
 
                                     <div class="mb-3">

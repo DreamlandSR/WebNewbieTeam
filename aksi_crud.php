@@ -1,31 +1,44 @@
 <?php
 
-//panggil koneksi database
-include "koneksi_crud.php";
+// Panggil Koneksi Database
+include "dbconfig.php";
+
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
 
 //Uji jika tombol simpan di klik
-if(isset($_POST['bsimpan'])) {
+if (isset($_POST['bsimpanguru'])) {
+    try {
+        // Persiapkan query untuk menyimpan data
+        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
+                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
+        $stmt = $conn->prepare($query);
 
-    //persiapan simpan data baru 
-    $simpan = mysqli_query($koneksi, "INSERT INTO siswa (nis, nama_siswa, kelas, prodi, email)
-                                       VALUES ('$_POST[tnim]',
-                                               '$_POST[tnama]',
-                                               '$_POST[tkelas]',
-                                               '$_POST[tprodi]',
-                                               '$_POST[temail]')");
-    //jika simpan sukses
-    if($simpan){
+        // Bind parameter
+        $stmt->bindParam(':nip', $_POST['tnip']);
+        $stmt->bindParam(':nama', $_POST['tnamaguru']);
+        $stmt->bindParam(':no_hp', $_POST['tnohp']);
+        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
+        $stmt->bindParam(':email', $_POST['temail']);
+
+        // Eksekusi query
+        $stmt->execute();
+
+        // Berikan pesan sukses
         echo "<script>
-               alert('Simpan data Sukses!');
-               document.location='index_crud.php'; 
+               alert('Simpan data Guru Sukses!');
+               document.location='crudguru_admin.php';
               </script>";
-    }else{
+    } catch (PDOException $e) {
+        // Tangani kesalahan dan tampilkan pesan error
         echo "<script>
-               alert('Simpan data Gagal!');
-               document.location='index_crud.php'; 
+               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
+               document.location='crudguru_admin.php';
               </script>";
     }
 }
+
 
 
 //Uji jika tombol ubah di klik
@@ -33,15 +46,13 @@ if(isset($_POST['bubah'])) {
 
     //persiapan ubah data
     $ubah = mysqli_query($koneksi, "UPDATE siswa SET
-                                                        nis = '$_POST[tnim]',
-                                                        nama_siswa = '$_POST[tnama]',
-                                                        kelas = '$_POST[tkelas]',
-                                                        prodi = '$_POST[tprodi]',
-                                                        email = '$_POST[temail]'
-                                                    WHERE id_siswa = '$_POST[id_siswa]' 
-                                                        ");
-
-
+    nis = '$_POST[tnim]',
+    nama_siswa = '$_POST[tnama]',
+    kelas = '$_POST[tkelas]',
+    prodi = '$_POST[tprodi]',
+    email = '$_POST[temail]'
+    WHERE id_siswa = '$_POST[id_siswa]' 
+    ");
     //jika ubah sukses
     if($ubah){
         echo "<script>
@@ -79,43 +90,55 @@ if(isset($_POST['bhapus'])) {
 //aksi crud guru untuk admin
 
 //Uji jika tombol simpan di klik
-if(isset($_POST['bsimpanguru'])) {
+if (isset($_POST['bsimpanguru'])) {
+    try {
+        // Persiapkan query simpan
+        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
+                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
+        $stmt = $conn->prepare($query);
 
-    //persiapan simpan data baru 
-    $simpan = mysqli_query($koneksi, "INSERT INTO guru (nip, nama_guru, no_hp, mata_pelajaran, email)
-                                       VALUES ('$_POST[tnip]',
-                                               '$_POST[tnamaguru]',
-                                               '$_POST[tnohp]',
-                                               '$_POST[tmatapelajaran]',
-                                               '$_POST[temail]')");
-    //jika simpan sukses
-    if($simpan){
+        // Bind parameter
+        $stmt->bindParam(':nip', $_POST['tnip']);
+        $stmt->bindParam(':nama', $_POST['tnamaguru']);
+        $stmt->bindParam(':no_hp', $_POST['tnohp']);
+        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
+        $stmt->bindParam(':email', $_POST['temail']);
+
+        // Eksekusi query
+        $stmt->execute();
+
         echo "<script>
-               alert('Simpan data Sukses!');
-               document.location='crudguru_admin.php'; 
+               alert('Simpan data Guru Sukses!');
+               document.location='crudguru_admin.php';
               </script>";
-    }else{
+    } catch (PDOException $e) {
         echo "<script>
-               alert('Simpan data Gagal!');
-               document.location='crudguru_admin.php'; 
+               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
+               document.location='crudguru_admin.php';
               </script>";
     }
 }
 
 
 //Uji jika tombol ubah di klik
-if(isset($_POST['bubahguru'])) {
+if (isset($_POST['bubahguru'])) {
+    $sql = "UPDATE guru SET
+                nip = :nip,
+                nama = :nama,
+                no_hp = :no_hp,
+                mata_pelajaran = :mata_pelajaran,
+                email = :email
+            WHERE id_guru = :id_guru";
 
-    //persiapan ubah data
-    $ubah = mysqli_query($koneksi, "UPDATE guru SET
-                                                        nip = '$_POST[tnip]',
-                                                        nama_guru = '$_POST[tnamaguru]',
-                                                        no_hp = '$_POST[tnohp]',
-                                                        mata_pelajaran = '$_POST[tmatapelajaran]',
-                                                        email = '$_POST[temail]'
-                                                    WHERE id_guru = '$_POST[id_guru]' 
-                                                        ");
-
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':nip', $_POST['tnip']);
+    $stmt->bindValue(':nama', $_POST['tnamaguru']);
+    $stmt->bindValue(':no_hp', $_POST['tnohp']);
+    $stmt->bindValue(':mata_pelajaran', $_POST['tmatapelajaran']);
+    $stmt->bindValue(':email', $_POST['temail']);
+    $stmt->bindValue(':id_guru', $_POST['id_guru']);
+    $ubah = $stmt->execute();
+}
 
     //jika ubah sukses
     if($ubah){
@@ -129,7 +152,7 @@ if(isset($_POST['bubahguru'])) {
                document.location='crudguru_admin.php'; 
               </script>";
     }
-}
+
 
 //Uji jika tombol hapus di klik
 if(isset($_POST['bhapusguru'])) {
