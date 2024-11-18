@@ -55,11 +55,11 @@ if (!$currentUser) {
             <a href="materi_dosen.html"> Siswa </a>
             <a href="../crudguru_admin.php"> Pendidik </a>
             <a href="#"> Kelas </a>
-            <a href="mapel.php"> Materi </a>
+            <a href="crudmapel.php"> Materi </a>
             <a href="materi_dosen.html"> Siswa </a>
             <a href="crudguru_admin.php"> Pendidik </a>
             <a href="#"> Kelas </a>
-            <a href="mapel.php"> Materi </a>
+            <a href="crudmapel.php"> Materi </a>
         </div>
     </div>
     <div class="content">
