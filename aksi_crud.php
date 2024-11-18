@@ -174,5 +174,82 @@ if(isset($_POST['bhapusguru'])) {
     }
 }
 
+//aksi crud mapel pada admin
+
+//Uji jika tombol simpan di klik
+if (isset($_POST['bsimpanmapel'])) {
+    try {
+        // Persiapkan query simpan
+        $query = "INSERT INTO mapel (kode_mapel, nama_mapel) 
+                  VALUES (:kode_mapel, :nama_mapel)";
+        $stmt = $conn->prepare($query);
+
+        // Bind parameter
+        $stmt->bindParam(':kode_mapel', $_POST['tkdmapel']);
+        $stmt->bindParam(':nama_mapel', $_POST['tmapel']);
+
+        // Eksekusi query
+        $stmt->execute();
+
+        echo "<script>
+               alert('Simpan data Mata Pelajaran Sukses!');
+               document.location='crudmapel.php';
+              </script>";
+    } catch (PDOException $e) {
+        echo "<script>
+               alert('Simpan data Mata Pelajaran Gagal: " . $e->getMessage() . "');
+               document.location='crudmapel.php';
+              </script>";
+    }
+}
+
+
+//Uji jika tombol ubah di klik
+if (isset($_POST['bubahmapel'])) {
+    $sql = "UPDATE mapel SET
+                kode_mapel = :kode_mapel,
+                nama_mapel = :nama_mapel,
+            WHERE id_mapel = :id_mapel";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':kode_mapel', $_POST['tkdmapel']);
+    $stmt->bindValue(':nama_mapel', $_POST['tmapel']);
+    $stmt->bindValue(':id_mapel', $_POST['id_mapel']);
+    $ubah = $stmt->execute();
+}
+
+    //jika ubah sukses
+    if($ubah){
+        echo "<script>
+               alert('Update data Sukses!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Update data Gagal!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }
+
+
+//Uji jika tombol hapus di klik
+if(isset($_POST['bhapusmapel'])) {
+
+    //persiapan hapus data
+    $hapus = mysqli_query($koneksi, "DELETE FROM mapel WHERE id_mapel ='$_POST[id_mapel]'");
+
+    //jika hapus sukses
+    if($hapus){
+        echo "<script>
+               alert('Hapus data Sukses!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Hapus data Gagal!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }
+}
 
 ?>
