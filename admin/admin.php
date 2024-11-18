@@ -20,24 +20,27 @@ if (!$currentUser) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Learning Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../css/admin.css">
 </head>
+
 <body>
-<div class="header">
-    <div class="logo">
-        <i class="fas fa-bars menu-icon"></i>
-        <img src="../Foto/smk7 jember.png" alt="School Logo" />
-        <span class="text-elearning">E-Learning</span>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-bars menu-icon"></i>
+            <img src="../Foto/smk7 jember.png" alt="School Logo" />
+            <span class="text-elearning">E-Learning</span>
+        </div>
+        <a href="../logout.php" class="logout">Keluar</a>
     </div>
-    <a href="../logout.php" class="logout">Keluar</a>
-</div>
     <div class="sidebar">
         <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
         <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
@@ -45,19 +48,19 @@ if (!$currentUser) {
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-        Tabel Master
-        <i class="fas fa-caret-down"> </i>
-      </a>
-      <div class="dropdown" id="dropdown">
-        <a href="materi_dosen.html"> Siswa </a>
-        <a href="crudguru_admin.php"> Pendidik </a>
-        <a href="#"> Kelas </a>
-        <a href="mapel.php"> Materi </a>
-        <a href="materi_dosen.html"> Siswa </a>
-        <a href="crudguru_admin.php"> Pendidik </a>
-        <a href="#"> Kelas </a>
-        <a href="mapel.php"> Materi </a>
-    </div>
+            Tabel Master
+            <i class="fas fa-caret-down"> </i>
+        </a>
+        <div class="dropdown" id="dropdown">
+            <a href="materi_dosen.html"> Siswa </a>
+            <a href="../crudguru_admin.php"> Pendidik </a>
+            <a href="#"> Kelas </a>
+            <a href="mapel.php"> Materi </a>
+            <a href="materi_dosen.html"> Siswa </a>
+            <a href="crudguru_admin.php"> Pendidik </a>
+            <a href="#"> Kelas </a>
+            <a href="mapel.php"> Materi </a>
+        </div>
     </div>
     <div class="content">
         <div class="profile-card">
@@ -98,7 +101,8 @@ if (!$currentUser) {
         <h1 class="stats-akun">Menu admin</h1>
         <div class="admin-menu">
             <div class="menu-title">Daftar Akun</div>
-            <div class="menu-description">Menambahkan akun seperti Admin, Siswa, dan Guru untuk memulai pembelajaran</div>
+            <div class="menu-description">Menambahkan akun seperti Admin, Siswa, dan Guru untuk memulai pembelajaran
+            </div>
             <a href="daftar.html"><button class="menu-button">Daftar</button></a>
         </div>
         <div class="admin-menu">
@@ -114,4 +118,5 @@ if (!$currentUser) {
     </div>
     <script src="../js/script.js"></script>
 </body>
+
 </html>
