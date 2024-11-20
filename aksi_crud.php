@@ -10,17 +10,25 @@ $conn = $db->getConnection();
 // crud siswa
 
 //Uji jika tombol ubah di klik
-if(isset($_POST['bubah'])) {
 
-    //persiapan ubah data
-    $ubah = mysqli_query($conn, "UPDATE siswa SET
-    nisn = '$_POST[tnim]',
-    nama_siswa = '$_POST[tnama]',
-    kelas = '$_POST[tkelas]',
-    email = '$_POST[temail]'
-    WHERE id_siswa = '$_POST[id_siswa]' 
-    ");
-    //jika ubah sukses
+if (isset($_POST['bubah'])) {
+    $sql = "UPDATE siswa SET
+                nisn = :nisn,
+                nama = :nama,
+                kelas = :kelas,
+                email = :email
+            WHERE id_siswa = :id_siswa";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':nisn', $_POST['tnim']);
+    $stmt->bindValue(':nama', $_POST['tnama']);
+    $stmt->bindValue(':kelas', $_POST['tkelas']);
+    $stmt->bindValue(':email', $_POST['temail']);
+    $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
+    $ubah = $stmt->execute();
+}
+
+//jika ubah sukses
     if($ubah){
         echo "<script>
                alert('Update data Sukses!');
@@ -28,11 +36,10 @@ if(isset($_POST['bubah'])) {
               </script>";
     }else{
         echo "<script>
-               alert('Update data Gagal!');
+               alert('Update data Gagal!'); 
                document.location='index_crud.php'; 
               </script>";
     }
-}
 
 //Uji jika tombol hapus di klik
 if(isset($_POST['bhapus'])) {
@@ -53,7 +60,6 @@ if(isset($_POST['bhapus'])) {
               </script>";
     }
 }
-
 //aksi crud guru untuk admin
 
 //Uji jika tombol ubah di klik
