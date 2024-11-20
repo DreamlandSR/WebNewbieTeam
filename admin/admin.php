@@ -67,7 +67,9 @@ if (!$currentUser) {
                     <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
                 </div>
             </div>
-            <button class="profile-button">Profile</button>
+            <a href="profile.php">
+                <button class="profile-button">Profile</button>
+            </a>
         </div>
 
         <h1 class="stats-akun">Akun yang terdaftar</h1>
@@ -99,17 +101,17 @@ if (!$currentUser) {
             <div class="menu-title">Daftar Akun</div>
             <div class="menu-description">Menambahkan akun seperti Admin, Siswa, dan Guru untuk memulai pembelajaran
             </div>
-            <a href="daftar.html"><button class="menu-button">Daftar</button></a>
+            <a href="daftar.php"><button class="menu-button">Daftar</button></a>
         </div>
         <div class="admin-menu">
             <div class="menu-title">Profile</div>
             <div class="menu-description">Melihat data pribadi serta mengubah tampilan pada data diri</div>
-            <a href="profile.html"><button class="menu-button">profile</button></a>
+            <a href="profile.php"><button class="menu-button">profile</button></a>
         </div>
         <div class="admin-menu">
             <div class="menu-title">Panduan</div>
             <div class="menu-description">Melihat panduan untuk masing - masing dari user</div>
-            <a href="panduan.html"><button class="menu-button">Panduan</button></a>
+            <a href="panduan.php"><button class="menu-button">Panduan</button></a>
         </div>
     </div>
     <script src="../js/script.js"></script>
