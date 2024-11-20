@@ -9,22 +9,7 @@ $conn = $db->getConnection();
 // Tambahkan logika CRUD di sini
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        if (isset($_POST['bsimpanguru'])) {
-            // Simpan data
-            $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
-                      VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':nip', $_POST['tnip']);
-            $stmt->bindParam(':nama', $_POST['tnamaguru']);
-            $stmt->bindParam(':no_hp', $_POST['tnohp']);
-            $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
-            $stmt->bindParam(':email', $_POST['temail']);
-            $stmt->execute();
-            echo "<script>
-                   alert('Simpan data Guru Sukses!');
-                   document.location='crudguru_admin.php';
-                  </script>";
-        } elseif (isset($_POST['bubahguru'])) {
+        if (isset($_POST['bubahguru'])) {
             // Ubah data
             $sql = "UPDATE guru SET
                         nip = :nip,
@@ -65,8 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-
-
 <!doctype html>
 <html lang="en">
 
@@ -91,10 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Data Guru
             </div>
             <div class="card-body">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                    Tambah Data
-                </button>
 
                 <table class="table table-bordered table-striped table-hover">
                     <tr>
@@ -157,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label class="form-label">Nama Lengkap</label>
                                             <input type="text" class="form-control" name="tnamaguru"
-                                                value="<?= $data['nama']?>"
-                                                placeholder="Masukkan Nama Lengkap Anda!" required>
+                                                value="<?= $data['nama']?>" placeholder="Masukkan Nama Lengkap Anda!"
+                                                required>
                                         </div>
 
                                         <div class="mb-3">
@@ -238,73 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <?php endwhile; ?>
                 </table>
-
-
-
-
-                <!-- Awal Modal Tambah -->
-                <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Form Data Guru</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <form method="POST" action="crudguru_admin.php">
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-                                        <label class="form-label">NIP</label>
-                                        <input type="text" class="form-control" name="tnip"
-                                            placeholder="Masukkan NIP Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" class="form-control" name="tnamaguru"
-                                            placeholder="Masukkan Nama Lengkap Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Nomor Handphone</label>
-                                        <input type="tel" class="form-control" name="tnohp" pattern="[0-9]*"
-                                            placeholder="Masukkan Nomor Telepon Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Mata Pelajaran</label>
-                                        <select class="form-select" name="tmatapelajaran">
-                                            <option value=""></option>
-                                            <option value="Matematika">Matematika</option>
-                                            <option value="Olahraga">Olahraga</option>
-                                            <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Mata Pelajaran tidak boleh kosong.
-                                        </div>
-
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" name="temail"
-                                            placeholder="Masukkan Email Anda" required>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" name="bsimpanguru">Simpan</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Keluar</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Akhir Modal Tambah -->
-
 
             </div>
         </div>

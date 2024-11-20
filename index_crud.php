@@ -1,7 +1,7 @@
 <?php
 
 //Panggil Koneksi Database
-include "koneksi_crud.php";
+include "dbconfig.php";
 
 ?>
 
@@ -29,10 +29,6 @@ include "koneksi_crud.php";
                 Data Siswa
             </div>
             <div class="card-body">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                    Tambah Data
-                </button>
 
                 <table class="table table-bordered table-striped table-hover">
                     <tr>
@@ -172,73 +168,6 @@ include "koneksi_crud.php";
 
                     <?php endwhile; ?>
                 </table>
-
-
-
-
-                <!-- Awal Modal Tambah -->
-                <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Form Data Siswa</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <form method="POST" action="aksi_crud.php">
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-                                        <label class="form-label">NIS</label>
-                                        <input type="text" class="form-control" name="tnim"
-                                            placeholder="Masukkan NIS Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" class="form-control" name="tnama"
-                                            placeholder="Masukkan Nama Lengkap Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Kelas</label>
-                                        <input type="text" class="form-control" name="tkelas"
-                                            placeholder="Masukkan Kelas Anda!" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Prodi</label>
-                                        <select class="form-select" name="tprodi">
-                                            <option value=""></option>
-                                            <option value="Manajemen Informatika">Manajemen Informatika</option>
-                                            <option value="Teknik Informatika">Teknik Informatika</option>
-                                            <option value="Teknik Komputer">Teknik Komputer</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Prodi tidak boleh kosong.
-                                        </div>
-
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" name="temail"
-                                            placeholder="Masukkan Email Anda" required>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" name="bsimpan">Simpan</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Keluar</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Akhir Modal Tambah -->
-
 
             </div>
         </div>

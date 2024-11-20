@@ -7,39 +7,7 @@ include "dbconfig.php";
 $db = new Database();
 $conn = $db->getConnection();
 
-//Uji jika tombol simpan di klik
-if (isset($_POST['bsimpanguru'])) {
-    try {
-        // Persiapkan query untuk menyimpan data
-        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
-                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
-        $stmt = $conn->prepare($query);
-
-        // Bind parameter
-        $stmt->bindParam(':nip', $_POST['tnip']);
-        $stmt->bindParam(':nama', $_POST['tnamaguru']);
-        $stmt->bindParam(':no_hp', $_POST['tnohp']);
-        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
-        $stmt->bindParam(':email', $_POST['temail']);
-
-        // Eksekusi query
-        $stmt->execute();
-
-        // Berikan pesan sukses
-        echo "<script>
-               alert('Simpan data Guru Sukses!');
-               document.location='crudguru_admin.php';
-              </script>";
-    } catch (PDOException $e) {
-        // Tangani kesalahan dan tampilkan pesan error
-        echo "<script>
-               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
-               document.location='crudguru_admin.php';
-              </script>";
-    }
-}
-
-
+// crud siswa
 
 //Uji jika tombol ubah di klik
 if(isset($_POST['bubah'])) {
@@ -88,37 +56,6 @@ if(isset($_POST['bhapus'])) {
 }
 
 //aksi crud guru untuk admin
-
-//Uji jika tombol simpan di klik
-if (isset($_POST['bsimpanguru'])) {
-    try {
-        // Persiapkan query simpan
-        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
-                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
-        $stmt = $conn->prepare($query);
-
-        // Bind parameter
-        $stmt->bindParam(':nip', $_POST['tnip']);
-        $stmt->bindParam(':nama', $_POST['tnamaguru']);
-        $stmt->bindParam(':no_hp', $_POST['tnohp']);
-        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
-        $stmt->bindParam(':email', $_POST['temail']);
-
-        // Eksekusi query
-        $stmt->execute();
-
-        echo "<script>
-               alert('Simpan data Guru Sukses!');
-               document.location='crudguru_admin.php';
-              </script>";
-    } catch (PDOException $e) {
-        echo "<script>
-               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
-               document.location='crudguru_admin.php';
-              </script>";
-    }
-}
-
 
 //Uji jika tombol ubah di klik
 if (isset($_POST['bubahguru'])) {

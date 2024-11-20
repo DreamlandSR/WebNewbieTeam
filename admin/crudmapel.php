@@ -1,6 +1,6 @@
 <?php
 // Panggil Koneksi Database
-include "dbconfig.php";
+include "../dbconfig.php";
 
 // Inisialisasi objek Database
 $db = new Database();
