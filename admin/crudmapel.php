@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <tr>
                         <td><?= $no++ ?></td>
                         <td><?= $data['kode_mapel' ]  ?></td>
-                        <td><?= $data['mata_pelajaran']?></td>
+                        <td><?= $data['nama_mapel']?></td>
                         <td>
                             <a href="#" class="btn btn-warning" data-bs-toggle="modal"
                                 data-bs-target="#modalUbah<?= $no ?>">Update</a>
@@ -136,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label class="form-label">Kode Mata Pelajaran</label>
                                             <input type="text" class="form-control" name="tkdmapel"
-                                                value="<?= $data['nip']?>" placeholder="Masukkan Kode Mata Pelajaran!"
-                                                required>
+                                                value="<?= $data['kode_mapel']?>"
+                                                placeholder="Masukkan Kode Mata Pelajaran!" required>
                                         </div>
 
                                         <div class="mb-3">

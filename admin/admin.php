@@ -54,7 +54,7 @@ if (!$currentUser) {
         <div class="dropdown" id="dropdown">
             <a href="../index_crud.php"> Siswa </a>
             <a href="../crudguru_admin.php"> Guru </a>
-            <a href="#"> Kelas </a>
+            <a href="crud_kelas.php"> Kelas </a>
             <a href="crudmapel.php"> Materi </a>
         </div>
     </div>

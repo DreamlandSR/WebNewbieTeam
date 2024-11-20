@@ -150,7 +150,7 @@ if (isset($_POST['bsimpanmapel'])) {
 if (isset($_POST['bubahmapel'])) {
     $sql = "UPDATE mapel SET
                 kode_mapel = :kode_mapel,
-                nama_mapel = :nama_mapel,
+                nama_mapel = :nama_mapel
             WHERE id_mapel = :id_mapel";
 
     $stmt = $conn->prepare($sql);
