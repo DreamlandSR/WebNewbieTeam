@@ -13,11 +13,10 @@ $conn = $db->getConnection();
 if(isset($_POST['bubah'])) {
 
     //persiapan ubah data
-    $ubah = mysqli_query($koneksi, "UPDATE siswa SET
-    nis = '$_POST[tnim]',
+    $ubah = mysqli_query($conn, "UPDATE siswa SET
+    nisn = '$_POST[tnim]',
     nama_siswa = '$_POST[tnama]',
     kelas = '$_POST[tkelas]',
-    prodi = '$_POST[tprodi]',
     email = '$_POST[temail]'
     WHERE id_siswa = '$_POST[id_siswa]' 
     ");
@@ -39,7 +38,7 @@ if(isset($_POST['bubah'])) {
 if(isset($_POST['bhapus'])) {
 
     //persiapan hapus data
-    $hapus = mysqli_query($koneksi, "DELETE FROM siswa WHERE id_siswa ='$_POST[id_siswa]'");
+    $hapus = mysqli_query($conn, "DELETE FROM siswa WHERE id_siswa ='$_POST[id_siswa]'");
 
     //jika hapus sukses
     if($hapus){
@@ -85,7 +84,7 @@ if (isset($_POST['bubahguru'])) {
               </script>";
     }else{
         echo "<script>
-               alert('Update data Gagal!');
+               alert('Update data Gagal!'); 
                document.location='crudguru_admin.php'; 
               </script>";
     }
@@ -95,7 +94,7 @@ if (isset($_POST['bubahguru'])) {
 if(isset($_POST['bhapusguru'])) {
 
     //persiapan hapus data
-    $hapus = mysqli_query($koneksi, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
+    $hapus = mysqli_query($conn, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
 
     //jika hapus sukses
     if($hapus){
@@ -173,7 +172,7 @@ if (isset($_POST['bubahmapel'])) {
 if(isset($_POST['bhapusmapel'])) {
 
     //persiapan hapus data
-    $hapus = mysqli_query($koneksi, "DELETE FROM mapel WHERE id_mapel ='$_POST[id_mapel]'");
+    $hapus = mysqli_query($conn, "DELETE FROM mapel WHERE id_mapel ='$_POST[id_mapel]'");
 
     //jika hapus sukses
     if($hapus){
