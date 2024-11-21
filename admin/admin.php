@@ -55,7 +55,7 @@ if (!$currentUser) {
             <a href="../index_crud.php"> Siswa </a>
             <a href="../crudguru_admin.php"> Guru </a>
             <a href="crud_kelas.php"> Kelas </a>
-            <a href="crudmapel.php"> Materi </a>
+            <a href="crudmapel.php"> Mata Pelajaran</a>
         </div>
     </div>
     <div class="content">
