@@ -50,11 +50,7 @@ if (!$currentUser) {
       </a>
       <div class="dropdown" id="dropdown">
         <a href="materi_dosen.html"> Siswa </a>
-        <a href="crudguru_admin.php"> Pendidik </a>
-        <a href="#"> Kelas </a>
-        <a href="mapel.php"> Materi </a>
-        <a href="materi_dosen.html"> Siswa </a>
-        <a href="crudguru_admin.php"> Pendidik </a>
+        <a href="../crudguru_admin.php"> Pendidik </a>
         <a href="#"> Kelas </a>
         <a href="mapel.php"> Materi </a>
     </div>

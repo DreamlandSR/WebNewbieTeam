@@ -45,17 +45,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                    alert('Update data Sukses!');
                    document.location='crudguru_admin.php';
                   </script>";
-        } elseif (isset($_POST['bhapusguru'])) {
-            // Hapus data
-            $query = "DELETE FROM guru WHERE id_guru = :id_guru";
-            $stmt = $conn->prepare($query);
-            $stmt->bindValue(':id_guru', $_POST['id_guru']);
-            $stmt->execute();
-            echo "<script>
-                   alert('Hapus data Sukses!');
-                   document.location='crudguru_admin.php';
-                  </script>";
-        }
+
+                  if (isset($_POST['bhapusguru'])) {
+                    // Hapus data dari tabel guru
+                    $query = "DELETE FROM guru WHERE id_guru = :id_guru";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bindValue(':id_guru', $_POST['id_guru']);
+                    $stmt->execute();
+                
+                    // Hapus data dari tabel users
+                    $query = "DELETE FROM users WHERE id = :id";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bindValue(':id', $_POST['id']);
+                    $stmt->execute();
+                
+                    var_dump($_POST['id']);
+                    die();
+
+
+                    echo "<script>
+                           alert('Hapus data Sukses!');
+                           document.location='crudguru_admin.php';
+                          </script>";
+                }
+            }                
+
     } catch (PDOException $e) {
         echo "<script>
                alert('Operasi Gagal: " . $e->getMessage() . "');
@@ -144,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
 
                                 <form method="POST" action="crudguru_admin.php">
-                                    <input type="hidden" name="id_guru" value="<?=$data['id_guru']?>">
+                                    <input type="hidden" name="id" value="<?=$data['id_guru']?>">
 
                                     <div class="modal-body">
 
@@ -214,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
 
                                 <form method="POST" action="crudguru_admin.php">
-                                    <input type="hidden" name="id_guru" value="<?=$data['id_guru']?>">
+                                    <input type="hidden" name="id" value="<?=$data['id']?>">
 
                                     <div class="modal-body">
 
