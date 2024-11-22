@@ -76,6 +76,9 @@
                     <tr>
                         <td>34 Menit lalu</td>
                     </tr>
+                    <tr>
+                        <td>File Tugas</td>
+                    </tr>
                 </table>
 
                 <!-- Button trigger modal -->
