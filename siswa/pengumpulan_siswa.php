@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../css/pengumpulan_siswa.css" />
 
@@ -74,9 +77,58 @@
                         <td>34 Menit lalu</td>
                     </tr>
                 </table>
-                <button class="submit-button">Masukkan tugas</button>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                    Masukkan Tugas
+                </button>
+
+                <!-- Awal Modal Tambah -->
+                <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload File</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <form method="POST" action="pengumpulan_siswa.php">
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="formFile" class="form-label">Masukkan File</label>
+                                        <input class="form-control" type="file" id="formFile" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Tugas</label>
+                                        <input type="text" class="form-control" placeholder="Masukkan Nama Tugas Anda!"
+                                            required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Author</label>
+                                        <input type="text" class="form-control" placeholder="Masukkan Nama Anda!"
+                                            required>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary"
+                                            name="bsimpankelas">Simpan</button>
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Keluar</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Akhir Modal Tambah -->
+
             </div>
         </div>
+
     </div>
     <script src="../js/script.js"></script>
 </body>
