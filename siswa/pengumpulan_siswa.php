@@ -106,12 +106,6 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Nama Tugas</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Nama Tugas Anda!"
-                                            required>
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label class="form-label">Author</label>
                                         <input type="text" class="form-control" placeholder="Masukkan Nama Anda!"
                                             required>

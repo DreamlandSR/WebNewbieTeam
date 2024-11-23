@@ -70,7 +70,9 @@ if (!$currentUser) {
                     <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
                 </div>
             </div>
-            <button class="profile-button">Profile</button>
+            <a href="profile.php">
+                <button class="profile-button">Profile</button>
+            </a>
         </div>
         <div class="grid-container">
             <div class="card">
