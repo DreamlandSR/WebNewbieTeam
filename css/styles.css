@@ -1,0 +1,43 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb-container {
+    background-color: #f0f0f0;
+    font-size: 14px;
+}
+
+.status-menu {
+    font-size: 16px;
+    line-height: 2;
+    border-radius: 8px;
+}
+
+.status-content {
+    font-size: 16px;
+}
+
+.status-content .table td {
+    padding: 10px;
+    border-top: none;
+}
+
+.status-content .table td:first-child {
+    font-weight: 600;
+    width: 40%;
+}
+
+.status-content button {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+}

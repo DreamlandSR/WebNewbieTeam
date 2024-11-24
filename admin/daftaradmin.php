@@ -5,86 +5,81 @@ require_once '../dbconfig.php';
 $db = new Database();
 $conn = $db->getConnection();
 
-// Mengecek apakah form telah dikirim
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Mengambil data dari form
+    // Ambil data dari form
     $nama = isset($_POST["nama"]) ? trim($_POST["nama"]) : '';
     $password = isset($_POST["password"]) ? $_POST["password"] : '';
-    $confirm_password = isset($_POST["confirm-password"]) ? $_POST["confirm-password"] : '';
-    $role = isset($_POST["role_user"]) ? $_POST["role_user"] : '';
+    $confirm_password = isset($_POST["confirm_password"]) ? $_POST["confirm_password"] : '';
     $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
+    $role_user = 'admin'; // Role default untuk admin
 
-    // Validasi data
+    // Validasi
     $errors = [];
+    if (empty($nama)) $errors[] = "Nama tidak boleh kosong.";
+    if (empty($password) || strlen($password) < 6) $errors[] = "Password minimal 6 karakter.";
+    if ($password !== $confirm_password) $errors[] = "Password dan konfirmasi password tidak cocok.";
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email tidak valid.";
 
-    if (empty($nama)) {
-        $errors[] = "Nama tidak boleh kosong";
-    }
-    if (empty($password) || strlen($password) < 6) {
-        $errors[] = "Password harus minimal 6 karakter";
-    }
-    if ($password !== $confirm_password) {
-        $errors[] = "Password dan Ulangi Password tidak cocok";
-    }
-    if (empty($role)) {
-        $errors[] = "Silakan pilih role";
-    }
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Email tidak valid atau kosong";
-    }
-
-    // Cek apakah email sudah terdaftar
-    if (empty($errors)) {
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->execute();
-        
-        $emailCount = $stmt->fetchColumn();
-
-        if ($emailCount > 0) {
-            // Jika email sudah terdaftar, tambahkan error
-            $errors[] = "Email sudah digunakan !";
-        }
-    }
-
-    // Jika ada error, simpan ke session dan kembali ke halaman daftaradmin.php
+    // Jika ada error, kembalikan ke form
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
         header("Location: daftaradmin.php");
         exit();
-    } else {
-        // Jika tidak ada error, hash password dan simpan ke database
+    }
+
+    try {
+        // Mulai transaksi
+        $conn->beginTransaction();
+
+        // Hash password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        
-        // Menggunakan prepared statement dengan PDO
-        $sql = "INSERT INTO admins (nama, password, role_user, email) VALUES (:nama, :password, :role_user, :email)";
-        $stmt = $conn->prepare($sql);
 
-        // Bind parameters
-        $stmt->bindValue(':nama', $nama, PDO::PARAM_STR);
-        $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
-        $stmt->bindValue(':role_user', $role, PDO::PARAM_STR);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        // 1. Masukkan data ke tabel e_learning_users
+        $sql_users = "INSERT INTO users (nama, password, email, role_user) 
+                      VALUES (:nama, :password, :email, :role_user)";
+        $stmt_users = $conn->prepare($sql_users);
+        $stmt_users->bindValue(':nama', $nama, PDO::PARAM_STR);
+        $stmt_users->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt_users->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt_users->bindValue(':role_user', $role_user, PDO::PARAM_STR);
+        $stmt_users->execute();
 
-        if ($stmt->execute()) {
-            // Menyimpan data ke session setelah berhasil menyimpan data
-            $_SESSION['user_info'] = [
-                'nama' => $nama,
-                'password' => $password,
-                'email' => $email,
-                'role_user' => $role
-            ];
-            header("Location: prosesdaftar.php?status=success"); // Berhasil, arahkan ke prosesdaftar.php
-            exit();
-        } else {
-            $_SESSION['errors'] = ["Error: Gagal menyimpan data"];
-            header("Location: daftaradmin.php");
-            exit();
-        }
+        // Dapatkan ID user yang baru saja ditambahkan
+        $id_user = $conn->lastInsertId();
+
+        // 2. Masukkan data ke tabel e_learning_admins
+        $sql_admins = "INSERT INTO admins (id_user, nama, email, password, role_user) 
+                       VALUES (:id_user, :nama, :email, :password, :role_user)";
+        $stmt_admins = $conn->prepare($sql_admins);
+        $stmt_admins->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        $stmt_admins->bindValue(':nama', $nama, PDO::PARAM_STR);
+        $stmt_admins->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt_admins->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt_admins->bindValue(':role_user', $role_user, PDO::PARAM_STR);
+        $stmt_admins->execute();
+
+        // Commit transaksi
+        $conn->commit();
+
+        // Redirect ke halaman sukses
+        // Simpan data ke session sebelum redirect
+        $_SESSION['user_info'] = [
+            'nama' => $nama,
+            'email' => $email,
+            'role_user' => $role_user
+        ];
+        header("Location: prosesdaftar.php");
+        exit();
+
+    } catch (PDOException $e) {
+        // Rollback jika ada error
+        $conn->rollBack();
+        $_SESSION['errors'] = ["Error: " . $e->getMessage()];
+        header("Location: daftaradmin.php");
+        exit();
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,15 +113,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-        Tabel Master
-        <i class="fas fa-caret-down"> </i>
-      </a>
-      <div class="dropdown" id="dropdown">
-        <a href="materi_dosen.html"> Siswa </a>
-        <a href="crudguru_admin.php"> Pendidik </a>
-        <a href="#"> Kelas </a>
-        <a href="mapel.php"> Materi </a>
-    </div>
+            Tabel Master
+            <i class="fas fa-caret-down"> </i>
+        </a>
+        <div class="dropdown" id="dropdown">
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
+            <a href="crud_kelas.php"> Kelas </a>
+            <a href="crudmapel.php"> Mata Pelajaran</a>
+        </div>
     </div>
     <div class="container">
         <div class="register-box">
@@ -153,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="input-group">
                     <label for="confirm-password">Ulangi password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required>
+                    <input type="password" id="confirm-password" name="confirm_password" placeholder="********" required>
                 </div>
                 <div class="input-group">
                     <label for="role_user">Role User</label>

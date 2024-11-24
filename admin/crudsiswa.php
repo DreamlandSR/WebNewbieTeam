@@ -1,5 +1,6 @@
 <?php
-// Panggil Koneksi Database
+
+//Panggil Koneksi Database
 include "../dbconfig.php";
 
 // Inisialisasi objek Database
@@ -9,54 +10,45 @@ $conn = $db->getConnection();
 // Tambahkan logika CRUD di sini
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        if (isset($_POST['bsimpanmapel'])) {
-            // Simpan data
-            $query = "INSERT INTO mapel (kode_mapel, nama_mapel) 
-                      VALUES (:kode_mapel, :nama_mapel)";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':kode_mapel', $_POST['tkdmapel']);
-            $stmt->bindParam(':nama_mapel', $_POST['tmapel']);
-            $stmt->execute();
-            echo "<script>
-                   alert('Simpan data Mata Pelajaran Sukses!');
-                   document.location='crudmapel.php';
-                  </script>";
-        } elseif (isset($_POST['bubahmapel'])) {
+        if (isset($_POST['bubah'])) {
             // Ubah data
-            $sql = "UPDATE mapel SET
-                        kode_mapel = :kode_mapel,
-                        mata_pelajaran = :nama_mapel,
-                    WHERE id_mapel = :id_mapel";
+            $sql = "UPDATE siswa SET
+                        nisn = :nisn,
+                        nama = :nama,
+                        kelas = :kelas,
+                        email = :email
+                    WHERE id_siswa = :id_siswa";
             $stmt = $conn->prepare($sql);
-            $stmt->bindValue(':kode_mapel', $_POST['tkdmapel']);
-            $stmt->bindValue(':nama_mapel', $_POST['tmapel']);
-            $stmt->bindValue(':id_mapel', $_POST['id_mapel']);
+            $stmt->bindValue(':nisn', $_POST['tnim']);
+            $stmt->bindValue(':nama', $_POST['tnama']);
+            $stmt->bindValue(':kelas', $_POST['kelas']);
+            $stmt->bindValue(':email', $_POST['temail']);
+            $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
             $stmt->execute();
             echo "<script>
                    alert('Update data Sukses!');
-                   document.location='crudmapel.php';
+                   document.location='index_crud.php';
                   </script>";
-        } elseif (isset($_POST['bhapusmapel'])) {
+        } elseif (isset($_POST['bhapus'])) {
             // Hapus data
-            $query = "DELETE FROM mapel WHERE id_mapel = :id_mapel";
+            $query = "DELETE FROM siswa WHERE id_siswa = :id_siswa";
             $stmt = $conn->prepare($query);
-            $stmt->bindValue(':id_mapel', $_POST['id_mapel']);
+            $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
             $stmt->execute();
             echo "<script>
                    alert('Hapus data Sukses!');
-                   document.location='crudmapel.php';
+                   document.location='index_crud.php';
                   </script>";
         }
     } catch (PDOException $e) {
         echo "<script>
                alert('Operasi Gagal: " . $e->getMessage() . "');
-               document.location='crudmapel.php';
+               document.location='index_crud.php';
               </script>";
     }
 }
+
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -64,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title>
+    <title>Tabel Master Siswa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -73,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="../css/crud.css" />
     </head>
-
 <body>
 <div class="header">
         <div class="logo">
@@ -101,43 +92,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
     <div class="content">
-
         <div class="mt-3">
             <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
         </div>
-
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
-                Data Mata Pelajaran
+                Data Siswa
             </div>
             <div class="card-body">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                    Tambah Data
-                </button>
-
                 <table class="table table-bordered table-striped table-hover">
                     <tr>
                         <th>No.</th>
-                        <th>Kode Mata Pelajaran</th>
-                        <th>Mata Pelajaran</th>
+                        <th>NISN</th>
+                        <th>Nama Lengkap</th>
+                        <th>Kelas</th>
+                        <th>Email</th>
                         <th>Aksi</th>
                     </tr>
-
+                    
                     <?php
-
                         //persiapan menampilkan data
-                        $no = 1;
-                            $query = $conn->prepare("SELECT * FROM mapel ORDER BY id_mapel DESC");
+                       $no = 1;
+                            $query = $conn->prepare("SELECT * FROM siswa ORDER BY id_siswa DESC");
                         $query->execute();
                         while ($data = $query->fetch(PDO::FETCH_ASSOC)):
-                        
                     ?>
 
                     <tr>
                         <td><?= $no++ ?></td>
-                        <td><?= $data['kode_mapel' ]  ?></td>
-                        <td><?= $data['nama_mapel']?></td>
+                        <td><?= $data['nisn']?></td>
+                        <td><?= $data['nama']?></td>
+                        <td><?= $data['kelas']?></td>
+                        <td><?= $data['email']?></td>
                         <td>
                             <a href="#" class="btn btn-warning" data-bs-toggle="modal"
                                 data-bs-target="#modalUbah<?= $no ?>">Update</a>
@@ -152,42 +138,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Form Data Mata Pelajaran</h1>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Form Data Siswa</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="crudmapel.php">
-                                    <input type="hidden" name="id_mapel" value="<?=$data['id_mapel']?>">
+                                <form method="POST" action="aksi_crud.php">
+                                    <input type="hidden" name="id_siswa" value="<?=$data['id_siswa']?>">
 
                                     <div class="modal-body">
 
                                         <div class="mb-3">
-                                            <label class="form-label">Kode Mata Pelajaran</label>
-                                            <input type="text" class="form-control" name="tkdmapel"
-                                                value="<?= $data['kode_mapel']?>"
-                                                placeholder="Masukkan Kode Mata Pelajaran!" required>
+                                            <label class="form-label">NISN</label>
+                                            <input type="text" class="form-control" name="tnim"
+                                                value="<?= $data['nisn']?>" placeholder="Masukkan NISN Anda!" required>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Mata Pelajaran</label>
-                                            <select class="form-select" name="tmapel">
-                                                <option value="<?= $data['nama_mapel']?>">
-                                                    <?= $data['nama_mapel']?></option>
-                                                <option value="Matematika">Matematika</option>
-                                                <option value="Olahraga">Olahraga</option>
-                                                <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Mata Pelajaran tidak boleh kosong.
-                                            </div>
+                                            <label class="form-label">Nama Lengkap</label>
+                                            <input type="text" class="form-control" name="tnama"
+                                                value="<?= $data['nama']?>" placeholder="Masukkan Nama Lengkap Anda!"
+                                                required>
                                         </div>
 
+                                        <div class="mb-3">
+                                            <label class="form-label">Kelas</label>
+                                            <input type="text" class="form-control" name="tkelas"
+                                                value="<?= $data['kelas']?>" placeholder="Masukkan Kelas Anda!"
+                                                required>
+                                        </div>
+
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="text" class="form-control" name="temail"
+                                                value="<?= $data['email']?>" placeholder="Masukkan Email Anda" required>
+                                        </div>
 
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" name="bubahmapel">Update</button>
+                                        <button type="submit" class="btn btn-primary" name="bubah">Update</button>
                                         <button type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Keluar</button>
                                     </div>
@@ -209,20 +200,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="crudmapel.php">
-                                    <input type="hidden" name="id_mapel" value="<?=$data['id_mapel']?>">
+                                <form method="POST" action="aksi_crud.php">
+                                    <input type="hidden" name="id_siswa" value="<?=$data['id_siswa']?>">
 
                                     <div class="modal-body">
 
                                         <h5 class="text-center">Apakah Anda yakin akan menghapus data ini?<br>
-                                            <span class="text-danger"><?= $data['kode_mapel']?> -
-                                                <?= $data['nama_mapel']?></span>
+                                            <span class="text-danger"><?= $data['nisn']?> -
+                                                <?= $data['nama']?></span>
                                         </h5>
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" name="bhapusmapel">Iya,
-                                            Hapus!</button>
+                                        <button type="submit" class="btn btn-primary" name="bhapus">Iya, Hapus!</button>
                                         <button type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Keluar</button>
                                     </div>
@@ -235,62 +225,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php endwhile; ?>
                 </table>
 
-
-
-
-                <!-- Awal Modal Tambah -->
-                <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Form Data Mata Pelajaran</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <form method="POST" action="crudmapel.php">
-                                <div class="modal-body">
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Kode Mata Pelajaran</label>
-                                        <input type="text" class="form-control" name="tkdmapel"
-                                            placeholder="Masukkan Kode Mata Pelajaran!" required>
-                                    </div>
-
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Mata Pelajaran</label>
-                                        <select class="form-select" name="tmapel">
-                                            <option value=""></option>
-                                            <option value="Matematika">Matematika</option>
-                                            <option value="Olahraga">Olahraga</option>
-                                            <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Mata Pelajaran tidak boleh kosong.
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary"
-                                            name="bsimpanmapel">Simpan</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Keluar</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Akhir Modal Tambah -->
             </div>
         </div>
-    </div>
-    <a href="admin.php">
-        <button class="btn btn-danger" id="btn-back">Kembali</button>
-    </a>
+        <a href="admin.php">
+            <button class="btn btn-danger" id="btn-back">Kembali</button>
+        </a>
     </div>
     <footer>
     <div class="footer">

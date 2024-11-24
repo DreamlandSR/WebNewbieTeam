@@ -133,8 +133,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
+            Tabel Master
+            <i class="fas fa-caret-down"> </i>
+        </a>
+        <div class="dropdown" id="dropdown">
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
+            <a href="crud_kelas.php"> Kelas </a>
+            <a href="crudmapel.php"> Mata Pelajaran</a>
+        </div>
     </div>
-    <div class="container">
+    <div class="content" id="box">
         <div class="register-box">
             <h2>Daftar Akun Siswa</h2>
             <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>

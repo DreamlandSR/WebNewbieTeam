@@ -23,9 +23,16 @@
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-        Kelas
-        <i class="fas fa-caret-down"> </i>
-      </a>
+            Tabel Master
+            <i class="fas fa-caret-down"> </i>
+        </a>
+        <div class="dropdown" id="dropdown">
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
+            <a href="crud_kelas.php"> Kelas </a>
+            <a href="crudmapel.php"> Mata Pelajaran</a>
+        </div>
+    </div>
       <div class="dropdown" id="dropdown">
         <a href="menu_kelas.php"> XII TKJ 1 </a>
         <a href="menu_kelas.php"> XII TKJ 2</a>

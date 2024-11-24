@@ -79,34 +79,47 @@ body {
 }
 
 .sidebar {
-  height: auto;
+  position: fixed;
+  max-height: 100vh;
   width: 200px;
-  background-color: #154abc;
+  background-color: #154ABC;
   color: #fff;
   position: fixed;
   top: 50px;
-  left: 0;
   bottom: 0;
+  left: 0;
   padding-top: 20px;
   transition: transform 0.3s ease, width 0.3s ease;
-  transform: translateX(-200px);
-  z-index: 2;
-}
-
-.sidebar.sidebar-expanded {
   transform: translateX(0);
+  z-index: 2;
+  overflow-y: scroll; /* Masih memungkinkan untuk menggulir */
+  scrollbar-width: none; /* Firefox: sembunyikan scrollbar */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.container.sidebar-expanded-content {
-  margin-left: 200px;
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, dan Opera: sembunyikan scrollbar */
 }
 
+.content {
+  margin-left: 200px; /* Pastikan hanya ada satu deklarasi */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Animasi untuk konten */
+}
+
+/* Menampilkan sidebar dengan animasi */
+.sidebar.sidebar-expanded {
+  transform: translateX(-100%); /* Tidak perlu mengubah posisi saat diperluas */
+}
+
+/* Menggunakan transform untuk menyembunyikan sidebar */
 .sidebar.hidden {
-  transform: translateX(-100%);
+  transform: translateX(-100%); /* Sidebar tersembunyi dengan transisi */
 }
 
+/* Konten bergeser ke kiri saat sidebar menyembunyikan */
 .content.sidebar-expanded-content {
-  margin-left: 0;
+  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
 
 .content.sidebar-expanded-container {
@@ -122,6 +135,25 @@ body {
 
 .sidebar a:hover {
   background-color: #4680fd;
+}
+
+.dropdown {
+  display: none;
+  background-color: #154ABC;
+}
+
+.dropdown.active {
+  display: block;
+}
+
+.dropdown a {
+  padding-left: 40px;
+}
+.dropdown-btn {
+  cursor: pointer;
+}
+.dropdown-btn.active + .dropdown {
+  display: block;
 }
 
 .container {

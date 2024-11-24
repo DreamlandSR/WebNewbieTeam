@@ -93,7 +93,7 @@ body {
 
 
 button {
-  background-color: #00477b;
+  background-color: #154ABC;
   color: #fff;
   border: none;
   padding: 10px 0;
@@ -106,13 +106,13 @@ button {
 }
 
 button:hover {
-  background-color: #00477b;
+  background-color: #4680fd;
 }
 
 /* footer */
 
 .footer {
-  background-color: #004a8f;
+  background-color: #154ABC;
   color: #fff;
   padding: 20px;
   display: flex;

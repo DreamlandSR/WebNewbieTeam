@@ -15,6 +15,23 @@ function toggleDropdown() {
     return true; // Lanjutkan pengiriman form jika valid
 }
 
+//dropdown pada tugas
+function dropdown() {
+  const dropdownMenu = document.getElementById('dropdownOptions');
+  dropdownMenu.classList.toggle('show');
+}
+
+// Menutup dropdown saat klik di luar elemen
+document.addEventListener('click', function (event) {
+  const isClickInside = document.getElementById('uploadMateriButton').contains(event.target);
+  const dropdownMenu = document.getElementById('dropdownOptions');
+
+  if (!isClickInside && dropdownMenu.classList.contains('show')) {
+    dropdownMenu.classList.remove('show');
+  }
+});
+
+
 //pada saat content sidebar menghilang atau tidak
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');

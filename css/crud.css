@@ -1,20 +1,16 @@
 * {
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+  }
+  
+  body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    justify-content: center;
-    align-items: center;
     background-color: #f5f5f5;
-}
-
-.header {
+    overflow: auto;
+  }
+  
+  .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -90,7 +86,6 @@ body {
     position: fixed;
     top: 50px;
     bottom: 0;
-    left: 0;
     padding-top: 20px;
     transition: transform 0.3s ease, width 0.3s ease;
     transform: translateX(0);
@@ -139,7 +134,7 @@ body {
   .sidebar a:hover {
     background-color: #4680fd;
   }
-
+  
   .dropdown {
     display: none;
     background-color: #154ABC;
@@ -159,142 +154,68 @@ body {
     display: block;
   }
 
-#box {
+.content {
+  height: 100vh;
+}
+
+#btn-back {
+  margin-top: 25px;
+}
+
+  .footer {
+    background-color: #154ABC;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Lebar penuh layar */
+    box-sizing: border-box;
+    position: relative; /* Agar footer tetap berada di bawah konten */
+    bottom: 0;
+  }
+  
+  #footer-contact {
+    font-weight: 700;
+  }
+  
+  .footer img {
+    height: 80px;
+  }
+  
+  .contact-info {
+    text-align: right;
+    margin-right: 20px;
+  }
+  
+  .contact-info p {
+    margin: 5px 0;
+    font-weight: 200;
+  }
+  
+  .contact-info i {
+    margin-right: 15px;
+  }
+  
+  .school-info {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-
-.register-box {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 800px;
-    min-width: 600px;
-    width: 100%;
-    height: auto;
-}
-
-.register-box p {
-    margin: 10px 20px;
     text-align: center;
-    position: relative; /* Agar pseudo-element diposisikan relatif ke elemen ini */
-    padding-bottom: 15px;
-}
-
-.register-box p::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%; /* Memulai dari tengah elemen */
-    transform: translateX(-50%); /* Memindahkan ke kiri agar berada di tengah */
-    width: 120%; /* Ubah sesuai panjang border yang diinginkan */
-    border-bottom: 1px solid #ccc;
-}
-
-
-.register-box h2 {
-    text-align: center;
-    font-size: 24px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.input-group input, .input-group select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 10px;
-    background-color: #154ABC;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #2f6ffa;
-}
-
-.footer {
-  background-color: #0a3aa2;
-  color: #fff;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-  bottom: 0;
-  transition: margin-left 0.3s ease, width 0.3s ease; /* Menambahkan transisi */
-}
-
-/* Footer saat sidebar aktif */
-.footer-active {
-  margin-left: 200px; /* Geser footer ke kanan */
-  width: calc(100% - 200px); /* Sesuaikan lebar footer */
-}
-
-
-
-#footer-contact {
-  font-weight: 700;
-}
-
-.footer img {
-  height: 80px;
-}
-
-.contact-info {
-  text-align: right;
-  margin-right: 20px;
-}
-
-.contact-info p {
-  margin: 5px 0;
-  font-weight: 200;
-}
-
-.contact-info i {
-  margin-right: 15px;
-}
-
-.school-info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.contact-info img {
-  margin-left: 20px;
-}
-
-.school-info p {
-  margin: 20px;
-  font-weight: 700;
-}
-
-.school-info img {
-  justify-content: center;
-  align-items: center;
-}
+  }
+  
+  .contact-info img {
+    margin-left: 20px;
+  }
+  
+  .school-info p {
+    margin: 20px;
+    font-weight: 700;
+  }
+  
+  .school-info img {
+    justify-content: center;
+    align-items: center;
+  }
+  
+  

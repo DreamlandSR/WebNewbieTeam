@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>E - Learning</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -38,7 +37,7 @@
     </div>
     <div class="content">
         <div class="container-menu">
-            <h1>Matematika</h1>
+        <h2 class="text-center mb-4 fw-bold custom">Matematika</h2>
             <div class="teacher-info">
                 <i class="fas fa-user"></i>
                 <span>Ismail Bin Mail</span>
@@ -49,42 +48,52 @@
             </div>
         </div>
 
-        <h3>STATUS PENGUMPULAN</h3>
-        <div class="status-box">
-            <div class="status-menu">
-                <a href="#">Status pengumpulan</a>
-                <a href="#">Status penilaian</a>
-                <a href="#">Batas waktu</a>
-                <a href="#">Sisa Waktu</a>
-                <a href="#">terakhir diedit</a>
-                <a href="#">Pengumpulan tugas</a>
+        <main class="container mt-4">
+        <h2 class="text-center mb-4 fw-bold">STATUS PENGUMPULAN</h2>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="status-menu p-3 bg-primary text-white">
+                    <p>Status pengumpulan</p>
+                    <p>Status penilaian</p>
+                    <p>Batas waktu</p>
+                    <p>Sisa Waktu</p>
+                    <p>Terakhir diedit</p>
+                    <p>Pengumpulan tugas</p>
+                </div>
             </div>
-            <div class="status-content">
-                <table>
-                    <tr>
-                        <td>Belum mengumpulkan</td>
-                    </tr>
-                    <tr>
-                        <td>Belum dinilai</td>
-                    </tr>
-                    <tr>
-                        <td>Kamis, 19 September 2024, 17:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td>1 Hari 15 Jam</td>
-                    </tr>
-                    <tr>
-                        <td>34 Menit lalu</td>
-                    </tr>
-                    <tr>
-                        <td>File Tugas</td>
-                    </tr>
-                </table>
+            <div class="col-md-9">
+                <div class="status-content p-4 bg-light border rounded">
+                    <table class="table mb-4">
+                        <tbody>
+                            <tr>
+                                <td>Belum mengumpulkan</td>
+                            </tr>
+                            <tr>
+                                <td>Belum dinilai</td>
+                            </tr>
+                            <tr>
+                                <td>Kamis, 19 September 2024, 17:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>1 Hari 15 Jam</td>
+                            </tr>
+                            <tr>
+                                <td>34 Menit lalu</td>
+                            </tr>
+                            <tr>
+                                <td>file</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">Masukkan Tugas</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                    Masukkan Tugas
-                </button>
+                
 
                 <!-- Awal Modal Tambah -->
                 <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -104,13 +113,7 @@
                                         <label for="formFile" class="form-label">Masukkan File</label>
                                         <input class="form-control" type="file" id="formFile" required>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Tugas</label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Nama Tugas Anda!"
-                                            required>
-                                    </div>
-
+                                    
                                     <div class="mb-3">
                                         <label class="form-label">Author</label>
                                         <input type="text" class="form-control" placeholder="Masukkan Nama Anda!"

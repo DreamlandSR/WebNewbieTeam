@@ -52,8 +52,8 @@ if (!$currentUser) {
             <i class="fas fa-caret-down"> </i>
         </a>
         <div class="dropdown" id="dropdown">
-            <a href="../index_crud.php"> Siswa </a>
-            <a href="../crudguru_admin.php"> Guru </a>
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
             <a href="crud_kelas.php"> Kelas </a>
             <a href="crudmapel.php"> Mata Pelajaran</a>
         </div>

@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../css/style-daftar.css">
-    <script src="../js/script.js"></script>
 </head>
 <body>
 <div class="header">
@@ -26,8 +25,18 @@
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
+            Tabel Master
+            <i class="fas fa-caret-down"> </i>
+        </a>
+        <div class="dropdown" id="dropdown">
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
+            <a href="crud_kelas.php"> Kelas </a>
+            <a href="crudmapel.php"> Mata Pelajaran</a>
+        </div>
     </div>
-    <div class="container">
+    <div class="content" id="box">
     <div class="register-box">
     <h2>Daftar</h2>
     <p>Daftar untuk akun Siswa, Guru, dan Admin</p>
@@ -59,5 +68,6 @@
         </div>
       </div>
     </footer>
+    <script src="../js/script.js"></script>
 </body>
 </html>
