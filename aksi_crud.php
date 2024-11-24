@@ -7,53 +7,28 @@ include "dbconfig.php";
 $db = new Database();
 $conn = $db->getConnection();
 
-//Uji jika tombol simpan di klik
-if (isset($_POST['bsimpanguru'])) {
-    try {
-        // Persiapkan query untuk menyimpan data
-        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
-                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
-        $stmt = $conn->prepare($query);
-
-        // Bind parameter
-        $stmt->bindParam(':nip', $_POST['tnip']);
-        $stmt->bindParam(':nama', $_POST['tnamaguru']);
-        $stmt->bindParam(':no_hp', $_POST['tnohp']);
-        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
-        $stmt->bindParam(':email', $_POST['temail']);
-
-        // Eksekusi query
-        $stmt->execute();
-
-        // Berikan pesan sukses
-        echo "<script>
-               alert('Simpan data Guru Sukses!');
-               document.location='crudguru_admin.php';
-              </script>";
-    } catch (PDOException $e) {
-        // Tangani kesalahan dan tampilkan pesan error
-        echo "<script>
-               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
-               document.location='crudguru_admin.php';
-              </script>";
-    }
-}
-
-
+// crud siswa
 
 //Uji jika tombol ubah di klik
-if(isset($_POST['bubah'])) {
 
-    //persiapan ubah data
-    $ubah = mysqli_query($koneksi, "UPDATE siswa SET
-    nis = '$_POST[tnim]',
-    nama_siswa = '$_POST[tnama]',
-    kelas = '$_POST[tkelas]',
-    prodi = '$_POST[tprodi]',
-    email = '$_POST[temail]'
-    WHERE id_siswa = '$_POST[id_siswa]' 
-    ");
-    //jika ubah sukses
+if (isset($_POST['bubah'])) {
+    $sql = "UPDATE siswa SET
+                nisn = :nisn,
+                nama = :nama,
+                kelas = :kelas,
+                email = :email
+            WHERE id_siswa = :id_siswa";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':nisn', $_POST['tnim']);
+    $stmt->bindValue(':nama', $_POST['tnama']);
+    $stmt->bindValue(':kelas', $_POST['tkelas']);
+    $stmt->bindValue(':email', $_POST['temail']);
+    $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
+    $ubah = $stmt->execute();
+}
+
+//jika ubah sukses
     if($ubah){
         echo "<script>
                alert('Update data Sukses!');
@@ -61,17 +36,16 @@ if(isset($_POST['bubah'])) {
               </script>";
     }else{
         echo "<script>
-               alert('Update data Gagal!');
+               alert('Update data Gagal!'); 
                document.location='index_crud.php'; 
               </script>";
     }
-}
 
 //Uji jika tombol hapus di klik
 if(isset($_POST['bhapus'])) {
 
     //persiapan hapus data
-    $hapus = mysqli_query($koneksi, "DELETE FROM siswa WHERE id_siswa ='$_POST[id_siswa]'");
+    $hapus = mysqli_query($conn, "DELETE FROM siswa WHERE id_siswa ='$_POST[id_siswa]'");
 
     //jika hapus sukses
     if($hapus){
@@ -86,39 +60,7 @@ if(isset($_POST['bhapus'])) {
               </script>";
     }
 }
-
 //aksi crud guru untuk admin
-
-//Uji jika tombol simpan di klik
-if (isset($_POST['bsimpanguru'])) {
-    try {
-        // Persiapkan query simpan
-        $query = "INSERT INTO guru (nip, nama, no_hp, mata_pelajaran, email) 
-                  VALUES (:nip, :nama, :no_hp, :mata_pelajaran, :email)";
-        $stmt = $conn->prepare($query);
-
-        // Bind parameter
-        $stmt->bindParam(':nip', $_POST['tnip']);
-        $stmt->bindParam(':nama', $_POST['tnamaguru']);
-        $stmt->bindParam(':no_hp', $_POST['tnohp']);
-        $stmt->bindParam(':mata_pelajaran', $_POST['tmatapelajaran']);
-        $stmt->bindParam(':email', $_POST['temail']);
-
-        // Eksekusi query
-        $stmt->execute();
-
-        echo "<script>
-               alert('Simpan data Guru Sukses!');
-               document.location='crudguru_admin.php';
-              </script>";
-    } catch (PDOException $e) {
-        echo "<script>
-               alert('Simpan data Guru Gagal: " . $e->getMessage() . "');
-               document.location='crudguru_admin.php';
-              </script>";
-    }
-}
-
 
 //Uji jika tombol ubah di klik
 if (isset($_POST['bubahguru'])) {
@@ -148,7 +90,7 @@ if (isset($_POST['bubahguru'])) {
               </script>";
     }else{
         echo "<script>
-               alert('Update data Gagal!');
+               alert('Update data Gagal!'); 
                document.location='crudguru_admin.php'; 
               </script>";
     }
@@ -158,7 +100,7 @@ if (isset($_POST['bubahguru'])) {
 if(isset($_POST['bhapusguru'])) {
 
     //persiapan hapus data
-    $hapus = mysqli_query($koneksi, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
+    $hapus = mysqli_query($conn, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
 
     //jika hapus sukses
     if($hapus){
@@ -174,5 +116,82 @@ if(isset($_POST['bhapusguru'])) {
     }
 }
 
+//aksi crud mapel pada admin
+
+//Uji jika tombol simpan di klik
+if (isset($_POST['bsimpanmapel'])) {
+    try {
+        // Persiapkan query simpan
+        $query = "INSERT INTO mapel (kode_mapel, nama_mapel) 
+                  VALUES (:kode_mapel, :nama_mapel)";
+        $stmt = $conn->prepare($query);
+
+        // Bind parameter
+        $stmt->bindParam(':kode_mapel', $_POST['tkdmapel']);
+        $stmt->bindParam(':nama_mapel', $_POST['tmapel']);
+
+        // Eksekusi query
+        $stmt->execute();
+
+        echo "<script>
+               alert('Simpan data Mata Pelajaran Sukses!');
+               document.location='crudmapel.php';
+              </script>";
+    } catch (PDOException $e) {
+        echo "<script>
+               alert('Simpan data Mata Pelajaran Gagal: " . $e->getMessage() . "');
+               document.location='crudmapel.php';
+              </script>";
+    }
+}
+
+
+//Uji jika tombol ubah di klik
+if (isset($_POST['bubahmapel'])) {
+    $sql = "UPDATE mapel SET
+                kode_mapel = :kode_mapel,
+                nama_mapel = :nama_mapel
+            WHERE id_mapel = :id_mapel";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':kode_mapel', $_POST['tkdmapel']);
+    $stmt->bindValue(':nama_mapel', $_POST['tmapel']);
+    $stmt->bindValue(':id_mapel', $_POST['id_mapel']);
+    $ubah = $stmt->execute();
+}
+
+    //jika ubah sukses
+    if($ubah){
+        echo "<script>
+               alert('Update data Sukses!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Update data Gagal!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }
+
+
+//Uji jika tombol hapus di klik
+if(isset($_POST['bhapusmapel'])) {
+
+    //persiapan hapus data
+    $hapus = mysqli_query($conn, "DELETE FROM mapel WHERE id_mapel ='$_POST[id_mapel]'");
+
+    //jika hapus sukses
+    if($hapus){
+        echo "<script>
+               alert('Hapus data Sukses!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }else{
+        echo "<script>
+               alert('Hapus data Gagal!');
+               document.location='crudmapel.php'; 
+              </script>";
+    }
+}
 
 ?>
