@@ -16,18 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         nisn = :nisn,
                         nama = :nama,
                         kelas = :kelas,
-                        email = :email
+                        email = :email,
+                        no_hp = :no_hp
                     WHERE id_siswa = :id_siswa";
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':nisn', $_POST['tnim']);
             $stmt->bindValue(':nama', $_POST['tnama']);
             $stmt->bindValue(':kelas', $_POST['kelas']);
             $stmt->bindValue(':email', $_POST['temail']);
+            $stmt->bindValue(':no_hp', $_POST['tnohp']);
             $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
             $stmt->execute();
             echo "<script>
                    alert('Update data Sukses!');
-                   document.location='index_crud.php';
+                   document.location='crudsiswa.php';
                   </script>";
         } elseif (isset($_POST['bhapus'])) {
             // Hapus data
@@ -37,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute();
             echo "<script>
                    alert('Hapus data Sukses!');
-                   document.location='index_crud.php';
+                   document.location='crudsiswa.php';
                   </script>";
         }
     } catch (PDOException $e) {
         echo "<script>
                alert('Operasi Gagal: " . $e->getMessage() . "');
-               document.location='index_crud.php';
+               document.location='crudsiswa.php';
               </script>";
     }
 }
@@ -58,15 +60,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tabel Master Siswa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="../css/crud.css" />
-    </head>
+</head>
+
 <body>
-<div class="header">
+    <div class="header">
         <div class="logo">
             <i class="fas fa-bars menu-icon"></i>
             <img src="../Foto/smk7 jember.png" alt="School Logo" />
@@ -107,9 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <th>Nama Lengkap</th>
                         <th>Kelas</th>
                         <th>Email</th>
+                        <th>Nomor Handphone</th>
                         <th>Aksi</th>
                     </tr>
-                    
+
                     <?php
                         //persiapan menampilkan data
                        $no = 1;
@@ -124,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?= $data['nama']?></td>
                         <td><?= $data['kelas']?></td>
                         <td><?= $data['email']?></td>
+                        <td><?= $data['no_hp']?></td>
                         <td>
                             <a href="#" class="btn btn-warning" data-bs-toggle="modal"
                                 data-bs-target="#modalUbah<?= $no ?>">Update</a>
@@ -172,7 +179,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
                                             <input type="text" class="form-control" name="temail"
-                                                value="<?= $data['email']?>" placeholder="Masukkan Email Anda" required>
+                                                value="<?= $data['email']?>" placeholder="Masukkan Email Anda!"
+                                                required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Nomor Handphone</label>
+                                            <input type="text" class="form-control" name="tnohp"
+                                                value="<?= $data['no_hp']?>"
+                                                placeholder="Masukkan Nomor Handphone Anda!" required>
                                         </div>
 
 
@@ -232,22 +247,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </a>
     </div>
     <footer>
-    <div class="footer">
-        <div class="school-info">
-          <img src="../Foto/smk7 jember.png" alt="School Emblem" />
-          <p>SMK Negeri 7 Jember</p>
+        <div class="footer">
+            <div class="school-info">
+                <img src="../Foto/smk7 jember.png" alt="School Emblem" />
+                <p>SMK Negeri 7 Jember</p>
+            </div>
+            <div class="contact-info">
+                <p id="footer-contact">Contact</p>
+                <p><i class="fas fa-envelope"></i> smkn7jember@gmail.com</p>
+                <p><i class="fas fa-globe"></i> https://smkn7jember.sch.id/</p>
+                <p><i class="fas fa-phone"></i> +6281-8094-0000</p>
+            </div>
         </div>
-        <div class="contact-info">
-          <p id="footer-contact">Contact</p>
-          <p><i class="fas fa-envelope"></i> smkn7jember@gmail.com</p>
-          <p><i class="fas fa-globe"></i> https://smkn7jember.sch.id/</p>
-          <p><i class="fas fa-phone"></i> +6281-8094-0000</p>
-        </div>
-      </div>
     </footer>
     <script src="../js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 </body>
+
 </html>
