@@ -10,6 +10,33 @@ if (!$user->isLoggedIn()) {
     exit; // Tambahkan exit setelah header
 }
 
+$db = new Database();
+$conn = $db ->getConnection();
+
+$sql = "
+    SELECT  
+    (SELECT COUNT(*) FROM admins WHERE role_user = 'admin') AS total_admin,
+    (SELECT COUNT(*) FROM guru) AS total_guru,
+    (SELECT COUNT(*) FROM siswa) AS total_siswa,
+    (SELECT COUNT(*) FROM mapel) AS total_mapel,
+    (SELECT COUNT(*) FROM kelas) AS total_kelas
+";
+
+try {
+    $stmt = $conn ->prepare($sql);
+    $stmt -> execute ();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $totalAdmin = $row['total_admin'];
+    $totalGuru = $row['total_guru'];
+    $totalSiswa = $row['total_siswa'];
+    $totalMapel = $row['total_mapel'];
+    $totalKelas = $row['total_kelas'];
+
+} catch(PDOException $e){
+    die("Query gagal: " . $e->getMessage());
+}
+
 // Ambil data user saat ini
 $currentUser = $user->getCurrentUser();
 if (!$currentUser) {
@@ -76,23 +103,23 @@ if (!$currentUser) {
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-title">Akun Admin</div>
-                <div class="stat-value">4</div>
+                <div class="stat-value"><?php echo htmlspecialchars($row['total_admin']); ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Akun Siswa</div>
-                <div class="stat-value">240</div>
+                <div class="stat-value"><?php echo htmlspecialchars($row['total_siswa']); ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Akun Guru</div>
-                <div class="stat-value">36</div>
+                <div class="stat-value"><?php echo htmlspecialchars($row['total_guru']); ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Mapel</div>
-                <div class="stat-value">12</div>
+                <div class="stat-value"><?php echo htmlspecialchars($row['total_mapel']); ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Kelas</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value"><?php echo htmlspecialchars($row['total_kelas']); ?></div>
             </div>
         </div>
 
@@ -116,5 +143,4 @@ if (!$currentUser) {
     </div>
     <script src="../js/script.js"></script>
 </body>
-
 </html>

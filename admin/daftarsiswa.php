@@ -74,12 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 print_r($stmtUsers->errorInfo());
             }
             // Ambil ID dari user yang baru saja dimasukkan
-            $userId = $conn->lastInsertId();
+            $id_user = $conn->lastInsertId();
 
             if ($role === 'siswa') {
                 // Masukkan data spesifik ke tabel siswa
-                $sqlSiswa = "INSERT INTO siswa ( nama, email, nisn, no_hp) VALUES (:nama, :email, :nisn, :no_hp)";
+                $sqlSiswa = "INSERT INTO siswa (id_user, nama, email, nisn, no_hp) VALUES (:id_user, :nama, :email, :nisn, :no_hp)";
                 $stmtSiswa = $conn->prepare($sqlSiswa);
+                $stmtSiswa->bindValue(':id_user', $id_user, PDO::PARAM_INT);
                 $stmtSiswa->bindValue(':nama', $nama, PDO::PARAM_STR);
                 $stmtSiswa->bindValue(':email', $email, PDO::PARAM_STR);
                 $stmtSiswa->bindValue(':nisn', $nisn, PDO::PARAM_STR);

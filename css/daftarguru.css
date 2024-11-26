@@ -159,12 +159,6 @@ body {
     display: block;
   }
   
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
 
 .container.sidebar-expanded-content {
   margin-left: 200px; /* Geser konten ke kanan jika sidebar aktif */
@@ -175,6 +169,13 @@ body {
   padding: 10px 15px; /* Padding lebih kecil */
   margin-bottom: 15px; /* Jarak antara alert dan elemen lain */
   width: 100%;
+}
+
+#box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .register-box {

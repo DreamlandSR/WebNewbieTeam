@@ -74,18 +74,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 print_r($stmtUsers->errorInfo());
             }
             // Ambil ID dari user yang baru saja dimasukkan
-            $userId = $conn->lastInsertId();
+            $id_user = $conn->lastInsertId();
 
             if ($role === 'guru') {
                 // Masukkan data spesifik ke tabel guru
-                $sqlGuru = "INSERT INTO guru ( nama, email, nip, no_hp) VALUES (:nama, :email, :nip, :no_hp)";
+                $sqlGuru = "INSERT INTO guru (id_user, nama, email, nip, no_hp) VALUES (:id_user, :nama, :email, :nip, :no_hp)";
                 $stmtGuru = $conn->prepare($sqlGuru);
+                $stmtGuru->bindValue(':id_user', $id_user, PDO::PARAM_INT);
                 $stmtGuru->bindValue(':nama', $nama, PDO::PARAM_STR);
                 $stmtGuru->bindValue(':email', $email, PDO::PARAM_STR);
                 $stmtGuru->bindValue(':nip', $nip, PDO::PARAM_STR);
                 $stmtGuru->bindValue(':no_hp', $telp, PDO::PARAM_STR);
                 $stmtGuru->execute();
+            
+                // Ambil ID guru yang baru saja ditambahkan
+                $id_guru = $conn->lastInsertId();
+            
+                // Masukkan data ke tabel guru_mapel
+                $id_mapel = isset($_POST["id_mapel"]) ? intval($_POST["id_mapel"]) : 0; // Pastikan ID mapel dikirim dari form
+                if ($id_mapel > 0) {
+                    $sqlGuruMapel = "INSERT INTO guru_mapel (id_guru, id_mapel) VALUES (:id_guru, :id_mapel)";
+                    $stmtGuruMapel = $conn->prepare($sqlGuruMapel);
+                    $stmtGuruMapel->bindValue(':id_guru', $id_guru, PDO::PARAM_INT);
+                    $stmtGuruMapel->bindValue(':id_mapel', $id_mapel, PDO::PARAM_INT);
+                    $stmtGuruMapel->execute();
+                }
             }
+            
 
             $conn->commit();
 

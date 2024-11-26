@@ -61,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Commit transaksi
         $conn->commit();
 
-        // Redirect ke halaman sukses
         // Simpan data ke session sebelum redirect
         $_SESSION['user_info'] = [
             'nama' => $nama,
@@ -123,7 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="crudmapel.php"> Mata Pelajaran</a>
         </div>
     </div>
-    <div class="container">
+
+    <div class="content" id="box">
         <div class="register-box">
             <h2>Daftar Akun Admin</h2>
             <?php if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])): ?>
@@ -163,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
     <div class="footer">
         <div class="school-info">
           <img src="../Foto/smk7 jember.png" alt="School Emblem" />
