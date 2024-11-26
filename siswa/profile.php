@@ -59,8 +59,8 @@ if (!$user->isLoggedIn()) {
 
                         <a href="../editprofil.php">
                             <button>
-                                <i class="fas fa-edit"> </i>
-                                Edit Profil
+                                <i class="fas fa-camera"> </i>
+                                Edit Foto
                             </button>
                         </a>
                     </div>

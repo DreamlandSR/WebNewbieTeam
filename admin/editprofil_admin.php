@@ -12,6 +12,7 @@
         background-color: #e3f2fd;
         /* Warna latar biru muda */
         font-family: 'Arial', sans-serif;
+
     }
 
     .card {
@@ -38,6 +39,11 @@
         background-color: #084298;
         /* Biru lebih gelap saat hover */
         border-color: #084298;
+    }
+
+    .btn-danger:hover {
+        background-color: #800000;
+        border-color: #800000;
     }
 
     .rounded-circle {
@@ -109,6 +115,9 @@
                     <p><strong>NIP:</strong> 351010100020</p>
                     <p><strong>No. Hp:</strong> +6281-6664-5555</p>
                 </div>
+                <a href="admin.php">
+                    <button class="btn btn-danger" id="btn-back">Kembali</button>
+                </a>
             </div>
         </div>
     </div>
