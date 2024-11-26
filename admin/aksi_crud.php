@@ -116,9 +116,31 @@ document.location = 'crudguru_admin.php';
 //Uji jika tombol hapus di klik
 if(isset($_POST['bhapusguru'])) {
 
-//persiapan hapus data
-$hapus = mysqli_query($conn, "DELETE FROM guru WHERE id_guru ='$_POST[id_guru]'");
-
+    if (isset($_POST['bhapusguru'])) {
+        // Persiapan query untuk hapus data
+        $sql = "DELETE FROM guru WHERE id_guru = :id_guru";
+        $stmt = $conn->prepare($sql);
+    
+        // Mengikat parameter
+        $stmt->bindValue(':id_guru', $_POST['id_guru'], PDO::PARAM_INT);
+    
+        // Eksekusi query
+        $hapus = $stmt->execute();
+    
+        // Jika hapus sukses
+        if ($hapus) {
+            echo "<script>
+                alert('Hapus data Sukses!');
+                document.location = 'crudguru_admin.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('Hapus data Gagal!');
+                document.location = 'crudguru_admin.php';
+            </script>";
+        }
+    }
+    
 //jika hapus sukses
 if($hapus){
 echo "<script>
@@ -192,10 +214,30 @@ document.location = 'crudmapel.php';
 
 
 //Uji jika tombol hapus di klik
-if(isset($_POST['bhapusmapel'])) {
+if (isset($_POST['bhapusmapel'])) {
+    // Persiapan query untuk hapus data
+    $sql = "DELETE FROM mapel WHERE id_mapel = :id_mapel";
+    $stmt = $conn->prepare($sql);
 
-//persiapan hapus data
-$hapus = mysqli_query($conn, "DELETE FROM mapel WHERE id_mapel ='$_POST[id_mapel]'");
+    // Mengikat parameter
+    $stmt->bindValue(':id_mapel', $_POST['id_mapel'], PDO::PARAM_INT);
+
+    // Eksekusi query
+    $hapus = $stmt->execute();
+
+    // Jika hapus sukses
+    if ($hapus) {
+        echo "<script>
+            alert('Hapus data Sukses!');
+            document.location = 'crudguru_admin.php';
+        </script>";
+    } else {
+        echo "<script>
+            alert('Hapus data Gagal!');
+            document.location = 'crudguru_admin.php';
+        </script>";
+    }
+}
 
 //jika hapus sukses
 if($hapus){
@@ -208,7 +250,6 @@ echo "<script>
 alert('Hapus data Gagal!');
 document.location = 'crudmapel.php';
 </script>";
-}
 }
 
 ?>
