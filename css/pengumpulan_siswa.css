@@ -77,6 +77,26 @@ body {
   padding: 10px;
 }
 
+.nomor {
+        width: 50px;
+        text-align: center;
+        padding: 5px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table td, table th {
+        padding: 8px;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #f9f9f9;
+    }
+
 .sidebar {
   position: fixed;
   max-height: 100vh;
@@ -199,3 +219,4 @@ h2.text-center.mb-4.fw-bold.custom {
   padding: 10px;
   border-radius: 8px;
 }
+
