@@ -244,9 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             </div>
         </div>
-        <a href="admin.php">
-            <button class="btn btn-danger" id="btn-back">Kembali</button>
-        </a>
+
     </div>
     <footer>
         <div class="footer">
