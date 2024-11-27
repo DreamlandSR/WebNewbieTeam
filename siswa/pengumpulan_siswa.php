@@ -72,46 +72,51 @@ try {
     die("Gagal mengambil data file: " . $e->getMessage());
 }
 
-// Mendapatkan ID dari form update
-$fileId = $_POST['file_id'];
+//update file
 
-// Proses update
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
-    $fileId = $_POST['file_id'];
-    $saveAs = htmlspecialchars($_POST['save_as']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bubah'])) {
+    if (!empty($_POST['id']) && !empty($_POST['save_as'])) {
+        $fileId = $_POST['id'];
+        $saveAs = htmlspecialchars($_POST['save_as']);
+        $fileOld = $_POST['file_old'];
 
-    if (!empty($_FILES['file']['name'])) {
-        // Hapus file lama
-        $stmt = $pdo->prepare("SELECT * FROM file_uploads WHERE id = ?");
-        $stmt->execute([$fileId]);
-        $file = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!empty($_FILES['file']['name'])) {
+            // Hapus file lama
+            $stmt = $pdo->prepare("SELECT * FROM file_uploads WHERE id = ?");
+            $stmt->execute([$fileId]);
+            $file = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($file && file_exists($file['file_path'])) {
-            unlink($file['file_path']);
-        }
+            if ($file && file_exists($file['file_path'])) {
+                unlink($file['file_path']);
+            }
 
-        // Upload file baru
-        $uploadDir = 'uploads/';
-        $fileName = time() . '-' . basename($_FILES['file']['name']);
-        $uploadFilePath = $uploadDir . $fileName;
+            // Upload file baru
+            $uploadDir = 'uploads/';
+            $fileName = time() . '-' . basename($_FILES['file']['name']);
+            $uploadFilePath = $uploadDir . $fileName;
 
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFilePath)) {
-            // Update database
-            $stmt = $pdo->prepare("UPDATE file_uploads SET file_name = ?, file_path = ?, save_as = ? WHERE id = ?");
-            $stmt->execute([$fileName, $uploadFilePath, $saveAs, $fileId]);
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFilePath)) {
+                // Update database
+                $stmt = $pdo->prepare("UPDATE file_uploads SET file_name = ?, file_path = ?, save_as = ? WHERE id = ?");
+                $stmt->execute([$fileName, $uploadFilePath, $saveAs, $fileId]);
 
-            echo "<script>alert('File berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+                echo "<script>alert('File berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+            } else {
+                echo "<script>alert('Gagal mengunggah file baru.');</script>";
+            }
         } else {
-            echo "<script>alert('Gagal mengunggah file baru.');</script>";
+            // Update hanya metadata
+            $stmt = $pdo->prepare("UPDATE file_uploads SET save_as = ? WHERE id = ?");
+            $stmt->execute([$saveAs, $fileId]);
+
+            echo "<script>alert('Nama tugas berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
         }
     } else {
-        // Update hanya metadata
-        $stmt = $pdo->prepare("UPDATE file_uploads SET save_as = ? WHERE id = ?");
-        $stmt->execute([$saveAs, $fileId]);
-
-        echo "<script>alert('Nama tugas berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+        echo "<script>alert('ID tidak ditemukan.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+        exit;
     }
 }
+
 ?>
 
 <html>
@@ -280,19 +285,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                     </div>
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
-                        <input type="hidden" name="file_id" value="<?= htmlspecialchars($file['id']); ?>">
+                        <!-- Input hidden untuk ID -->
+                        <input type="hidden" name="id"
+                            value="<?= isset($fileId['id']) ? htmlspecialchars($fileId['id']) : ''; ?>">
 
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Masukkan File</label>
-                                <input class="form-control" type="file" id="formFile" name="file" required>
+                                <label for="formFile" class="form-label">Masukkan File Baru</label>
+                                <input class="form-control" type="file" id="formFile" name="file">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">File Lama</label>
-                                <input type="text" class="form-control" name="save_as"
-                                    value="<?= htmlspecialchars($file['file_name']); ?>"
-                                    placeholder="Masukkan Nama Tugas Anda!" required>
+                                <label class="form-label">Nama File Lama</label>
+                                <input type="text" class="form-control" name="file_old"
+                                    value="<?= htmlspecialchars($file['file_name']); ?>" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -311,6 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                 </div>
             </div>
         </div>
+
         <!-- Akhir Modal Update -->
 
     </div>
