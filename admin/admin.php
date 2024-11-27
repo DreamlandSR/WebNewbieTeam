@@ -83,8 +83,8 @@ if (!$currentUser) {
             <a href="crudguru_admin.php"> Guru </a>
             <a href="crud_kelas.php"> Master Kelas </a>
             <a href="crudmapel.php"> Master mapel</a>
-            <a href="crudmapel.php"> Guru mapel</a>
-            <a href="crudmapel.php"> Kelas</a>
+            <a href="guruMapel.php"> Guru mapel</a>
+            <a href="kelas.php"> Kelas</a>
         </div>
     </div>
     <div class="content">

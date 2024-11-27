@@ -38,8 +38,8 @@
             <a href="crudguru_admin.php"> Guru </a>
             <a href="crud_kelas.php"> Master Kelas </a>
             <a href="crudmapel.php"> Master mapel</a>
-            <a href="crudmapel.php"> Guru mapel</a>
-            <a href="crudmapel.php"> Kelas</a>
+            <a href="guruMapel.php"> Guru mapel</a>
+            <a href="kelas.php"> Kelas</a>
         </div>
     </div>
     <div class="content">
@@ -56,11 +56,10 @@
 
                 <table class="table table-bordered table-striped table-hover">
                     <tr>
-                        <th>No.</th>
-                        <th>NIP</th>
-                        <th>Nama Lengkap</th>
-                        <th>Nomor Handphone</th>
-                        <th>Email</th>
+                        <th>No</th>
+                        <th>id_kelas</th>
+                        <th>Nama Kelas</th>
+                        <th>Jumlah Siswa</th>
                         <th>Aksi</th>
                     </tr>
 
