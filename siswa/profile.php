@@ -9,6 +9,14 @@ if (!$user->isLoggedIn()) {
     header("location: login.php"); //Redirect ke halaman login  
     exit; // Tambahkan exit setelah header
 }
+
+// Ambil data user saat ini
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
+}
+
 ?>
 
 <html>
@@ -41,10 +49,10 @@ if (!$user->isLoggedIn()) {
             <i class="fas fa-caret-down"> </i>
         </a>
         <div class="dropdown" id="dropdown">
-            <a href="menu_kelas.php"> XII TKJ 1 </a>
-            <a href="menu_kelas.php"> XII TKJ 2</a>
-            <a href="menu_kelas.php"> XII MM 1 </a>
-            <a href="menu_kelas.php"> XII MM 2 </a>
+            <a href="kelas_siswa.php"> Matematika </a>
+            <a href="kelas_siswa.php"> Penjaskes</a>
+            <a href="kelas_siswa.php"> B.Jawa</a>
+            <a href="kelas_siswa.php"> B.Inggris</a>
         </div>
     </div>
     <div class="content">
@@ -68,23 +76,26 @@ if (!$user->isLoggedIn()) {
                         <div class="info">
                             <div>
                                 <b> Nama </b>
-                                Mulyana
+                                <?php echo htmlspecialchars($currentUser['nama']); ?>
                             </div>
                             <div>
                                 <b> Email </b>
-                                Mulyana@gmail.com
+                                <?php echo htmlspecialchars($currentUser['email']); ?>
                             </div>
                         </div>
                         <div class="info">
                             <div>
-                                <b> NIP </b>
-                                351010100020
+                                <b> NISN </b>
+                                <?php 
+            // Pastikan data ada dan tampilkan
+            echo isset($currentUser['nisn']) ? htmlspecialchars($currentUser['nisn']) : "Data NISN tidak tersedia";
+            ?>
                             </div>
                         </div>
                         <div class="info">
                             <div>
                                 <b> No.Hp </b>
-                                +6281-6664-5555
+                                <?php echo htmlspecialchars($currentUser['no_hp']); ?>
                             </div>
                         </div>
                     </div>
