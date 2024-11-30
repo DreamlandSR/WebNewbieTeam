@@ -1,7 +1,14 @@
 <?php
+// Panggil Koneksi Database
+require_once "../dbconfig.php";
+
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
+
+// Mulai sesi
 session_start();
 require_once "../Auth.php";
-require_once "../dbconfig.php"; 
 
 $user = new Auth();
 // Cek status login user
@@ -9,6 +16,14 @@ if (!$user->isLoggedIn()) {
     header("location: login.php"); //Redirect ke halaman login  
     exit; // Tambahkan exit setelah header
 }
+
+// Ambil data user saat ini
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
+}
+
 ?>
 
 <html>
@@ -41,10 +56,10 @@ if (!$user->isLoggedIn()) {
             <i class="fas fa-caret-down"> </i>
         </a>
         <div class="dropdown" id="dropdown">
-            <a href="menu_kelas.php"> XII TKJ 1 </a>
-            <a href="menu_kelas.php"> XII TKJ 2</a>
-            <a href="menu_kelas.php"> XII MM 1 </a>
-            <a href="menu_kelas.php"> XII MM 2 </a>
+            <a href="kelas_siswa.php"> Matematika </a>
+            <a href="kelas_siswa.php"> Penjaskes</a>
+            <a href="kelas_siswa.php"> B.Jawa</a>
+            <a href="kelas_siswa.php"> B.Inggris</a>
         </div>
     </div>
     <div class="content">
@@ -57,7 +72,7 @@ if (!$user->isLoggedIn()) {
                             src="https://storage.googleapis.com/a1aa/image/EQfmn4Xbi2waCCbUEeHlR3z5FdjWdqNHXR3RVeCZ1uCD1CQnA.jpg"
                             class="rounded-circle img-thumbnail" width="100" />
 
-                        <a href="../editprofil.php">
+                        <a href="editprofil.php">
                             <button>
                                 <i class="fas fa-camera"> </i>
                                 Edit Foto
@@ -68,11 +83,11 @@ if (!$user->isLoggedIn()) {
                         <div class="info">
                             <div>
                                 <b> Nama </b>
-                                Mulyana
+                                <?php echo htmlspecialchars($currentUser['nama']);?>
                             </div>
                             <div>
                                 <b> Email </b>
-                                Mulyana@gmail.com
+                                <?php echo htmlspecialchars($currentUser['email']);?>
                             </div>
                         </div>
                         <div class="info">

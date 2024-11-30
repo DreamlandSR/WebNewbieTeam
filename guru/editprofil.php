@@ -1,3 +1,31 @@
+<?php
+// Panggil Koneksi Database
+require_once "../dbconfig.php";
+
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
+
+// Mulai sesi
+session_start();
+require_once "../Auth.php";
+
+$user = new Auth();
+// Cek status login user
+if (!$user->isLoggedIn()) {  
+    header("location: login.php"); //Redirect ke halaman login  
+    exit; // Tambahkan exit setelah header
+}
+
+// Ambil data user saat ini
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -104,8 +132,8 @@
                 </div>
                 <!-- Informasi Profil -->
                 <div class="col-md-8">
-                    <p><strong>Nama:</strong> Mulyana</p>
-                    <p><strong>Email:</strong> mulyana@gmail.com</p>
+                    <p><strong>Nama:</strong> <?php echo htmlspecialchars($currentUser['nama']);?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($currentUser['email']);?></p>
                     <p><strong>NIP:</strong> 351010100020</p>
                     <p><strong>No. Hp:</strong> +6281-6664-5555</p>
                 </div>

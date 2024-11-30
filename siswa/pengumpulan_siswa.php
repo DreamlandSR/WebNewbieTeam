@@ -1,118 +1,88 @@
 <?php
-// Konfigurasi database
-$host = 'localhost';
-$dbname = 'e_learning';
-$username = 'root';
-$password = '';
 
-// Koneksi ke database
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Koneksi gagal: " . $e->getMessage());
+// Panggil Koneksi Database
+include "../dbconfig.php";
+
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
+
+// Pastikan folder tempat file akan disimpan
+$uploadDir = 'uploads/';
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true); // Membuat folder jika belum ada
 }
 
-$uploadDir = 'uploads/   '; // Folder tempat menyimpan file
+// Uji jika tombol simpan di klik
+if (isset($_POST['bsimpantugas'])) {
+    try {
+        if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] === UPLOAD_ERR_OK) {
+            // Ambil informasi file
+            $fileName = basename($_FILES['file_tugas']['name']);
+            $fileTmp = $_FILES['file_tugas']['tmp_name'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validasi file unggahan
-    if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
-        echo "<script>alert('File tidak ditemukan atau terjadi kesalahan.');</script>";
-        header('Location: pengumpulan_siswa.php');
-        exit;
-    }
+            // Validasi tipe file
+            $allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            $fileType = mime_content_type($fileTmp);
 
-    // Validasi input "Save As"
-    if (empty($_POST['save_as'])) {
-        echo "<script>alert('Nama tugas tidak boleh kosong.');</script>";
-        header('Location: pengumpulan_siswa.php');
-        exit;
-    }
+            if (!in_array($fileType, $allowedTypes)) {
+                echo "<script>
+                    alert('Tipe file tidak didukung. Hanya PDF atau Word yang diperbolehkan.');
+                    document.location = 'pengumpulan_siswa.php';
+                </script>";
+                exit;
+            }
 
-    $saveAs = htmlspecialchars($_POST['save_as']); // Nama tugas
-    $file = $_FILES['file'];
+            // Buat nama file unik
+            $uniqueFileName = time() . '-' . preg_replace("/[^a-zA-Z0-9.]/", "_", $fileName);
+            $targetPath = $uploadDir . $uniqueFileName;
 
-    // Membuat nama file unik
-    $fileName = time() . '-' . basename($file['name']);
-    $uploadFilePath = $uploadDir . $fileName;
+            // Pindahkan file ke folder tujuan
+            if (move_uploaded_file($fileTmp, $targetPath)) {
+                // Persiapkan query simpan
+                $query = "INSERT INTO pengumpulan (id_tugas, id_siswa, file_tugas, waktu_pengumpulan) 
+                          VALUES (:id_tugas, :id_siswa, :file_tugas, NOW())";
+                $stmt = $conn->prepare($query);
 
-    // Pastikan folder "uploads" ada
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
+                // Bind parameter
+                $stmt->bindParam(':id_tugas', $_POST['id_tugas']); // Pastikan input id_tugas ada di form
+                $stmt->bindParam(':id_siswa', $_POST['id_siswa']); // Pastikan input id_siswa ada di form
+                $stmt->bindParam(':file_tugas', $uniqueFileName);
 
-    // Pindahkan file ke folder tujuan
-    if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
-        try {
-            // Simpan metadata ke database
-            $stmt = $pdo->prepare("INSERT INTO file_uploads (file_name, file_path, save_as) VALUES (?, ?, ?)");
-            $stmt->execute([$fileName, $uploadFilePath, $saveAs]);
-
-            echo "<script>alert('Tugas berhasil diunggah dan disimpan ke database!');</script>";
-            header('Location: pengumpulan_siswa.php');
-            exit;
-        } catch (PDOException $e) {
-            echo "<script>alert('Gagal menyimpan ke database: " . $e->getMessage() . "');</script>";
-            header('Location: pengumpulan_siswa.php');
-            exit;
-        }
-    } else {
-        echo "<script>alert('Gagal mengunggah file. Silakan coba lagi.');</script>";
-        header('Location: pengumpulan_siswa.php');
-        exit;
-    }
-}
-
-// Mendapatkan data file dari database
-try {
-    $stmt = $pdo->query("SELECT * FROM file_uploads ORDER BY upload_time DESC");
-    $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Gagal mengambil data file: " . $e->getMessage());
-}
-
-// Mendapatkan ID dari form update
-$fileId = $_POST['file_id'];
-
-// Proses update
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
-    $fileId = $_POST['file_id'];
-    $saveAs = htmlspecialchars($_POST['save_as']);
-
-    if (!empty($_FILES['file']['name'])) {
-        // Hapus file lama
-        $stmt = $pdo->prepare("SELECT * FROM file_uploads WHERE id = ?");
-        $stmt->execute([$fileId]);
-        $file = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($file && file_exists($file['file_path'])) {
-            unlink($file['file_path']);
-        }
-
-        // Upload file baru
-        $uploadDir = 'uploads/';
-        $fileName = time() . '-' . basename($_FILES['file']['name']);
-        $uploadFilePath = $uploadDir . $fileName;
-
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFilePath)) {
-            // Update database
-            $stmt = $pdo->prepare("UPDATE file_uploads SET file_name = ?, file_path = ?, save_as = ? WHERE id = ?");
-            $stmt->execute([$fileName, $uploadFilePath, $saveAs, $fileId]);
-
-            echo "<script>alert('File berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+                // Eksekusi query
+                if ($stmt->execute()) {
+                    echo "<script>
+                        alert('Simpan Tugas Sukses!');
+                        document.location = 'pengumpulan_siswa.php';
+                    </script>";
+                } else {
+                    echo "<script>
+                        alert('Terjadi kesalahan saat menyimpan ke database.');
+                        document.location = 'pengumpulan_siswa.php';
+                    </script>";
+                }
+            } else {
+                echo "<script>
+                    alert('Gagal memindahkan file ke folder tujuan.');
+                    document.location = 'pengumpulan_siswa.php';
+                </script>";
+            }
         } else {
-            echo "<script>alert('Gagal mengunggah file baru.');</script>";
+            echo "<script>
+                alert('File tidak valid atau belum diunggah.');
+                document.location = 'pengumpulan_siswa.php';
+            </script>";
         }
-    } else {
-        // Update hanya metadata
-        $stmt = $pdo->prepare("UPDATE file_uploads SET save_as = ? WHERE id = ?");
-        $stmt->execute([$saveAs, $fileId]);
-
-        echo "<script>alert('Nama tugas berhasil diperbarui.'); window.location.href = 'pengumpulan_siswa.php';</script>";
+    } catch (PDOException $e) {
+        error_log($e->getMessage(), 3, 'error_log.txt'); // Simpan error ke file log
+        echo "<script>
+            alert('Terjadi kesalahan saat menyimpan tugas.');
+            document.location = 'pengumpulan_siswa.php';
+        </script>";
     }
 }
 ?>
+
 
 <html>
 
@@ -199,26 +169,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                                     <td>34 Menit lalu</td>
                                 </tr>
                                 <?php if (!empty($files)) : ?>
-                                <?php foreach ($files as $index => $file) : ?>
+                                <?php foreach ($files as $file) : ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($file['file_name']); ?></td>
+                                    <td><?= htmlspecialchars($file['file_tugas']); ?></td>
+                                    <td><?= htmlspecialchars($file['waktu_pengumpulan']); ?></td>
+                                    <td><?= htmlspecialchars($file['status']); ?></td>
                                     <td>
-                                        <a href="<?= htmlspecialchars($file['file_path']); ?>" class="btn btn-primary"
-                                            target="_blank">Lihat</a>
-                                        <a href="<?= htmlspecialchars($file['file_path']); ?>" download
+                                        <a href="uploads/<?= htmlspecialchars($file['file_tugas']); ?>"
+                                            class="btn btn-primary" target="_blank">Lihat</a>
+                                        <a href="uploads/<?= htmlspecialchars($file['file_tugas']); ?>" download
                                             class="btn btn-success">Unduh</a>
                                         <a href="#" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#modalUbah">Update</a>
-                                        <a href="delete_file.php?id=<?= $file['id']; ?>" class="btn btn-danger"
+                                        <a href="delete_file.php?id=<?= $file['id_pengumpulan']; ?>"
+                                            class="btn btn-danger"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?')">Hapus</a>
-
-
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php else : ?>
                                 <tr>
-                                    <td colspan="5" class="text-center">Belum ada file yang diunggah</td>
+                                    <td colspan="4" class="text-center">Belum ada file yang diunggah</td>
                                 </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -244,24 +215,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                     </div>
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
+                        <input type="hidden" name="id_tugas" value="1"> <!-- Ganti sesuai tugas -->
+                        <input type="hidden" name="id_siswa" value="123"> <!-- Ganti sesuai siswa -->
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Masukkan File</label>
-                                <input class="form-control" type="file" id="formFile" name="file" required>
+                                <input class="form-control" type="file" id="file_tugas" name=" file_tugas" required>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Save As</label>
-                                <input type="text" class="form-control" name="save_as"
-                                    placeholder="Masukkan Nama Tugas Anda!" required>
-                            </div>
 
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" name="bsimpankelas">Simpan</button>
+                                <button type="submit" class="btn btn-primary" name="bsimpantugas">Simpan</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
                             </div>
                         </div>
                     </form>
+
 
                 </div>
             </div>
@@ -280,19 +249,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                     </div>
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
-                        <input type="hidden" name="file_id" value="<?= htmlspecialchars($file['id']); ?>">
+                        <!-- Input hidden untuk ID -->
+                        <input type="hidden" name="id"
+                            value="<?= isset($fileId['id']) ? htmlspecialchars($fileId['id']) : ''; ?>">
 
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Masukkan File</label>
-                                <input class="form-control" type="file" id="formFile" name="file" required>
+                                <label for="formFile" class="form-label">Masukkan File Baru</label>
+                                <input class="form-control" type="file" id="formFile" name="file">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">File Lama</label>
-                                <input type="text" class="form-control" name="save_as"
-                                    value="<?= htmlspecialchars($file['file_name']); ?>"
-                                    placeholder="Masukkan Nama Tugas Anda!" required>
+                                <label class="form-label">Nama File Lama</label>
+                                <input type="text" class="form-control" name="file_old"
+                                    value="<?= htmlspecialchars($file['file_name']); ?>" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -311,6 +281,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
                 </div>
             </div>
         </div>
+
         <!-- Akhir Modal Update -->
 
     </div>
