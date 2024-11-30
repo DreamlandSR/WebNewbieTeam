@@ -1,7 +1,14 @@
 <?php
+// Panggil Koneksi Database
+require_once "../dbconfig.php";
+
+// Inisialisasi objek Database
+$db = new Database();
+$conn = $db->getConnection();
+
+// Mulai sesi
 session_start();
 require_once "../Auth.php";
-require_once "../dbconfig.php"; 
 
 $user = new Auth();
 // Cek status login user
@@ -65,7 +72,7 @@ if (!$currentUser) {
                             src="https://storage.googleapis.com/a1aa/image/EQfmn4Xbi2waCCbUEeHlR3z5FdjWdqNHXR3RVeCZ1uCD1CQnA.jpg"
                             class="rounded-circle img-thumbnail" width="100" />
 
-                        <a href="../editprofil.php">
+                        <a href="editprofil.php">
                             <button>
                                 <i class="fas fa-camera"> </i>
                                 Edit Foto
@@ -76,26 +83,23 @@ if (!$currentUser) {
                         <div class="info">
                             <div>
                                 <b> Nama </b>
-                                <?php echo htmlspecialchars($currentUser['nama']); ?>
+                                <?php echo htmlspecialchars($currentUser['nama']);?>
                             </div>
                             <div>
                                 <b> Email </b>
-                                <?php echo htmlspecialchars($currentUser['email']); ?>
+                                <?php echo htmlspecialchars($currentUser['email']);?>
                             </div>
                         </div>
                         <div class="info">
                             <div>
-                                <b> NISN </b>
-                                <?php 
-            // Pastikan data ada dan tampilkan
-            echo isset($currentUser['nisn']) ? htmlspecialchars($currentUser['nisn']) : "Data NISN tidak tersedia";
-            ?>
+                                <b> NIP </b>
+                                351010100020
                             </div>
                         </div>
                         <div class="info">
                             <div>
                                 <b> No.Hp </b>
-                                <?php echo htmlspecialchars($currentUser['no_hp']); ?>
+                                +6281-6664-5555
                             </div>
                         </div>
                     </div>
