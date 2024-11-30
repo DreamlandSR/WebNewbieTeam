@@ -177,11 +177,24 @@ body {
 .card h2 {
   color: #003366;
   margin-bottom: 20px;
+  font-weight: 600;
 }
 .profile {
   display: flex;
   width: 100%;
 }
+
+#upload {
+  width: 150px;
+}
+
+.profile button {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  justify-content: center;
+}
+
 .profile .left {
   flex: 1;
   display: flex;
@@ -226,3 +239,10 @@ body {
   display: block;
   margin-bottom: 5px;
 }
+
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+

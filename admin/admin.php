@@ -11,7 +11,7 @@ if (!$user->isLoggedIn()) {
 }
 
 $db = new Database();
-$conn = $db ->getConnection();
+$conn = $db->getConnection();
 
 $sql = "
     SELECT  
@@ -23,8 +23,8 @@ $sql = "
 ";
 
 try {
-    $stmt = $conn ->prepare($sql);
-    $stmt -> execute ();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $totalAdmin = $row['total_admin'];
@@ -37,17 +37,36 @@ try {
     die("Query gagal: " . $e->getMessage());
 }
 
-// Ambil data user saat ini
-$currentUser = $user->getCurrentUser();
+// Ambil foto user dari tabel admins
+$userId = $_SESSION['id']; 
+
+$sqlFoto = "SELECT foto FROM admins WHERE id = :id";
+try {
+    $stmt = $conn->prepare($sqlFoto);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $fotoData = $row['foto']; 
+    } else {
+        $fotoData = null;
+    }
+
+} catch(PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
+}
+
+$currentUser = $user->getUserAdmin();
 if (!$currentUser) {
     echo "Error: Gagal mengambil data pengguna.";
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,6 +87,7 @@ if (!$currentUser) {
         </div>
         <a href="../logout.php" class="logout">Keluar</a>
     </div>
+
     <div class="sidebar">
         <a href="admin.php"><i class="fas fa-home"></i> Dashboard</a>
         <a href="daftar.php"><i class="bi bi-person-plus-fill"></i> Daftar Akun</a>
@@ -87,13 +107,21 @@ if (!$currentUser) {
             <a href="kelas.php"> Kelas</a>
         </div>
     </div>
+
     <div class="content">
         <div class="profile-card">
             <div class="profile-info">
-                <i class="fas fa-user-circle profile-icon"></i>
+                <!-- Menampilkan foto profil dalam format base64 -->
+                <div class="name">
+                    <?php if ($fotoData): ?>
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="img-fluid rounded-circle" width="50">
+                    <?php else: ?>
+                        <p>Foto tidak ditemukan.</p>
+                    <?php endif; ?>
+                </div>
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
-                    <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
+                    <div class="email"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
                 </div>
             </div>
             <a href="profile.php">
@@ -105,23 +133,23 @@ if (!$currentUser) {
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-title">Akun Admin</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_admin']); ?></div>
+                <div class="stat-value"><?php echo $totalAdmin; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Akun Siswa</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_siswa']); ?></div>
+                <div class="stat-value"><?php echo $totalSiswa; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Akun Guru</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_guru']); ?></div>
+                <div class="stat-value"><?php echo $totalGuru; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Mapel</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_mapel']); ?></div>
+                <div class="stat-value"><?php echo $totalMapel; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Kelas</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_kelas']); ?></div>
+                <div class="stat-value"><?php echo $totalKelas; ?></div>
             </div>
         </div>
 
@@ -141,6 +169,7 @@ if (!$currentUser) {
             <div class="menu-title">Panduan</div>
             <div class="menu-description">Melihat panduan untuk masing - masing dari user</div>
             <a href="panduan.php"><button class="menu-button">Panduan</button></a>
+            </div>
         </div>
     </div>
     <script src="../js/script.js"></script>

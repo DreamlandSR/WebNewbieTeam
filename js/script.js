@@ -118,3 +118,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
   checkVisibility(); // Memanggil saat pertama kali untuk memuat elemen yang sudah terlihat
 });
+
+
+//kalender
+function updateCalendar() {
+    var month = document.getElementById("month").value;
+    var year = document.getElementById("year").value;
+    window.location.href = "?month=" + month + "&year=" + year;
+}

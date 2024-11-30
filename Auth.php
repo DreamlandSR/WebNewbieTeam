@@ -79,5 +79,22 @@ class Auth {
         $role = $this->getUserRole();
         return in_array($role, $allowed_role);
     }
+// mengambil data admin
+
+public function getUserAdmin() {
+    if ($this->isLoggedIn()) {
+        try {
+            $stmt = $this->db->prepare("SELECT id, nama, email, role_user, foto FROM admins WHERE id = :id");
+            $stmt->bindParam(":id", $_SESSION['id']);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            $this->error = "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    return null; // Kembalikan null jika tidak ada sesi
 }
+}
+
 ?>
