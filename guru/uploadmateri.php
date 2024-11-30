@@ -54,36 +54,48 @@
         <!-- Main Form -->
         <div class="form-container mt-3">
             <h2 class="h5 mb-4">Minggu ke - 1</h2>
-            <form>
+            <form id="materiForm" enctype="multipart/form-data" action="upload.php" method="POST">
                 <div class="mb-3">
-                    <label for="judulMateri" class="form-label">Judul Materi</label>
-                    <input type="text" class="form-control" id="judulMateri" placeholder="Masukkan Judul Materi!    ">
+                    <label for="idGuru" class="form-label">ID Guru</label>
+                    <input type="number" class="form-control" id="idGuru" name="id_guru" placeholder="Masukkan ID Guru">
                 </div>
                 <div class="mb-3">
-                    <label for="batasWaktu" class="form-label">Batas Waktu</label>
-                    <input type="datetime-local" class="form-control" id="batasWaktu">
+                    <label for="jenisMateri" class="form-label">Jenis Materi</label>
+                    <input type="text" class="form-control" id="jenisMateri" name="jenis_materi"
+                        placeholder="PDF, Docx, PNG, dll.">
                 </div>
                 <div class="mb-3">
-                    <label for="jenisFile" class="form-label">Jenis File</label>
-                    <input type="text" class="form-control" id="jenisFile" placeholder="PDF, Docx, PNG, JPEG" disabled>
+                    <label for="judulTugas" class="form-label">Judul Tugas</label>
+                    <input type="text" class="form-control" id="judulTugas" name="judul_tugas"
+                        placeholder="Judul Tugas atau Materi">
                 </div>
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi (optional)</label>
-                    <textarea class="form-control" id="deskripsi" rows="3" placeholder="Deskripsi Materi"></textarea>
+                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"
+                        placeholder="Deskripsi Materi"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="idKelas" class="form-label">ID Kelas</label>
+                    <input type="number" class="form-control" id="idKelas" name="id_kelas" placeholder="ID Kelas">
+                </div>
+                <div class="mb-3">
+                    <label for="deadline" class="form-label">Batas Waktu</label>
+                    <input type="datetime-local" class="form-control" id="deadline" name="deadline">
                 </div>
                 <div class="mb-3">
                     <label for="videoURL" class="form-label">Video URL (optional)</label>
-                    <input type="url" class="form-control" id="videoURL" placeholder="Link URL">
+                    <input type="url" class="form-control" id="videoURL" name="video_url" placeholder="Link URL">
                 </div>
-                <div class="mb-3 d-flex align-items-center">
-                    <button type="button" class="btn btn-primary me-3">Pilih File</button>
-                    <span>full_Matematika.pdf</span>
+                <div class="mb-3">
+                    <label for="file" class="form-label">File</label>
+                    <input type="file" class="form-control" id="file" name="file">
                 </div>
                 <div class="form-actions d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-danger">Cancel</button>
+                    <button type="reset" class="btn btn-danger">Cancel</button>
                 </div>
             </form>
+
         </div>
     </div>
 

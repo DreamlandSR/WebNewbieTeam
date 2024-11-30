@@ -75,9 +75,7 @@
             <div class="lesson">
                 <span>1. Pembelajaran Minggu ini terkait Eksponen dan algoritma silahkan
                     pelajari terlebih dahulu materi berikut</span><br>
-                <span>2. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est aliquid sint nemo, magnam facilis
-                    nisi eum sit assumenda vel architecto numquam dignissimos nulla consequatur neque placeat unde quasi
-                    quia voluptas!</span>
+
             </div>
             <div class="lesson">
                 <i class="bi bi-file-earmark-pdf-fill"></i><a href="#"> Pembelajaran Minggu ke-1: Materi Al - Jabar</a>
