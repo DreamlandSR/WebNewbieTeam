@@ -41,7 +41,6 @@ if (!$currentUser) {
         /* Warna latar biru muda */
         font-family: 'Arial', sans-serif;
     }
-
     .card {
         border: none;
         border-radius: 20px;
