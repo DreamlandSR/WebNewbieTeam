@@ -95,6 +95,25 @@ public function getUserAdmin() {
     }
     return null; // Kembalikan null jika tidak ada sesi
 }
+
+//mengambil data siswa
+
+public function getUserSiswa() {
+    if ($this->isLoggedIn()) {
+        try {
+            $stmt = $this->db->prepare("SELECT id_siswa, nama, email, foto FROM siswa WHERE id_siswa = :id_siswa");
+            $stmt->bindParam(":id_siswa", $_SESSION['id_siswa']);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            $this->error = "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    return null; // Kembalikan null jika tidak ada sesi
+}
+
+
 }
 
 ?>

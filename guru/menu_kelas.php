@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-..." crossorigin="anonymous">
     <link rel="stylesheet" href="../css/menu_kelas.css" />
+</head>
 
 <body>
     <div class="header">
@@ -27,8 +28,7 @@
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
-        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-            Kelas
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">Kelas
             <i class="fas fa-caret-down"> </i>
         </a>
         <div class="dropdown" id="dropdown">
@@ -46,28 +46,16 @@
                 <span>Ismail Bin Mail</span>
             </div>
             <div class="breadcrumb">
-                <a href="#">Dashboard</a> / <a href="#">Kelas</a> /
-                <a href="#">Matematika</a>
+                <a href="#">Dashboard</a> / <a href="#">Kelas</a> / <a href="#">Matematika</a>
             </div>
         </div>
         <div class="actions d-flex align-items-center gap-3">
             <!-- Tombol Edit Class -->
             <button class="btn btn-primary"><i class="fas fa-edit"></i> Edit Class</button>
             <!-- Tombol Upload Materi -->
-            <div class="dropdown-upload">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="uploadMateriButton"
-                    onclick="dropdown()">
-                    <i class="fas fa-plus"></i> Upload Materi
-                </button>
-                <ul class="dropdown-menu" id="dropdownOptions">
-                    <li><a class="dropdown-item" href="uploadmateri.php" data-bs-toggle="modal"
-                            data-bs-target="#modalTambah">Minggu
-                            1</a></li>
-                    <li><a class="dropdown-item" href="#">Minggu 2</a></li>
-                    <li><a class="dropdown-item" href="#">Minggu 3</a></li>
-                    <li><a class="dropdown-item" href="#">Minggu 4</a></li>
-                </ul>
-            </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materiModal">
+                <i class="fas fa-plus"></i> Upload Materi
+            </button>
         </div>
 
         <div class="week">
@@ -75,7 +63,6 @@
             <div class="lesson">
                 <span>1. Pembelajaran Minggu ini terkait Eksponen dan algoritma silahkan
                     pelajari terlebih dahulu materi berikut</span><br>
-
             </div>
             <div class="lesson">
                 <i class="bi bi-file-earmark-pdf-fill"></i><a href="#"> Pembelajaran Minggu ke-1: Materi Al - Jabar</a>
@@ -83,40 +70,52 @@
             <div class="task">
                 <i class="bi bi-file-earmark-pdf-fill"></i><a href="#">Tugas 1</a>
             </div>
-            <h2>Minggu 2</h2>
-            <div class="lesson">
-                <span>1. Pembelajaran Minggu ini terkait Eksponen dan algoritma silahkan
-                    pelajari terlebih dahulu materi berikut</span>
-            </div>
-            <div class="lesson">
-                <a href="#">Pembelajaran Minggu ke-2: Materi Eksponen dan algoritma</a>
-            </div>
         </div>
     </div>
 
-    <!-- Awal Modal Tambah -->
-
-    <div class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="modalTambahLabel" aria-hidden="true">
+    <!-- Modal Tambah Materi -->
+    <div class="modal fade" id="materiModal" tabindex="-1" aria-labelledby="materiModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalTambahLabel">Upload File</h1>
+                    <h5 class="modal-title" id="materiModalLabel">Tambah Materi </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="pengumpulan_siswa.php">
+                    <form id="materiForm" enctype="multipart/form-data" action="upload.php" method="POST">
+
                         <div class="mb-3">
-                            <label for="formFile" class="form-label">Masukkan File</label>
-                            <input class="form-control" type="file" id="formFile" required>
+                            <label for="jenisMateri" class="form-label">Jenis Materi</label>
+                            <input type="text" class="form-control" id="jenisMateri" name="jenis_materi"
+                                placeholder="PDF, Docx, PNG, dll.">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Author</label>
-                            <input type="text" class="form-control" placeholder="Masukkan Nama Anda!" required>
+                            <label for="judulTugas" class="form-label">Judul Tugas</label>
+                            <input type="text" class="form-control" id="judulTugas" name="judul_tugas"
+                                placeholder="Judul Tugas atau Materi">
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" name="bsimpankelas">Simpan</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi (optional)</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"
+                                placeholder="Deskripsi Materi"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">Batas Waktu</label>
+                            <input type="datetime-local" class="form-control" id="deadline" name="deadline">
+                        </div>
+                        <div class="mb-3">
+                            <label for="videoURL" class="form-label">Video URL (optional)</label>
+                            <input type="url" class="form-control" id="videoURL" name="video_url"
+                                placeholder="Link URL">
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File</label>
+                            <input type="file" class="form-control" id="file" name="file">
+                        </div>
+                        <div class="form-actions d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="reset" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -124,6 +123,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
 </body>
 

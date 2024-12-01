@@ -10,11 +10,34 @@ if (!$user->isLoggedIn()) {
     exit; // Tambahkan exit setelah header
 }
 
+$db = new Database();
+$conn = $db ->getConnection();
+
 // Ambil data user saat ini
 $currentUser = $user->getCurrentUser();
 if (!$currentUser) {
     echo "Error: Gagal mengambil data pengguna.";
     exit;
+}
+
+// Ambil foto user dari tabel siswa
+$userId = $_SESSION['id']; 
+
+$sqlFoto = "SELECT foto FROM siswa WHERE id_siswa = :id_siswa";
+try {
+    $stmt = $conn->prepare($sqlFoto);
+    $stmt->bindParam(':id_siswa', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $fotoData = $row['foto']; 
+    } else {
+        $fotoData = null;
+    }
+
+} catch(PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
 
 ?>
@@ -64,13 +87,23 @@ if (!$currentUser) {
     <div class="content">
         <div class="profile-card">
             <div class="profile-info">
-                <i class="fas fa-user-circle profile-icon"></i>
+                <!-- Menampilkan foto profil dalam format base64 -->
+                <div class="name">
+                    <?php if ($fotoData): ?>
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil"
+                        class="img-fluid rounded-circle" width="50">
+                    <?php else: ?>
+                    <p>Foto tidak ditemukan.</p>
+                    <?php endif; ?>
+                </div>
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
-                    <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
+                    <div class="email"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
                 </div>
             </div>
-            <button class="profile-button">Profile</button>
+            <a href="profile.php">
+                <button class="profile-button">Profile</button>
+            </a>
         </div>
         <div class="grid-container">
             <div class="card">
