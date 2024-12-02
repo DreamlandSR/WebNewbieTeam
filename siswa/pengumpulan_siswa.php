@@ -126,28 +126,8 @@ $conn->close();
                                 <tr>
                                     <td>34 Menit lalu</td>
                                 </tr>
-                                <?php if (!empty($file_data)) : ?>
-                                <?php foreach ($file_data as $file_data) : ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($file_data['file_tugas']); ?></td>
-                                    <td>
-                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>"
-                                            class="btn btn-primary" target="_blank">Lihat</a>
-                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>" download
-                                            class="btn btn-success">Unduh</a>
-                                        <a href="#" class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modalUbah">Update</a>
-                                        <a href="delete_file.php?id=<?= $file_data['id_pengumpulan']; ?>"
-                                            class="btn btn-danger"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?')">Hapus</a>
-                                    </td>
+                                <td colspan="4" class="text-center">Belum ada file yang diunggah</td>
                                 </tr>
-                                <?php endforeach; ?>
-                                <?php else : ?>
-                                <tr>
-                                    <td colspan="4" class="text-center">Belum ada file yang diunggah</td>
-                                </tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
                         <!-- Button trigger modal -->
@@ -206,8 +186,7 @@ $conn->close();
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
                         <!-- Input hidden untuk ID -->
-                        <input type="hidden" name="id"
-                            value="<?= isset($fileId['id']) ? htmlspecialchars($fileId['id']) : ''; ?>">
+                        <input type="hidden" name="id">
 
                         <div class="modal-body">
                             <div class="mb-3">
@@ -217,14 +196,12 @@ $conn->close();
 
                             <div class="mb-3">
                                 <label class="form-label">Nama File Lama</label>
-                                <input type="text" class="form-control" name="file_old"
-                                    value="<?= htmlspecialchars($file['file_name']); ?>" readonly>
+                                <input type="text" class="form-control" name="file_old">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Save As</label>
                                 <input type="text" class="form-control" name="save_as"
-                                    value="<?= htmlspecialchars($file['save_as']); ?>"
                                     placeholder="Masukkan Nama Tugas Anda!" required>
                             </div>
 
