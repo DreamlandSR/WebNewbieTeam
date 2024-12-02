@@ -72,7 +72,8 @@ if (!$currentUser) {
 <head>
     <title>Data Diri</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -95,7 +96,12 @@ if (!$currentUser) {
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" data-bs-toggle="dropdown"
+            aria-expanded="false">
+
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
+
             Tabel Master
             <i class="fas fa-caret-down"> </i>
         </a>
@@ -113,9 +119,23 @@ if (!$currentUser) {
         <div class="container">
             <div class="card">
                 <h2>Data Diri</h2>
-                    <div class="profile">
+                <div class="profile">
                     <div class="left">
                         <form action="profile.php" method="POST" enctype="multipart/form-data">
+
+                            <?php if ($userFoto): ?>
+                            <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil"
+                                class="rounded-circle" width="150" height="150">
+                            <?php else: ?>
+                            <img src="../images/default-profile.png" alt="Foto Profil" class="rounded-circle"
+                                width="150" height="150">
+                            <?php endif; ?>
+                            <div class="col-md-9" id="upload">
+                                <!-- Tombol untuk membuka modal -->
+                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#uploadModal">Ganti Foto</button>
+                            </div>
+
                     <?php if ($userFoto): ?>
                         <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil" class="rounded-circle" width="150" height="150">
                     <?php else: ?>
@@ -125,26 +145,33 @@ if (!$currentUser) {
                         <!-- Tombol untuk membuka modal -->
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">Ganti Foto</button>
                     </div>
+
                     </div>
                     <div class="right">
                         <div class="info">
                             <div>
                                 <b>Nama</b>
-                                <div class="name"><?php echo isset($currentUser['nama']) ? htmlspecialchars($currentUser['nama']) : 'Nama tidak tersedia'; ?></div>
+                                <div class="name">
+                                    <?php echo isset($currentUser['nama']) ? htmlspecialchars($currentUser['nama']) : 'Nama tidak tersedia'; ?>
+                                </div>
                             </div>
                         </div>
-                        
+
                         <div class="info">
                             <div>
                                 <b>Email</b>
-                                <div class="name"><?php echo isset($currentUser['email']) ? htmlspecialchars($currentUser['email']) : 'Email tidak tersedia'; ?></div>
+                                <div class="name">
+                                    <?php echo isset($currentUser['email']) ? htmlspecialchars($currentUser['email']) : 'Email tidak tersedia'; ?>
+                                </div>
                             </div>
                         </div>
 
                         <div class="info">
                             <div>
                                 <b>Role User</b>
-                                <div class="name"><?php echo isset($currentUser['email']) ? htmlspecialchars($currentUser['role_user']) : 'role tidak tersedia'; ?></div>
+                                <div class="name">
+                                    <?php echo isset($currentUser['email']) ? htmlspecialchars($currentUser['role_user']) : 'role tidak tersedia'; ?>
+                                </div>
                             </div>
                         </div>
 

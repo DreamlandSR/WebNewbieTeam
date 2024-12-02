@@ -1,47 +1,46 @@
 <?php
-// Panggil Koneksi Database
-include "../dbconfig.php";
+// Koneksi ke database
+$host = "localhost";  // Ganti sesuai konfigurasi Anda
+$user = "root";       // Ganti dengan user database Anda
+$password = "";       // Ganti dengan password database Anda
+$dbname = "e_learning"; // Nama database
 
-// Inisialisasi objek Database
-$db = new Database();
-$conn = $db->getConnection();
+$conn = new mysqli($host, $user, $password, $dbname);
 
-// Periksa apakah form dikirim
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Validasi method request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idGuru = $_POST['id_guru']; // Tambahkan input ID guru dari form
-    $jenisMateri = $_POST['jenis_materi']; // Tambahkan input jenis materi dari form
-    $judulTugas = $_POST['judul_tugas'];
-    $deskripsi = $_POST['deskripsi'] ?? null;
-    $idKelas = $_POST['id_kelas']; // Tambahkan input ID kelas dari form
-    $deadline = $_POST['deadline'];
-    $videoUrl = $_POST['video_url'] ?? null;
+    // Ambil data dari form
+$file_data = $_POST['jenis_materi'];
+$judul_tugas = $_POST['judul_tugas'];
+$deskripsi = $_POST['deskripsi'];
+$deadline = $_POST['deadline'];
+$video_url = $_POST['video_url'];
 
-    // Periksa apakah file diunggah
-    $filePath = null;
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        $fileName = time() . "_" . basename($_FILES['file']['name']);
-        $uploadDir = "upload/";
-        $filePath = $uploadDir . $fileName;
+// Periksa apakah file diunggah
+if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+    // Ambil informasi file
+    $file_data = file_get_contents($_FILES['file']['tmp_name']); // Baca data file biner
 
-        if (!move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
-            die("Gagal mengunggah file.");
-        }
-    }
-
-    // Tanggal dibuat
-    $tanggalDibuat = date('Y-m-d H:i:s');
-
-    // Simpan data ke database
-    $stmt = $conn->prepare("INSERT INTO materi (id_guru, jenis_materi, judul_tugas, deskripsi, id_kelas, tanggal_dibuat, deadline, video_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssisss", $idGuru, $jenisMateri, $judulTugas, $deskripsi, $idKelas, $tanggalDibuat, $deadline, $videoUrl);
+    // Query untuk menyimpan data ke database
+    $stmt = $conn->prepare("INSERT INTO materi (jenis_materi, judul_tugas, deskripsi, deadline, video_url) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param( "sssss",$file_data, $judul_tugas, $deskripsi, $deadline, $video_url);
 
     if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Data berhasil disimpan!"]);
+        echo "Data dan file berhasil disimpan ke database.";
     } else {
-        echo json_encode(["success" => false, "message" => "Gagal menyimpan data."]);
+        echo "Error: " . $stmt->error;
     }
 
     $stmt->close();
-    $conn->close();
+} else {
+    echo "File tidak diunggah atau terjadi kesalahan.";
 }
+}
+
+$conn->close();
 ?>
