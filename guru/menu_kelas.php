@@ -78,12 +78,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="materiModalLabel">Tambah Materi </h5>
+                    <h5 class="modal-title" id="materiModalLabel">Tambah Materi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Form Upload Materi -->
                     <form id="materiForm" enctype="multipart/form-data" action="upload.php" method="POST">
-
                         <div class="mb-3">
                             <label for="jenisMateri" class="form-label">Jenis Materi</label>
                             <input type="text" class="form-control" id="jenisMateri" name="jenis_materi"
@@ -99,7 +99,6 @@
                             <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"
                                 placeholder="Deskripsi Materi"></textarea>
                         </div>
-
                         <div class="mb-3">
                             <label for="deadline" class="form-label">Batas Waktu</label>
                             <input type="datetime-local" class="form-control" id="deadline" name="deadline">
@@ -114,14 +113,16 @@
                             <input type="file" class="form-control" id="file" name="file">
                         </div>
                         <div class="form-actions d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <button type="reset" class="btn btn-danger">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="bsimpanmateri">Simpan</button>
+                            <button type=" reset" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
+                    <!-- End Form -->
                 </div>
             </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>

@@ -94,7 +94,7 @@
                     <option value="12"
                         <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 12 ? 'selected' : ''; ?>>
                         Desember</option>
-                </select>erja
+                </select>
                 <label for="year">Pilih Tahun:</label>
                 <input type="number" name="year" id="year"
                     value="<?php echo isset($_GET['year']) ? $_GET['year'] : date('Y'); ?>" onchange="updateCalendar()">

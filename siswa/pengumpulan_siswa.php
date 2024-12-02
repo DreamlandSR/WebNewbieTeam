@@ -1,88 +1,46 @@
 <?php
 
-// Panggil Koneksi Database
-include "../dbconfig.php";
+// Koneksi ke database
+$host = "localhost";  // Ganti sesuai konfigurasi Anda
+$user = "root";       // Ganti dengan user database Anda
+$password = "";       // Ganti dengan password database Anda
+$dbname = "e_learning"; // Nama database
 
-// Inisialisasi objek Database
-$db = new Database();
-$conn = $db->getConnection();
+$conn = new mysqli($host, $user, $password, $dbname);
 
-// Pastikan folder tempat file akan disimpan
-$uploadDir = 'uploads/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true); // Membuat folder jika belum ada
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Uji jika tombol simpan di klik
-if (isset($_POST['bsimpantugas'])) {
-    try {
-        if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] === UPLOAD_ERR_OK) {
-            // Ambil informasi file
-            $fileName = basename($_FILES['file_tugas']['name']);
-            $fileTmp = $_FILES['file_tugas']['tmp_name'];
+// Validasi method request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari form
+$file_data = $_POST['file_tugas'];
 
-            // Validasi tipe file
-            $allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-            $fileType = mime_content_type($fileTmp);
+// Periksa apakah file diunggah
+if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] == 0) {
+    // Ambil informasi file
+    $file_data = file_get_contents($_FILES['file_tugas']['tmp_name']); // Baca data file biner
 
-            if (!in_array($fileType, $allowedTypes)) {
-                echo "<script>
-                    alert('Tipe file tidak didukung. Hanya PDF atau Word yang diperbolehkan.');
-                    document.location = 'pengumpulan_siswa.php';
-                </script>";
-                exit;
-            }
+    // Query untuk menyimpan data ke database
+    $stmt = $conn->prepare("INSERT INTO pengumpulan (file_tugas) VALUES (?)");
+    $stmt->bind_param( "s",$file_data);
 
-            // Buat nama file unik
-            $uniqueFileName = time() . '-' . preg_replace("/[^a-zA-Z0-9.]/", "_", $fileName);
-            $targetPath = $uploadDir . $uniqueFileName;
-
-            // Pindahkan file ke folder tujuan
-            if (move_uploaded_file($fileTmp, $targetPath)) {
-                // Persiapkan query simpan
-                $query = "INSERT INTO pengumpulan (id_tugas, id_siswa, file_tugas, waktu_pengumpulan) 
-                          VALUES (:id_tugas, :id_siswa, :file_tugas, NOW())";
-                $stmt = $conn->prepare($query);
-
-                // Bind parameter
-                $stmt->bindParam(':id_tugas', $_POST['id_tugas']); // Pastikan input id_tugas ada di form
-                $stmt->bindParam(':id_siswa', $_POST['id_siswa']); // Pastikan input id_siswa ada di form
-                $stmt->bindParam(':file_tugas', $uniqueFileName);
-
-                // Eksekusi query
-                if ($stmt->execute()) {
-                    echo "<script>
-                        alert('Simpan Tugas Sukses!');
-                        document.location = 'pengumpulan_siswa.php';
-                    </script>";
-                } else {
-                    echo "<script>
-                        alert('Terjadi kesalahan saat menyimpan ke database.');
-                        document.location = 'pengumpulan_siswa.php';
-                    </script>";
-                }
-            } else {
-                echo "<script>
-                    alert('Gagal memindahkan file ke folder tujuan.');
-                    document.location = 'pengumpulan_siswa.php';
-                </script>";
-            }
-        } else {
-            echo "<script>
-                alert('File tidak valid atau belum diunggah.');
-                document.location = 'pengumpulan_siswa.php';
-            </script>";
-        }
-    } catch (PDOException $e) {
-        error_log($e->getMessage(), 3, 'error_log.txt'); // Simpan error ke file log
-        echo "<script>
-            alert('Terjadi kesalahan saat menyimpan tugas.');
-            document.location = 'pengumpulan_siswa.php';
-        </script>";
+    if ($stmt->execute()) {
+        echo "Data dan file berhasil disimpan ke database.";
+    } else {
+        echo "Error: " . $stmt->error;
     }
-}
-?>
 
+    $stmt->close();
+} else {
+    echo "File tidak diunggah atau terjadi kesalahan.";
+}
+}
+
+$conn->close();
+?>
 
 <html>
 
@@ -168,20 +126,18 @@ if (isset($_POST['bsimpantugas'])) {
                                 <tr>
                                     <td>34 Menit lalu</td>
                                 </tr>
-                                <?php if (!empty($files)) : ?>
-                                <?php foreach ($files as $file) : ?>
+                                <?php if (!empty($file_data)) : ?>
+                                <?php foreach ($file_data as $file_data) : ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($file['file_tugas']); ?></td>
-                                    <td><?= htmlspecialchars($file['waktu_pengumpulan']); ?></td>
-                                    <td><?= htmlspecialchars($file['status']); ?></td>
+                                    <td><?= htmlspecialchars($file_data['file_tugas']); ?></td>
                                     <td>
-                                        <a href="uploads/<?= htmlspecialchars($file['file_tugas']); ?>"
+                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>"
                                             class="btn btn-primary" target="_blank">Lihat</a>
-                                        <a href="uploads/<?= htmlspecialchars($file['file_tugas']); ?>" download
+                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>" download
                                             class="btn btn-success">Unduh</a>
                                         <a href="#" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#modalUbah">Update</a>
-                                        <a href="delete_file.php?id=<?= $file['id_pengumpulan']; ?>"
+                                        <a href="delete_file.php?id=<?= $file_data['id_pengumpulan']; ?>"
                                             class="btn btn-danger"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?')">Hapus</a>
                                     </td>
@@ -194,14 +150,14 @@ if (isset($_POST['bsimpantugas'])) {
                                 <?php endif; ?>
                             </tbody>
                         </table>
+                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-                            data-bs-target="#modalTambah">Masukkan Tugas</button>
+                            data-bs-target="#modalTambah">Masukkan
+                            Tugas</button>
                     </div>
                 </div>
             </div>
         </main>
-
-        <!-- Button trigger modal -->
 
 
         <!-- Awal Modal Tambah -->
@@ -220,7 +176,7 @@ if (isset($_POST['bsimpantugas'])) {
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Masukkan File</label>
-                                <input class="form-control" type="file" id="file_tugas" name=" file_tugas" required>
+                                <input class="form-control" type="file" id="file_tugas" name="file_tugas" required>
                             </div>
 
 
