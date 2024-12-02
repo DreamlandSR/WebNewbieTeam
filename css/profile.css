@@ -118,6 +118,10 @@ body {
   margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
 }
 
+.content.sidebar-expanded-container {
+  margin-left: 0; /* Konten bergeser ke kiri saat sidebar memenuhi layar */
+}
+
 .sidebar a {
   display: block;
   padding: 15px 20px;
@@ -131,7 +135,7 @@ body {
 
 .dropdown {
   display: none;
-  background-color: #154abc;
+  background-color: #154ABC;
 }
 
 .dropdown.active {
@@ -147,6 +151,10 @@ body {
 .dropdown-btn.active + .dropdown {
   display: block;
 }
+
+/* .dropdown-menu ul li {
+  color: #154ABC !important;
+} */
 
 .container {
   display: flex;

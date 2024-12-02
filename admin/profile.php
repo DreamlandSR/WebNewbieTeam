@@ -95,18 +95,18 @@ if (!$currentUser) {
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
-        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
             Tabel Master
             <i class="fas fa-caret-down"> </i>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdown-btn">
-            <li><a class="dropdown-item" href="crudsiswa.php">Siswa</a></li>
-            <li><a class="dropdown-item" href="crudguru_admin.php">Guru</a></li>
-            <li><a class="dropdown-item" href="crud_kelas.php">Master Kelas</a></li>
-            <li><a class="dropdown-item" href="crudmapel.php">Master mapel</a></li>
-            <li><a class="dropdown-item" href="guruMapel.php">Guru mapel</a></li>
-            <li><a class="dropdown-item" href="kelas.php">Kelas</a></li>
-        </ul>
+        <div class="dropdown" id="dropdown">
+            <a href="crudsiswa.php"> Siswa </a>
+            <a href="crudguru_admin.php"> Guru </a>
+            <a href="crud_kelas.php"> Master Kelas </a>
+            <a href="crudmapel.php"> Master mapel</a>
+            <a href="guruMapel.php"> Guru mapel</a>
+            <a href="kelas.php"> Kelas</a>
+        </div>
     </div>
 
     <div class="content">
@@ -119,7 +119,7 @@ if (!$currentUser) {
                     <?php if ($userFoto): ?>
                         <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil" class="rounded-circle" width="150" height="150">
                     <?php else: ?>
-                        <img src="../images/default-profile.png" alt="Foto Profil" class="rounded-circle" width="150" height="150">
+                        <img src="../images/account.png" alt="Foto Profil" class="rounded-circle" width="150" height="150">
                     <?php endif; ?>
                     <div class="col-md-9" id="upload">
                         <!-- Tombol untuk membuka modal -->
@@ -178,7 +178,7 @@ if (!$currentUser) {
             </div>
         </div>
     </div>
-
+<script src="../js/script.js"></script>
 </body>
 
 </html>

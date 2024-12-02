@@ -79,13 +79,32 @@ class Auth {
         $role = $this->getUserRole();
         return in_array($role, $allowed_role);
     }
+    
 // mengambil data admin
 
 public function getUserAdmin() {
     if ($this->isLoggedIn()) {
         try {
+            // Query untuk mengambil data admin berdasarkan ID
             $stmt = $this->db->prepare("SELECT id, nama, email, role_user, foto FROM admins WHERE id = :id");
             $stmt->bindParam(":id", $_SESSION['id']);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC); // Mengembalikan data admin dalam bentuk array
+        } catch(PDOException $e) {
+            $this->error = "Error: " . $e->getMessage(); // Menangani error jika query gagal
+            return false;
+        }
+    }
+    return null; // Kembalikan null jika tidak ada sesi login
+}
+
+
+// mengambil data guru
+public function getUserGuru() {
+    if ($this->isLoggedIn()) {
+        try {
+            $stmt = $this->db->prepare("SELECT id_guru, nama, email, nip,  no_hp, foto FROM guru WHERE id_guru = :id_guru");
+            $stmt->bindParam(":id_guru", $_SESSION['id_guru']);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch(PDOException $e) {
@@ -93,8 +112,9 @@ public function getUserAdmin() {
             return false;
         }
     }
-    return null; // Kembalikan null jika tidak ada sesi
+    return null; 
 }
+
 }
 
 ?>
