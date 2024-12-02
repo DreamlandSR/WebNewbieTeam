@@ -57,7 +57,7 @@ try {
     die("Query gagal: " . $e->getMessage());
 }
 
-$currentUser = $user->getUserAdmin();
+$currentUser = $user->getCurrentUser();
 if (!$currentUser) {
     echo "Error: Gagal mengambil data pengguna.";
     exit;
@@ -114,11 +114,14 @@ if (!$currentUser) {
                 <!-- Menampilkan foto profil dalam format base64 -->
                 <div class="name">
                     <?php if ($fotoData): ?>
-                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="img-fluid rounded-circle" width="50">
+                        <!-- Menampilkan foto profil jika ada -->
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="rounded-circle" width="50" height="50">
                     <?php else: ?>
-                        <p>Foto tidak ditemukan.</p>
+                        <!-- Menampilkan foto default jika tidak ada foto -->
+                        <img src="../Foto/account.png" alt="Foto profil" class="rounded-circle" width="50" height="50">
                     <?php endif; ?>
                 </div>
+
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
                     <div class="email"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
@@ -170,7 +173,6 @@ if (!$currentUser) {
             <div class="menu-description">Melihat panduan untuk masing - masing dari user</div>
             <a href="panduan.php"><button class="menu-button">Panduan</button></a>
             </div>
-        </div>
     </div>
     <script src="../js/script.js"></script>
 </body>

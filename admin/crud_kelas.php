@@ -11,13 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         if (isset($_POST['bsimpankelas'])) {
             // Simpan data
-            $query = "INSERT INTO kelas (kode_kelas, nama_kelas, tahun_ajaran, semester, wali_kelas) 
-                      VALUES (:kode_kelas, :nama_kelas, :tahun_ajaran, :semester, :wali_kelas)";
+            $query = "INSERT INTO kelas (id_kelas, nama_kelas, tahun_ajaran, wali_kelas)
+                      VALUES (:id_kelas, :nama_kelas, :tahun_ajaran, :wali_kelas)";
             $stmt = $conn->prepare($query);
-            $stmt->bindParam(':kode_kelas', $_POST['tkkelas']);
-            $stmt->bindParam(':nama_kelas', $_POST['tnamakelas']);
-            $stmt->bindParam(':tahun_ajaran', $_POST['tajaran']);
-            $stmt->bindParam(':semester', $_POST['tsemester']);
+            $stmt->bindParam(':id_kelas', $_POST['tidkelas']);
+            $stmt->bindParam(':nama_kelas', $_POST['tnama']);
+            $stmt->bindParam(':tahun_ajaran', $_POST['ttahun']);
             $stmt->bindParam(':wali_kelas', $_POST['twali']);
             $stmt->execute();
             echo "<script>
@@ -26,22 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   </script>";
         } elseif (isset($_POST['bubahkelas'])) {
             // Ubah data
-            $sql = "UPDATE kelas SET
-                        kode_kelas = :kode_kelas,
-                        nama_kelas = :nama_kelas,
+            $sql = "UPDATE kelas
+                    SET nama_kelas = :nama_kelas,
                         tahun_ajaran = :tahun_ajaran,
-                        semester = :semester,
                         wali_kelas = :wali_kelas
-                    WHERE id_kelas= :id_kelas";
+                    WHERE id_kelas = :id_kelas";
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':kode_kelas', $_POST['tkkelas']);
-            $stmt->bindParam(':nama_kelas', $_POST['tnamakelas']);
-            $stmt->bindParam(':tahun_ajaran', $_POST['tajaran']);
-            $stmt->bindParam(':semester', $_POST['tsemester']);
-            $stmt->bindParam(':wali_kelas', $_POST['twali']);
+            $stmt->bindValue(':nama_kelas', $_POST['tnama']);
+            $stmt->bindValue(':tahun_ajaran', $_POST['ttahun']);
+            $stmt->bindValue(':wali_kelas', $_POST['twali']);
+            $stmt->bindValue(':id_kelas', $_POST['id_kelas']);
             $stmt->execute();
             echo "<script>
-                   alert('Update Data Kelas Sukses!');
+                   alert('Update data Sukses!');
                    document.location='crud_kelas.php';
                   </script>";
         } elseif (isset($_POST['bhapuskelas'])) {
@@ -51,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindValue(':id_kelas', $_POST['id_kelas']);
             $stmt->execute();
             echo "<script>
-                   alert('Hapus Data Kelas Sukses!');
+                   alert('Hapus data Sukses!');
                    document.location='crud_kelas.php';
                   </script>";
         }
@@ -70,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title>
+    <!-- <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -110,9 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="content">
 
-        <div class="mt-3">
+        <!-- <div class="mt-3">
             <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
-        </div>
+        </div> -->
 
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
@@ -135,18 +131,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </tr>
 
                     <?php
-
                         //persiapan menampilkan data
                         $no = 1;
-                            $query = $conn->prepare("SELECT * FROM kelas ORDER BY id_kelas DESC");
+                        $query = $conn->prepare("SELECT * FROM kelas ORDER BY id_kelas DESC");
                         $query->execute();
                         while ($data = $query->fetch(PDO::FETCH_ASSOC)):
-                        
                     ?>
 
                     <tr>
                         <td><?= $no++ ?></td>
-                        <td><?= $data['id_kelas']  ?></td>
+                        <td><?= $data['id_kelas']?></td>
                         <td><?= $data['nama_kelas']?></td>
                         <td><?= $data['tahun_ajaran']?></td>
                         <td><?= $data['wali_kelas']?></td>
@@ -169,37 +163,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="crudmapel.php">
+                                <form method="POST" action="crud_kelas.php">
                                     <input type="hidden" name="id_kelas" value="<?=$data['id_kelas']?>">
 
                                     <div class="modal-body">
 
                                         <div class="mb-3">
                                             <label class="form-label">Kode Kelas</label>
-                                            <input type="text" class="form-control" name="tkkelas"
-                                                value="<?= $data['kode_kelas']?>" placeholder="Masukkan Kode Kelas!"
+                                            <input type="text" class="form-control" name="tid"
+                                                value="<?= $data['id_kelas']?>" placeholder="Masukkan Kode Kelas!"
                                                 required>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Nama Kelas</label>
-                                            <select class="form-select" name="tnamakelas">
-                                                <option value="<?= $data['nama_kelas']?>">
-                                                    <?= $data['nama_kelas']?></option>
-                                                <option value="IPA 1">IPA 1</option>
-                                                <option value="IPA 2">IPA 2</option>
-                                                <option value="MTK 1">MTK1 </option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Mata Pelajaran tidak boleh kosong.
-                                            </div>
+                                            <input type="text" class="form-control" name="tnama"
+                                                value="<?= $data['nama_kelas']?>" placeholder="Masukkan Nama Kelas!"
+                                                required>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Tahun Ajaran</label>
-                                            <input type="text" class="form-control" name="tajaran"
-                                                value="<?= $data['tahun_ajaran']?>"
-                                                placeholder="Masukkan Tahun Ajaran Kelas!" required>
+                                            <input type="text" class="form-control" name="ttahun"
+                                                value="<?= $data['tahun_ajaran']?>" placeholder="Masukkan Tahun Ajaran Kelas!" 
+                                                required>
                                         </div>
 
                                         <div class="mb-3">
@@ -239,8 +226,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="modal-body">
 
                                         <h5 class="text-center">Apakah Anda yakin akan menghapus data ini?<br>
-                                            <span class="text-danger"><?= $data['kode_kelas']?> -
+                                            <span class="text-danger"><?= $data['id_kelas']?> -
                                                 <?= $data['nama_kelas']?></span>
+                                                <?= $data['tahun_ajaran']?></span>
+                                                <?= $data['wali_kelas']?></span>
                                         </h5>
 
                                     </div>
@@ -278,23 +267,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                     <div class="mb-3">
                                         <label class="form-label">Kode Kelas</label>
-                                        <input type="text" class="form-control" name="tkkelas"
+                                        <input type="text" class="form-control" name="tidkelas"
                                             placeholder="Masukkan Kode Kelas!" required>
                                     </div>
 
 
                                     <div class="mb-3">
-                                        <label class="form-label">Nama Kelas</label>
-                                        <select class="form-select" name="tnamakelas">
-                                            <option value="IPA 1">IPA 1</option>
-                                            <option value="IPA 2">IPA 2</option>
-                                            <option value="MTK 1">MTK1 </option>
-                                        </select>
-                                    </div>
+                                            <label class="form-label">Nama Kelas</label>
+                                            <input type="text" class="form-control" name="tnama"
+                                                placeholder="Masukkan Nama Kelas!"
+                                                required>
+                                        </div>
 
                                     <div class="mb-3">
                                         <label class="form-label">Tahun Ajaran</label>
-                                        <input type="text" class="form-control" name="tajaran"
+                                        <input type="text" class="form-control" name="ttahun"
                                             placeholder="Masukkan Tahun Ajaran Kelas!" required>
                                     </div>
 
@@ -322,6 +309,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </div>
 
+    <a href="admin.php">
+        <button class="btn btn-danger" id="btn-back">Kembali</button>
+    </a>
     </div>
     <footer>
     <div class="footer">

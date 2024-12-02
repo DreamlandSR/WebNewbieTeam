@@ -192,6 +192,14 @@ body {
   cursor: pointer;
 }
 
+.name {
+  margin-right: 20px;
+}
+
+.rounded-circle {
+  border-radius: 50%!important; /* Memastikan gambar berbentuk bulat */
+}
+
 
 .stats {
   display: flex;

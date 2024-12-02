@@ -34,76 +34,104 @@
     </div>
     <div class="content">
       <div class="breadcrumb">
-        <strong style="background-color: white"> SMK 7 JEMBER (E-Learning) </strong>
+        <strong style="background-color: white"> SMKN 7 JEMBER </strong>
         <br />
-        Dashboard /
-        <a href="#"> Kalender </a>
-        / September 2024
+        Dashboard / <a href="#"> Kalender </a> / 
+        <span>
+        <?php
+        $month = isset($_GET['month']) ? $_GET['month'] : date('n'); 
+        $year = isset($_GET['year']) ? $_GET['year'] : date('Y');
+
+        // Tampilkan nama bulan dan tahun
+        echo date("F Y", strtotime("$year-$month-01"));
+        ?>
+    </span>
       </div>
-      <div class="calendar">
-        <div class="calendar-header">
-          <div class="nav">
-            <i class="fas fa-chevron-left"> </i>
-          </div>
-          <h2>Agustus 2024</h2>
-          <h2>September 2024</h2>
-          <h2>Oktober 2024</h2>
-          <div class="nav">
-            <i class="fas fa-chevron-right"> </i>
-          </div>
-        </div>
-        <table class="calendar-table">
-          <thead>
+      <div class="calendar-container">
+    <div class="calendar-header">
+        <form method="get">
+        <label for="month">Pilih Bulan:</label>
+          <select name="month" id="month" onchange="updateCalendar()">
+              <option value="1" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 1 ? 'selected' : ''; ?>>Januari</option>
+              <option value="2" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 2 ? 'selected' : ''; ?>>Februari</option>
+              <option value="3" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 3 ? 'selected' : ''; ?>>Maret</option>
+              <option value="4" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 4 ? 'selected' : ''; ?>>April</option>
+              <option value="5" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 5 ? 'selected' : ''; ?>>Mei</option>
+              <option value="6" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 6 ? 'selected' : ''; ?>>Juni</option>
+              <option value="7" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 7 ? 'selected' : ''; ?>>Juli</option>
+              <option value="8" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 8 ? 'selected' : ''; ?>>Agustus</option>
+              <option value="9" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 9 ? 'selected' : ''; ?>>September</option>
+              <option value="10" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 10 ? 'selected' : ''; ?>>Oktober</option>
+              <option value="11" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 11 ? 'selected' : ''; ?>>November</option>
+              <option value="12" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 12 ? 'selected' : ''; ?>>Desember</option>
+          </select>
+            <label for="year">Pilih Tahun:</label>
+            <input type="number" name="year" id="year" value="<?php echo isset($_GET['year']) ? $_GET['year'] : date('Y'); ?>" onchange="updateCalendar()">
+        </form>
+    </div>
+
+    <?php
+    // Ambil bulan dan tahun dari URL, atau defaultkan ke bulan dan tahun sekarang
+    $month = isset($_GET['month']) ? $_GET['month'] : date('n'); // defaultkan bulan ke bulan saat ini jika tidak ada
+    $year = isset($_GET['year']) ? $_GET['year'] : date('Y');   // defaultkan tahun ke tahun saat ini jika tidak ada
+
+    // Menentukan jumlah hari dalam bulan tertentu
+    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+    // Menentukan hari pertama bulan tersebut
+    $firstDayOfMonth = strtotime("$year-$month-01");
+    $firstDayName = date('w', $firstDayOfMonth); // Hari pertama dalam angka (0=Sunday, 6=Saturday)
+    ?>
+
+    <table class="calendar-table">
+        <thead>
             <tr>
-              <th>Senin</th>
-              <th>Selasa</th>
-              <th>Rabu</th>
-              <th>Kamis</th>
-              <th>Jumat</th>
-              <th>Sabtu</th>
-              <th>Minggu</th>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>8</td>
-              <td>9</td>
-              <td>10</td>
-              <td>11</td>
-              <td>12</td>
-              <td>13</td>
-              <td>14</td>
-            </tr>
-            <tr>
-              <td>15</td>
-              <td>16</td>
-              <td>17</td>
-              <td>18</td>
-              <td>19</td>
-              <td>20</td>
-              <td>21</td>
-            </tr>
-            <tr>
-              <td>22</td>
-              <td>23</td>
-              <td>24</td>
-              <td>25</td>
-              <td>26</td>
-              <td>27</td>
-              <td>28</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        </thead>
+        <tbody>
+            <?php
+            // Membuat baris pertama kosong sesuai dengan hari pertama bulan
+            $currentDay = 1;
+            echo '<tr>';
+
+            // Tambahkan spasi kosong sebelum hari pertama
+            for ($i = 0; $i < $firstDayName; $i++) {
+                echo '<td class="empty"></td>';
+            }
+
+            // Isi tanggal-tanggal
+            for ($i = $firstDayName; $i < 7; $i++) {
+                echo '<td>' . $currentDay++ . '</td>';
+            }
+            echo '</tr>';
+
+            // Isi sisa tanggal-tanggal
+            while ($currentDay <= $daysInMonth) {
+                echo '<tr>';
+                for ($i = 0; $i < 7; $i++) {
+                    if ($currentDay <= $daysInMonth) {
+                        echo '<td>' . $currentDay++ . '</td>';
+                    } else {
+                        echo '<td class="empty"></td>';
+                    }
+                }
+                echo '</tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+
+    <div class="calendar-footer">
+        <span>Kalender <?php echo date("F Y", strtotime("$year-$month-01")); ?></span>
+    </div>
+</div>
     </div>
     <script src="../js/script.js"></script>
   </body>
