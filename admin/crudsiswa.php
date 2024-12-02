@@ -1,55 +1,63 @@
 <?php
 
-//Panggil Koneksi Database
+// Panggil Koneksi Database
 include "../dbconfig.php";
 
-// Inisialisasi objek Database
+// Inisialisasi objek Database  
 $db = new Database();
 $conn = $db->getConnection();
 
-// Tambahkan logika CRUD di sini
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
-        if (isset($_POST['bubah'])) {
-            // Ubah data
-            $sql = "UPDATE siswa SET
-                        nisn = :nisn,
-                        nama = :nama,
-                        kelas = :kelas,
-                        email = :email,
-                        no_hp = :no_hp
-                    WHERE id_siswa = :id_siswa";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue(':nisn', $_POST['tnim']);
-            $stmt->bindValue(':nama', $_POST['tnama']);
-            $stmt->bindValue(':kelas', $_POST['kelas']);
-            $stmt->bindValue(':email', $_POST['temail']);
-            $stmt->bindValue(':no_hp', $_POST['tnohp']);
-            $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
-            $stmt->execute();
-            echo "<script>
-                   alert('Update data Sukses!');
-                   document.location='crudsiswa.php';
-                  </script>";
-        } elseif (isset($_POST['bhapus'])) {
-            // Hapus data
-            $query = "DELETE FROM siswa WHERE id_siswa = :id_siswa";
-            $stmt = $conn->prepare($query);
-            $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
-            $stmt->execute();
-            echo "<script>
-                   alert('Hapus data Sukses!');
-                   document.location='crudsiswa.php';
-                  </script>";
-        }
-    } catch (PDOException $e) {
+// Logika CRUD
+if (isset($_POST['bubah'])) {
+    // Ubah data siswa
+    $sql = "UPDATE siswa SET
+                nisn = :nisn,
+                nama = :nama,
+                id_kelas = :kelas,  -- Ubah ke id_kelas jika ini adalah ID kelas
+                email = :email,
+                no_hp = :nohp
+            WHERE id_siswa = :id_siswa";
+    $stmt = $conn->prepare($sql);
+
+    // Binding nilai dari form ke parameter SQL
+    $stmt->bindValue(':nisn', $_POST['tnisn']);
+    $stmt->bindValue(':nama', $_POST['tnama']);
+    $stmt->bindValue(':kelas', $_POST['tkelas']);
+    $stmt->bindValue(':email', $_POST['temail']);
+    $stmt->bindValue(':nohp', $_POST['tnohp']); // Pastikan parameter ini sesuai dengan nama form input
+    $stmt->bindValue(':id_siswa', $_POST['id_siswa']); // Pastikan parameter ini sesuai dengan ID siswa
+
+    // Eksekusi query
+    if ($stmt->execute()) {
         echo "<script>
-               alert('Operasi Gagal: " . $e->getMessage() . "');
+               alert('Update data Sukses!');
+               document.location='crudsiswa.php';
+              </script>";
+    } else {
+        echo "<script>
+               alert('Update data Gagal!');
+               document.location='crudsiswa.php';
+              </script>";
+    }
+} elseif (isset($_POST['bhapus'])) {
+    // Hapus data
+    $query = "DELETE FROM siswa WHERE id_siswa = :id_siswa";
+    $stmt = $conn->prepare($query);
+    $stmt->bindValue(':id_siswa', $_POST['id_siswa']);
+
+    // Eksekusi query
+    if ($stmt->execute()) {
+        echo "<script>
+               alert('Hapus data Sukses!');
+               document.location='crudsiswa.php';
+              </script>";
+    } else {
+        echo "<script>
+               alert('Hapus data Gagal!');
                document.location='crudsiswa.php';
               </script>";
     }
 }
-
 ?>
 
 <!doctype html>
@@ -99,9 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
     <div class="content">
-        <div class="mt-3">
+        <!-- <div class="mt-3">
             <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
-        </div>
+        </div> -->
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
                 Data Siswa
@@ -119,11 +127,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </tr>
 
                     <?php
-                        //persiapan menampilkan data
-                       $no = 1;
-                            $query = $conn->prepare("SELECT * FROM siswa ORDER BY id_siswa DESC");
+                        //persiapan menampilkan data                       
+                        $no = 1;
+                        $query = $conn->prepare("SELECT * FROM siswa ORDER BY id_siswa DESC");
                         $query->execute();
                         while ($data = $query->fetch(PDO::FETCH_ASSOC)):
+
+                        // Query mengambil data kelas
+                        $sql_kelas = "SELECT * FROM kelas ORDER BY id_kelas DESC";
+                        $stmt_kelas = $conn->prepare($sql_kelas);
+                        $stmt_kelas->execute();
+                        $kelas_data = $stmt_kelas->fetchAll(PDO::FETCH_ASSOC);                        
                     ?>
 
                     <tr>
@@ -152,14 +166,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="aksi_crud.php">
+                                <form method="POST" action="crudsiswa.php">
                                     <input type="hidden" name="id_siswa" value="<?=$data['id_siswa']?>">
-
                                     <div class="modal-body">
-
                                         <div class="mb-3">
                                             <label class="form-label">NISN</label>
-                                            <input type="text" class="form-control" name="tnim"
+                                            <input type="text" class="form-control" name="tnisn"
                                                 value="<?= $data['nisn']?>" placeholder="Masukkan NISN Anda!" required>
                                         </div>
 
@@ -172,11 +184,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                         <div class="mb-3">
                                             <label class="form-label">Kelas</label>
-                                            <input type="text" class="form-control" name="tkelas"
-                                                value="<?= $data['kelas']?>" placeholder="Masukkan Kelas Anda!"
-                                                required>
+                                            <select name="tkelas" id="kelas">
+                                                <?php foreach ($kelas_data as $kelas): ?>
+                                                    <option value="<?= $kelas['id_kelas']; ?>" 
+                                                        <?= ($kelas['id_kelas'] == $data['id_kelas']) ? 'selected' : ''; ?>>
+                                                        <?= $kelas['nama_kelas']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
 
+
+                                            <!-- <input type="text" class="form-control" name="tkelas"
+                                                value="<?= $data['kelas']?>" placeholder="Masukkan Kelas Anda!"
+                                                required>
+                                        </div> -->
 
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
@@ -191,7 +213,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 value="<?= $data['no_hp']?>"
                                                 placeholder="Masukkan Nomor Handphone Anda!" required>
                                         </div>
-
 
                                     </div>
                                     <div class="modal-footer">
@@ -217,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         aria-label="Close"></button>
                                 </div>
 
-                                <form method="POST" action="aksi_crud.php">
+                                <form method="POST" action="crudsiswa.php">
                                     <input type="hidden" name="id_siswa" value="<?=$data['id_siswa']?>">
 
                                     <div class="modal-body">
@@ -244,7 +265,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             </div>
         </div>
-
+        <a href="admin.php">
+            <button class="btn btn-danger" id="btn-back">Kembali</button>
+        </a>
     </div>
     <footer>
         <div class="footer">

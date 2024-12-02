@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Ubah data
             $sql = "UPDATE mapel SET
                         kode_mapel = :kode_mapel,
-                        mata_pelajaran = :nama_mapel,
+                        nama_mapel = :nama_mapel
                     WHERE id_mapel = :id_mapel";
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':kode_mapel', $_POST['tkdmapel']);
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title>
+    <!-- <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="content">
 
-        <div class="mt-3">
+        <!-- <div class="mt-3">
             <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
-        </div>
+        </div> -->
 
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <tr>
                         <td><?= $no++ ?></td>
-                        <td><?= $data['kode_mapel' ]  ?></td>
+                        <td><?= $data['kode_mapel']?></td>
                         <td><?= $data['nama_mapel']?></td>
                         <td>
                             <a href="#" class="btn btn-warning" data-bs-toggle="modal"
@@ -163,29 +163,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input type="hidden" name="id_mapel" value="<?=$data['id_mapel']?>">
 
                                     <div class="modal-body">
-
                                         <div class="mb-3">
                                             <label class="form-label">Kode Mata Pelajaran</label>
-                                            <input type="text" class="form-control" name="tkdmapel"
-                                                value="<?= $data['kode_mapel']?>"
-                                                placeholder="Masukkan Kode Mata Pelajaran!" required>
+                                            <input type="text" class="form-control" name="tkdmapel" 
+                                                value="<?= $data['kode_mapel']?>" placeholder="Masukkan Kode Mata Pelajaran!" 
+                                                required>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Mata Pelajaran</label>
-                                            <select class="form-select" name="tmapel">
-                                                <option value="<?= $data['nama_mapel']?>">
-                                                    <?= $data['nama_mapel']?></option>
-                                                <option value="Matematika">Matematika</option>
-                                                <option value="Olahraga">Olahraga</option>
-                                                <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Mata Pelajaran tidak boleh kosong.
-                                            </div>
+                                            <input type="text" class="form-control"name="tmapel" 
+                                                value="<?= $data['nama_mapel']?>" placeholder="Masukkan Nama Mata Pelajaran!" 
+                                                required>
                                         </div>
-
-
 
                                     </div>
                                     <div class="modal-footer">
@@ -232,11 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                     </div>
-                    <!-- Akhir Modal Hapus -->
-
                     <?php endwhile; ?>
                 </table>
-
+                <!-- Akhir Modal Hapus -->
 
 
 
@@ -262,19 +250,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                                     <div class="mb-3">
-                                        <label class="form-label">Mata Pelajaran</label>
-                                        <select class="form-select" name="tmapel">
-                                            <option value=""></option>
-                                            <option value="Matematika">Matematika</option>
-                                            <option value="Olahraga">Olahraga</option>
-                                            <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Mata Pelajaran tidak boleh kosong.
-                                        </div>
-
+                                            <label class="form-label">Mata Pelajaran</label>
+                                            <input type="text" class="form-control"name="tmapel"
+                                                placeholder="Masukkan Nama Mata Pelajaran!" required>
                                     </div>
-
 
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary"
@@ -290,7 +269,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
- 
+    <a href="admin.php">
+        <button class="btn btn-danger" id="btn-back">Kembali</button>
+    </a>
     </div>
     <footer>
     <div class="footer">

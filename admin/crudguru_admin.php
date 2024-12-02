@@ -9,14 +9,15 @@ $conn = $db->getConnection();
 // Tambahkan logika CRUD di sini
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
+        // Proses update guru
         if (isset($_POST['bubahguru'])) {
-            // Ubah data
-            $sql = "UPDATE guru SET
+            $sql = "UPDATE guru SET 
                         nip = :nip,
                         nama = :nama,
                         no_hp = :no_hp,
                         email = :email
                     WHERE id_guru = :id_guru";
+            
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':nip', $_POST['tnip']);
             $stmt->bindValue(':nama', $_POST['tnamaguru']);
@@ -24,39 +25,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindValue(':email', $_POST['temail']);
             $stmt->bindValue(':id_guru', $_POST['id_guru']);
             $stmt->execute();
+            
             echo "<script>
-                   alert('Update data Sukses!');
-                   document.location='crudguru_admin.php';
+                    alert('Update data Sukses!');
+                    document.location='crudguru_admin.php';
                   </script>";
-
-                  if (isset($_POST['bhapusguru'])) {
-                    // Hapus data dari tabel guru
-                    $query = "DELETE FROM guru WHERE id_guru = :id_guru";
-                    $stmt = $conn->prepare($query);
-                    $stmt->bindValue(':id_guru', $_POST['id_guru']);
-                    $stmt->execute();
+        }
+        
+        // Proses hapus data
+        if (isset($_POST['bhapusguru'])) {
+            try {
+                // Mulai transaksi database
+                $conn->beginTransaction();
                 
-                    // Hapus data dari tabel users
-                    $query = "DELETE FROM users WHERE id = :id";
-                    $stmt = $conn->prepare($query);
-                    $stmt->bindValue(':id', $_POST['id']);
-                    $stmt->execute();
+                // Pertama, hapus dari tabel users
+                $query_users = "DELETE FROM users WHERE id = :id";
+                $stmt_users = $conn->prepare($query_users);
+                $stmt_users->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+                $stmt_users->execute();
                 
-                    var_dump($_POST['id']);
-                    die();
-
-
-                    echo "<script>
-                           alert('Hapus data Sukses!');
-                           document.location='crudguru_admin.php';
-                          </script>";
-                }
-            }                
-
+                // Kemudian, hapus dari tabel guru
+                $query_guru = "DELETE FROM guru WHERE id_guru = :id_guru";
+                $stmt_guru = $conn->prepare($query_guru);
+                $stmt_guru->bindValue(':id_guru', $_POST['id_guru'], PDO::PARAM_INT);
+                $stmt_guru->execute();
+                
+                // Commit transaksi
+                $conn->commit();
+                
+                // Redirect dengan pesan sukses
+                echo "<script>
+                        alert('Data berhasil dihapus!');
+                        document.location='crudguru_admin.php';
+                      </script>";
+                
+            } catch (PDOException $e) {
+                // Batalkan transaksi jika terjadi kesalahan
+                $conn->rollBack();
+                
+                // Tampilkan pesan kesalahan
+                echo "<script>
+                        alert('Gagal menghapus data: " . $e->getMessage() . "');
+                        document.location='crudguru_admin.php';
+                      </script>";
+            }
+        }
+        
     } catch (PDOException $e) {
+        // Tangani kesalahan umum
         echo "<script>
-               alert('Operasi Gagal: " . $e->getMessage() . "');
-               document.location='crudguru_admin.php';
+                alert('Terjadi kesalahan: " . $e->getMessage() . "');
+                document.location='crudguru_admin.php';
               </script>";
     }
 }
@@ -68,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title>
+    <!-- <title>CRUD - PHP & MySQL + Modal Bootstrap 5</title> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -108,9 +127,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="content">
 
-        <div class="mt-3">
+        <!-- <div class="mt-3">
             <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
-        </div>
+        </div> -->
 
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
@@ -242,6 +261,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             </div>
         </div>
+
+        <a href="admin.php">
+            <button class="btn btn-danger" id="btn-back">Kembali</button>
+        </a>
 
     </div>
     <footer>
