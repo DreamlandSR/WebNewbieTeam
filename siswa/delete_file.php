@@ -1,42 +1,40 @@
 <?php
-// Konfigurasi database
-$host = 'localhost';
-$dbname = 'e_learning';
-$username = 'root';
-$password = '';
 
 // Koneksi ke database
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Koneksi gagal: " . $e->getMessage());
+$host = "localhost";  
+$user = "root";       
+$password = "";       
+$dbname = "e_learning"; 
+
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $file_name = $_POST['file_name'];  // Ganti menjadi 'file_name' sesuai dengan input field di form
+    $file_path = "uploads/" . $file_name;
 
-// Ambil ID file
-$id = $_GET['id'] ?? null;
+    if (file_exists($file_path)) {
+        // Coba hapus file dari server
+        if (unlink($file_path)) {
+            // Hapus data dari database
+            require '../dbconfig.php'; 
+            $stmt = $conn->prepare("DELETE FROM pengumpulan WHERE file_tugas = ?");
+            $stmt->bind_param("s", $file_name);
 
-if (!$id) {
-    die('ID file tidak ditemukan.');
+            if ($stmt->execute()) {
+                echo "<script>alert('File berhasil dihapus!'); document.location='pengumpulan_siswa.php';</script>";
+            } else {
+                echo "<script>alert('Gagal menghapus data dari database!');</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>alert('Gagal menghapus file!');</script>";
+        }
+    } else {
+        echo "<script>alert('File tidak ditemukan!');</script>";
+    }
 }
-
-// Ambil data file dari database
-$stmt = $pdo->prepare("SELECT * FROM file_uploads WHERE id = ?");
-$stmt->execute([$id]);
-$file = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$file) {
-    die('File tidak ditemukan.');
-}
-
-// Hapus file dari server
-if (file_exists($file['file_path'])) {
-    unlink($file['file_path']);
-}
-
-// Hapus data dari database
-$stmt = $pdo->prepare("DELETE FROM file_uploads WHERE id = ?");
-$stmt->execute([$id]);
-
-echo "<script>alert('File berhasil dihapus.'); window.location.href = 'pengumpulan_siswa.php';</script>";
 ?>
