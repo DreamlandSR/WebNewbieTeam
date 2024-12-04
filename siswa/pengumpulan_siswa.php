@@ -15,28 +15,36 @@ if ($conn->connect_error) {
 
 // Validasi method request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form
-$file_data = $_POST['file_tugas'];
 
 // Periksa apakah file diunggah
 if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] == 0) {
-    // Ambil informasi file
-    $file_data = file_get_contents($_FILES['file_tugas']['tmp_name']); // Baca data file biner
+    $file_name = basename($_FILES['file_tugas']['name']); // Nama file
+    $target_dir = "uploads/"; // Folder penyimpanan
+    $target_file = $target_dir . $file_name;
 
-    // Query untuk menyimpan data ke database
-    $stmt = $conn->prepare("INSERT INTO pengumpulan (file_tugas) VALUES (?)");
-    $stmt->bind_param( "s",$file_data);
-
-    if ($stmt->execute()) {
-        echo "Data dan file berhasil disimpan ke database.";
+    if (move_uploaded_file($_FILES['file_tugas']['tmp_name'], $target_file)) {
+        // Simpan nama file ke database
+        $stmt = $conn->prepare("INSERT INTO pengumpulan (file_tugas) VALUES (?)");
+        $stmt->bind_param("s", $file_name);
+        if ($stmt->execute()) {
+            echo "<script>alert('File berhasil diunggah!'); document.location='pengumpulan_siswa.php';</script>";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
     } else {
-        echo "Error: " . $stmt->error;
+        echo "<script>alert('Gagal mengunggah file ke server!');</script>";
     }
-
-    $stmt->close();
-} else {
-    echo "File tidak diunggah atau terjadi kesalahan.";
 }
+
+}
+
+// Ambil file dari database
+$result = $conn->query("SELECT id_pengumpulan, file_tugas FROM pengumpulan");
+$files = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $files[] = $row;
+    }
 }
 
 $conn->close();
@@ -109,10 +117,10 @@ $conn->close();
                 </div>
                 <div class="col-md-9">
                     <div class="status-content p-4 bg-light border rounded">
-                        <table class="table mb-4">
-                            <tbody>
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>Belum mengumpulkan</td>
+                                    <td>Status Pengumpulan</td>
                                 </tr>
                                 <tr>
                                     <td>Belum dinilai</td>
@@ -126,30 +134,40 @@ $conn->close();
                                 <tr>
                                     <td>34 Menit lalu</td>
                                 </tr>
-                                <?php if (!empty($file_data)) : ?>
-                                <?php foreach ($file_data as $file_data) : ?>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($files as $index => $file): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($file_data['file_tugas']); ?></td>
+                                    <td><?= htmlspecialchars($file['file_tugas']); ?></td>
                                     <td>
-                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>"
-                                            class="btn btn-primary" target="_blank">Lihat</a>
-                                        <a href="uploads/<?= htmlspecialchars($file_data['file_tugas']); ?>" download
-                                            class="btn btn-success">Unduh</a>
-                                        <a href="#" class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modalUbah">Update</a>
-                                        <a href="delete_file.php?id=<?= $file_data['id_pengumpulan']; ?>"
-                                            class="btn btn-danger"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus file ini?')">Hapus</a>
+                                        <?php
+                $file_path = "uploads/" . htmlspecialchars($file['file_tugas']);
+                $file_ext = pathinfo($file_path, PATHINFO_EXTENSION);
+
+                // Cek jenis file dan tampilkan opsi sesuai
+                if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png', 'gif'])): ?>
+                                        <img src="<?= $file_path; ?>" alt="Gambar" width="100">
+                                        <?php elseif (strtolower($file_ext) === 'pdf'): ?>
+                                        <?php endif; ?>
+
+                                        <!-- Tombol Lihat -->
+                                        <a href="<?= $file_path; ?>" target="blank"
+                                            class="btn btn-info btn-sm">Lihat</a>
+                                        <!-- Tombol Unduh -->
+                                        <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
+                                        <!-- Tombol Hapus -->
+                                        <form method="POST" action="delete_file.php" style="display:inline-block;">
+                                            <input type="hidden" name="file_name"
+                                                value="<?= htmlspecialchars($file['file_tugas']); ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Yakin ingin menghapus file ini?');">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
-                                <?php else : ?>
-                                <tr>
-                                    <td colspan="4" class="text-center">Belum ada file yang diunggah</td>
-                                </tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
+
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
                             data-bs-target="#modalTambah">Masukkan
@@ -206,26 +224,17 @@ $conn->close();
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
                         <!-- Input hidden untuk ID -->
-                        <input type="hidden" name="id"
-                            value="<?= isset($fileId['id']) ? htmlspecialchars($fileId['id']) : ''; ?>">
+                        <input type="hidden" name="id">
 
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Masukkan File Baru</label>
-                                <input class="form-control" type="file" id="formFile" name="file">
+                                <input class="form-control" type="file" id="formFile" name="file_tugas">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Nama File Lama</label>
-                                <input type="text" class="form-control" name="file_old"
-                                    value="<?= htmlspecialchars($file['file_name']); ?>" readonly>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Save As</label>
-                                <input type="text" class="form-control" name="save_as"
-                                    value="<?= htmlspecialchars($file['save_as']); ?>"
-                                    placeholder="Masukkan Nama Tugas Anda!" required>
+                                <input type="text" class="form-control" name="file_tugas">
                             </div>
 
                             <div class="modal-footer">
