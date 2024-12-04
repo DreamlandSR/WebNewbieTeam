@@ -31,14 +31,14 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
     $stmt->bind_param( "sssss",$file_data, $judul_tugas, $deskripsi, $deadline, $video_url);
 
     if ($stmt->execute()) {
-        echo "Data dan file berhasil disimpan ke database.";
+        echo "<script>alert('File berhasil diunggah!'); document.location='menu_kelas.php';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
 
     $stmt->close();
 } else {
-    echo "File tidak diunggah atau terjadi kesalahan.";
+    echo "<script>alert('File Gagal diunggah!'); document.location='menu_kelas.php';</script>";
 }
 }
 
