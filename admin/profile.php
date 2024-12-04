@@ -96,12 +96,7 @@ if (!$currentUser) {
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
-
-        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" data-bs-toggle="dropdown"
-            aria-expanded="false">
-
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-
             Tabel Master
             <i class="fas fa-caret-down"> </i>
         </a>
@@ -122,30 +117,16 @@ if (!$currentUser) {
                 <div class="profile">
                     <div class="left">
                         <form action="profile.php" method="POST" enctype="multipart/form-data">
-
                             <?php if ($userFoto): ?>
-                            <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil"
-                                class="rounded-circle" width="150" height="150">
+                                <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil" class="rounded-circle" width="150" height="150">
                             <?php else: ?>
-                            <img src="../images/default-profile.png" alt="Foto Profil" class="rounded-circle"
-                                width="150" height="150">
+                                <img src="../images/account.png" alt="Foto Profil" class="rounded-circle" width="150" height="150">
                             <?php endif; ?>
                             <div class="col-md-9" id="upload">
                                 <!-- Tombol untuk membuka modal -->
-                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#uploadModal">Ganti Foto</button>
-                            </div>
-
-                    <?php if ($userFoto): ?>
-                        <img src="data:image/jpeg;base64,<?= base64_encode($userFoto); ?>" alt="Foto Profil" class="rounded-circle" width="150" height="150">
-                    <?php else: ?>
-                        <img src="../images/account.png" alt="Foto Profil" class="rounded-circle" width="150" height="150">
-                    <?php endif; ?>
-                    <div class="col-md-9" id="upload">
-                        <!-- Tombol untuk membuka modal -->
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">Ganti Foto</button>
                     </div>
-
+                    
                     </div>
                     <div class="right">
                         <div class="info">
