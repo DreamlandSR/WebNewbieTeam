@@ -61,31 +61,7 @@
 
         </span>
 
-    </span>
-</div>
-
-    <div class="calendar-container">
-    <div class="calendar-header">
-        <form method="get">
-        <label for="month">Pilih Bulan:</label>
-          <select name="month" id="month" onchange="updateCalendar()">
-              <option value="1" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 1 ? 'selected' : ''; ?>>Januari</option>
-              <option value="2" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 2 ? 'selected' : ''; ?>>Februari</option>
-              <option value="3" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 3 ? 'selected' : ''; ?>>Maret</option>
-              <option value="4" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 4 ? 'selected' : ''; ?>>April</option>
-              <option value="5" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 5 ? 'selected' : ''; ?>>Mei</option>
-              <option value="6" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 6 ? 'selected' : ''; ?>>Juni</option>
-              <option value="7" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 7 ? 'selected' : ''; ?>>Juli</option>
-              <option value="8" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 8 ? 'selected' : ''; ?>>Agustus</option>
-              <option value="9" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 9 ? 'selected' : ''; ?>>September</option>
-              <option value="10" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 10 ? 'selected' : ''; ?>>Oktober</option>
-              <option value="11" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 11 ? 'selected' : ''; ?>>November</option>
-              <option value="12" <?php echo (isset($_GET['month']) ? $_GET['month'] : date('n')) == 12 ? 'selected' : ''; ?>>Desember</option>
-          </select>
-            <label for="year">Pilih Tahun:</label>
-            <input type="number" name="year" id="year" value="<?php echo isset($_GET['year']) ? $_GET['year'] : date('Y'); ?>" onchange="updateCalendar()">
-        </form>
-
+        </span>
     </div>
 
     <div class="calendar-container">
@@ -134,6 +110,7 @@
                 <input type="number" name="year" id="year"
                     value="<?php echo isset($_GET['year']) ? $_GET['year'] : date('Y'); ?>" onchange="updateCalendar()">
             </form>
+
         </div>
 
         <?php

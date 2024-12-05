@@ -84,7 +84,6 @@ $conn->close();
             </button>
         </div>
 
-        <!-- Daftar Materi -->
         <div class="week">
             <h1>Minggu 1</h1>
             <?php if (!empty($files)): ?>
@@ -92,15 +91,32 @@ $conn->close();
             <div class="lesson">
                 <h5><?php echo htmlspecialchars($file['judul_tugas']); ?></h5>
                 <p><?php echo htmlspecialchars($file['deskripsi']); ?></p>
-                <a href="uploads/<?php echo htmlspecialchars($file['jenis_materi']); ?>" target="_blank">
-                    <i class="bi bi-file-earmark-pdf-fill"></i> Download Materi
-                </a>
+                <?php
+                // Periksa apakah file ada di folder uploads
+                $file_path = "uploads/" . htmlspecialchars($file['jenis_materi']);
+
+                // Validasi file sebelum menampilkan tombol
+                if (file_exists($file_path)): ?>
+                <!-- Tombol Lihat -->
+                <a href="<?= $file_path; ?>" target="_blank" class="btn btn-info btn-sm">Lihat</a>
+                <!-- Tombol Unduh -->
+                <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
+                <!-- Tombol Hapus -->
+                <form method="POST" action="delete_file.php" style="display:inline-block;">
+                    <input type="hidden" name="file_name" value="<?= htmlspecialchars($file['jenis_materi']); ?>">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Yakin ingin menghapus file ini?');">Hapus</button>
+                </form>
+                <?php else: ?>
+                <p class="text-danger">File tidak ditemukan di server.</p>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
             <?php else: ?>
             <p>Belum ada materi atau tugas yang tersedia.</p>
             <?php endif; ?>
         </div>
+
     </div>
 
 

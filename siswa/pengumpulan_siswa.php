@@ -151,7 +151,7 @@ $conn->close();
                                         <?php endif; ?>
 
                                         <!-- Tombol Lihat -->
-                                        <a href="<?= $file_path; ?>" target="blank"
+                                        <a href="<?= $file_path; ?>" target="_blank"
                                             class="btn btn-info btn-sm">Lihat</a>
                                         <!-- Tombol Unduh -->
                                         <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
