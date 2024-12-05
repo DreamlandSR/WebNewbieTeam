@@ -1,3 +1,29 @@
+<?php
+// Koneksi ke database
+$host = "localhost";  // Ganti sesuai konfigurasi Anda
+$user = "root";       // Ganti dengan user database Anda
+$password = "";       // Ganti dengan password database Anda
+$dbname = "e_learning"; // Nama database
+
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil file dari database
+$result = $conn->query("SELECT id_tugas, jenis_materi, judul_tugas, deskripsi FROM materi");
+$files = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $files[] = $row;
+    }
+}
+
+$conn->close();
+?>
+
 <html>
 
 <head>
@@ -58,20 +84,25 @@
             </button>
         </div>
 
+        <!-- Daftar Materi -->
         <div class="week">
-            <h2>Minggu 1</h2>
+            <h1>Minggu 1</h1>
+            <?php if (!empty($files)): ?>
+            <?php foreach ($files as $file): ?>
             <div class="lesson">
-                <span>1. Pembelajaran Minggu ini terkait Eksponen dan algoritma silahkan
-                    pelajari terlebih dahulu materi berikut</span><br>
+                <h5><?php echo htmlspecialchars($file['judul_tugas']); ?></h5>
+                <p><?php echo htmlspecialchars($file['deskripsi']); ?></p>
+                <a href="uploads/<?php echo htmlspecialchars($file['jenis_materi']); ?>" target="_blank">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> Download Materi
+                </a>
             </div>
-            <div class="lesson">
-                <i class="bi bi-file-earmark-pdf-fill"></i><a href="#"> Pembelajaran Minggu ke-1: Materi Al - Jabar</a>
-            </div>
-            <div class="task">
-                <i class="bi bi-file-earmark-pdf-fill"></i><a href="#">Tugas 1</a>
-            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <p>Belum ada materi atau tugas yang tersedia.</p>
+            <?php endif; ?>
         </div>
     </div>
+
 
     <!-- Modal Tambah Materi -->
     <div class="modal fade" id="materiModal" tabindex="-1" aria-labelledby="materiModalLabel" aria-hidden="true">
@@ -84,11 +115,7 @@
                 <div class="modal-body">
                     <!-- Form Upload Materi -->
                     <form id="materiForm" enctype="multipart/form-data" action="upload.php" method="POST">
-                        <div class="mb-3">
-                            <label for="jenisMateri" class="form-label">Jenis Materi</label>
-                            <input type="text" class="form-control" id="jenisMateri" name="jenis_materi"
-                                placeholder="PDF, Docx, PNG, dll.">
-                        </div>
+
                         <div class="mb-3">
                             <label for="judulTugas" class="form-label">Judul Tugas</label>
                             <input type="text" class="form-control" id="judulTugas" name="judul_tugas"
