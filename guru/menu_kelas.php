@@ -54,6 +54,7 @@ $conn->close();
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+        <a href="pengumpulan_guru.php"><i class="fas fa-book"></i> Pengumpulan Tugas</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">Kelas
             <i class="fas fa-caret-down"> </i>
         </a>
