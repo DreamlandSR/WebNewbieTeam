@@ -94,7 +94,10 @@ body {
     }
 
     table th {
-        background-color: #f9f9f9;
+      width: 100%;
+      min-width: 700px;
+      height: auto;
+      background-color: #ff3232;
     }
 
 .sidebar {

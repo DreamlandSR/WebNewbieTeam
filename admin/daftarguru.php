@@ -57,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $conn->beginTransaction();
-
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Masukkan data ke tabel users

@@ -32,39 +32,46 @@ if ($auth->isLoggedIn()) {
 
 // Login
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nama = $_POST['nama'];
-    $password = $_POST['password'];
+    // Periksa apakah input 'nama' dan 'password' ada di $_POST
+    if (isset($_POST['nama']) && isset($_POST['password'])) {
+        $nama = $_POST['nama'];
+        $password = $_POST['password'];
 
-    if ($auth->login($nama, $password)) {
-        // Login berhasil, ambil informasi pengguna
-        $user = $auth->getCurrentUser();
+        if ($auth->login($nama, $password)) {
+            // Login berhasil, lanjutkan dengan logika
+            $user = $auth->getCurrentUser();
 
-        // Periksa apakah $user bukan null
-        if ($user) {
-            // Redirect berdasarkan role
-            switch ($user['role_user']) {
-                case 'admin':
-                    header("Location: admin/admin.php");
-                    break;
-                case 'guru':
-                    header("Location: guru/guru.php");
-                    break;
-                case 'siswa':
-                    header("Location: siswa/siswa.php");
-                    break;
-                default:
-                    // Tangani role yang tidak dikenal
-                    header("Location: login.php?error=unknown_role");
-                    exit();
+            // Periksa apakah $user bukan null
+            if ($user) {
+                // Redirect berdasarkan role
+                switch ($user['role_user']) {
+                    case 'admin':
+                        header("Location: admin/admin.php");
+                        break;
+                    case 'guru':
+                        header("Location: guru/guru.php");
+                        break;
+                    case 'siswa':
+                        header("Location: siswa/siswa.php");
+                        break;
+                    default:
+                        // Tangani role yang tidak dikenal
+                        header("Location: login.php?error=unknown_role");
+                        exit();
+                }
+                exit(); // Tambahkan exit setelah redirect
+            } else {
+                $error = "Pengguna tidak ditemukan.";
             }
-            exit(); // Tambahkan exit setelah redirect
         } else {
-            $error = "Pengguna tidak ditemukan.";
+            $error = $auth->getLastError();
         }
     } else {
-        $error = $auth->getLastError();
+        // Jika nama atau password tidak ada dalam $_POST
+        $error = "Nama atau password tidak boleh kosong.";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <span class="show-password" onclick="togglePassword()">Show</span>
                 </div>
                 <div class="forgot-password">
-                    <a href="forgot_password.php">Lupa Nama siswa atau password?</a>
+                    <a href="forgot-password.php">Lupa Nama siswa atau password?</a>
                     <p>Kuki harus diaktifkan pada browser anda</p>
                 </div>
                 <button type="submit" class="btn_input" id="submit" name="kirim">Masuk</button>

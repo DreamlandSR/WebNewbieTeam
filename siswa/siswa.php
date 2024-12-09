@@ -108,7 +108,7 @@ try {
         </div>
         <div class="grid-container">
             <div class="card">
-                <a href="materi.">
+                <a href="#">
                     <h3>Matematika</h3>
                 </a>
                 <ul>
