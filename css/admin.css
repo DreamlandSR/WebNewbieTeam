@@ -96,7 +96,7 @@ body {
 }
 
 .sidebar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, dan Opera: sembunyikan scrollbar */
+  display: none; 
 }
 
 .content {

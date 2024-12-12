@@ -44,10 +44,6 @@
     </div>
     <div class="content">
 
-        <div class="mt-3">
-            <h3 class="text-center">CRUD - PHP & MySQL + Modal Bootstrap 5</h3>
-        </div>
-
         <div class="card mt-3">
             <div class="card-header bg-primary text-white">
                 Data Guru

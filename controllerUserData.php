@@ -36,7 +36,7 @@ if (isset($_POST['check-email'])) {
             $sender = "From: shahiprem7890@gmail.com";
             
             if (mail($email, $subject, $message, $sender)) {
-                $_SESSION['info'] = "We've sent a password reset OTP to your email - $email";
+                $_SESSION['info'] = "kita sudah mengirimkan kode OTP, silahkan cek emailmu sekarang - $email";
                 $_SESSION['email'] = $email;
                 header('Location: reset-code.php');
                 exit();
@@ -66,7 +66,7 @@ if (isset($_POST['check-reset-otp'])) {
         $fetch_data = $stmt->fetch(PDO::FETCH_ASSOC);
         $email = $fetch_data['email'];
         $_SESSION['email'] = $email;
-        $_SESSION['info'] = "Please create a new password that you don't use on any other site.";
+        $_SESSION['info'] = "Masukkan password baru anda";
         header('Location: new-password.php');
         exit();
     } else {
@@ -93,7 +93,7 @@ if (isset($_POST['change-password'])) {
         $stmt->bindParam(':email', $email);
         
         if ($stmt->execute()) {
-            $_SESSION['info'] = "Your password has been changed. Now you can login with your new password.";
+            $_SESSION['info'] = "Password kamu sudah berubah, kamu bisa login sekarang menggunakan password baru.";
             header('Location: password-changed.php');
         } else {
             $errors['db-error'] = "Failed to change your password!";
