@@ -92,12 +92,13 @@ $conn->close();
             <div class="lesson">
                 <h5><?php echo htmlspecialchars($file['judul_tugas']); ?></h5>
                 <p><?php echo htmlspecialchars($file['deskripsi']); ?></p>
+                <p><?php echo htmlspecialchars($file['jenis_materi']); ?></p>
                 <?php
-                // Periksa apakah file ada di folder uploads
-                $file_path = "uploads/" . htmlspecialchars($file['jenis_materi']);
+         // Periksa apakah file ada di folder uploads
+         $file_path = "uploads/" . htmlspecialchars($file['jenis_materi']);
 
-                // Validasi file sebelum menampilkan tombol
-                if (file_exists($file_path)): ?>
+        // Validasi file sebelum menampilkan tombol
+         if (file_exists($file_path)): ?>
                 <!-- Tombol Lihat -->
                 <a href="<?= $file_path; ?>" target="_blank" class="btn btn-info btn-sm">Lihat</a>
                 <!-- Tombol Unduh -->
@@ -112,6 +113,7 @@ $conn->close();
                 <p class="text-danger">File tidak ditemukan di server.</p>
                 <?php endif; ?>
             </div>
+
             <?php endforeach; ?>
             <?php else: ?>
             <p>Belum ada materi atau tugas yang tersedia.</p>

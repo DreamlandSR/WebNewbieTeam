@@ -29,16 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Proses file
-        $file_name = basename($_FILES['file']['name']);
+        $file_name = time() . '_' . basename($_FILES['file']['name']);
         $file_path = $upload_dir . $file_name;
+
 
         if (move_uploaded_file($_FILES['file']['tmp_name'], $file_path)) {
             // Baca data file sebagai biner
             $file_data = file_get_contents($file_path);
 
-            // Query untuk menyimpan data ke database
+           // Query untuk menyimpan data ke database
             $stmt = $conn->prepare("INSERT INTO materi (jenis_materi, judul_tugas, deskripsi, deadline, video_url) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss",$file_data, $judul_tugas, $deskripsi, $deadline, $video_url);
+            $stmt->bind_param("sssss", $file_name, $judul_tugas, $deskripsi, $deadline, $video_url);
 
             if ($stmt->execute()) {
                 echo "<script>alert('File berhasil diunggah!'); document.location='menu_kelas.php';</script>";
