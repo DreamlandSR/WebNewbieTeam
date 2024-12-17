@@ -18,7 +18,7 @@ if($email == false){
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Style -->
-    <link rel="stylesheet" href="css/style-sidebar.css">
+    <link rel="stylesheet" href="css/header-sidebar.css">
 </head>
 <body>
 <nav class="header">
@@ -84,7 +84,7 @@ if($email == false){
         <div class="row">
             <div class="col-md-4 offset-md-4 form">
                 <form action="reset-code.php" method="POST" autocomplete="off">
-                    <h2 class="text-center">Code Verification</h2>
+                    <h2 class="text-center">Kode verifikasi</h2>
                     <?php 
                     if(isset($_SESSION['info'])){
                         ?>
@@ -108,10 +108,10 @@ if($email == false){
                     }
                     ?>
                     <div class="form-group">
-                        <input class="form-control" type="number" name="otp" placeholder="Enter code" required>
+                        <input class="form-control" type="number" name="otp" placeholder="Kode anda" required>
                     </div>
                     <div class="form-group">
-                        <input class="form-control button" type="submit" name="check-reset-otp" value="Submit">
+                        <input class="form-control button" type="submit" name="check-reset-otp" value="Kirim">
                     </div>
                 </form>
             </div>

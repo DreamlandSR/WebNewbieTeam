@@ -33,7 +33,7 @@ if (isset($_POST['check-email'])) {
             // Mengirimkan email reset password
             $subject = "Password Reset Code";
             $message = "Your password reset code is $code";
-            $sender = "From: shahiprem7890@gmail.com";
+            $sender = "From: smkn7jember@gmail.com";
             
             if (mail($email, $subject, $message, $sender)) {
                 $_SESSION['info'] = "kita sudah mengirimkan kode OTP, silahkan cek emailmu sekarang - $email";

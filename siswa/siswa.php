@@ -21,7 +21,7 @@ if (!$currentUser) {
 }
 
 // Ambil foto user dari tabel siswa
-$userId = $_SESSION['id']; 
+$userId = $_SESSION['id_siswa']; 
 
 $sqlFoto = "SELECT foto FROM siswa WHERE id_siswa = :id_siswa";
 try {
@@ -38,6 +38,12 @@ try {
 
 } catch(PDOException $e) {
     die("Query gagal: " . $e->getMessage());
+}
+
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
 }
 
 ?>

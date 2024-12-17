@@ -40,7 +40,7 @@ try {
 // Ambil foto user dari tabel admins
 $userId = $_SESSION['id']; 
 
-$sqlFoto = "SELECT foto FROM admins WHERE id = :id";
+$sqlFoto = "SELECT foto FROM admins WHERE id_user = :id";
 try {
     $stmt = $conn->prepare($sqlFoto);
     $stmt->bindParam(':id', $userId, PDO::PARAM_INT);

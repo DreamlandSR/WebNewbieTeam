@@ -93,7 +93,7 @@ if($_SESSION['info'] == false){
             ?>
                 <form action="login.php" method="GET">
                     <div class="form-group">
-                        <input class="form-control button" type="submit" name="login" value="Login Now">
+                        <input class="form-control button" type="submit" name="login" value="Masuk sekarang">
                     </div>
                 </form>
             </div>

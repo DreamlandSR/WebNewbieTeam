@@ -4,67 +4,81 @@ require_once "../Auth.php";
 require_once "../dbconfig.php";
 
 $user = new Auth();
+
 // Cek status login user
 if (!$user->isLoggedIn()) {  
-    header("location: login.php"); // Redirect ke halaman login  
-    exit; // Tambahkan exit setelah header
+    header("location: login.php");
+    exit;
 }
 
 $db = new Database();
-$conn = $db ->getConnection();
+$conn = $db->getConnection();
 
+// Periksa apakah session ID ada
+if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
+    echo "Session ID tidak ditemukan atau kosong.";
+    exit;
+}
 
-$userId = $_SESSION['id']; // Mengambil ID user dari session
+$userId = $_SESSION['id']; // ID pengguna dari session
 
-// Koneksi ke database
 try {
-    $conn = new PDO("mysql:host=".'localhost'.";dbname=".'e_learning', 'root', '');
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Mendapatkan foto user yang ada
-    $query = "SELECT foto FROM admins WHERE id = :id";
+    // Mendapatkan data pengguna
+    $query = "SELECT id, nama, email, role_user, foto FROM admins WHERE id_user = :id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
     $stmt->execute();
-    $userFoto = $stmt->fetchColumn(); // Menyimpan data foto yang ada
-    
-    // Mengupdate foto jika ada file baru yang diupload
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_FILES['fotoProfil']) && $_FILES['fotoProfil']['error'] == 0) {
-            // Mendapatkan file yang di-upload
-            $foto = $_FILES['fotoProfil']['tmp_name'];
-            $fotoData = file_get_contents($foto); // Membaca file dan mengubahnya ke dalam format biner
 
-            // Query untuk memperbarui foto di database
-            $query = "UPDATE admins SET foto = :foto WHERE id = :id";
+    $currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$currentUser) {
+        echo "Data pengguna dengan ID $userId tidak ditemukan di database.";
+        exit;
+    }
+
+    $userFoto = $currentUser['foto'];
+    if (is_null($userFoto)) {
+        $userFoto = '../Foto/zeta.jpg'; // Nama file foto default
+    }
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_FILES['fotoProfil']) && $_FILES['fotoProfil']['error'] == 0) {
+        $foto = $_FILES['fotoProfil']['tmp_name'];
+        $fotoData = file_get_contents($foto);
+
+        if (!$fotoData) {
+            echo "Foto tidak valid atau tidak terbaca.";
+            exit;
+        }
+
+        try {
+            // Query untuk memperbarui foto di database menggunakan id_user
+            $query = "UPDATE admins SET foto = :foto WHERE id_user = :id";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':foto', $fotoData, PDO::PARAM_LOB);
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
-            // Mengecek apakah foto berhasil diperbarui
             if ($stmt->rowCount() > 0) {
                 echo "Foto berhasil diperbarui!";
-                // Refresh halaman untuk melihat perubahan
                 header("Location: profile.php");
                 exit;
             } else {
-                echo "Gagal memperbarui foto. Mungkin tidak ada perubahan!";
+                echo "Gagal memperbarui foto. Mungkin tidak ada perubahan atau ID tidak valid!";
             }
-        } else {
-            echo "Tidak ada foto yang di-upload atau terjadi kesalahan saat upload.";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
+    } else {
+        echo "Tidak ada foto yang di-upload atau terjadi kesalahan saat upload.";
     }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
 }
-
-$currentUser = $user->getUserAdmin();
-if (!$currentUser) {
-    echo "Error: Gagal mengambil data pengguna.";
-    exit;
-}
-
 ?>
 
 <html>
@@ -151,7 +165,7 @@ if (!$currentUser) {
                             <div>
                                 <b>Role User</b>
                                 <div class="name">
-                                    <?php echo isset($currentUser['email']) ? htmlspecialchars($currentUser['role_user']) : 'role tidak tersedia'; ?>
+                                    <?php echo isset($currentUser['role_user']) ? htmlspecialchars($currentUser['role_user']) : 'role tidak tersedia'; ?>
                                 </div>
                             </div>
                         </div>

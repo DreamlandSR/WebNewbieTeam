@@ -96,7 +96,7 @@
                         <input class="form-control" id="input-text" type="email" name="email" placeholder="Masukkan email anda" required value="<?php echo $email ?>">
                     </div>
                     <div class="form-group">
-                        <input class="form-control button" type="submit" name="check-email" value="Lanjutkan">
+                        <input class="form-control button" type="submit" name="check-email" value="Kirim kode">
                     </div>
                 </form>
             </div>
