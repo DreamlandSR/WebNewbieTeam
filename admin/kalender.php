@@ -59,37 +59,7 @@
         echo date("F Y", strtotime("$year-$month-01"));
         ?>
         </span>
-</div>
 
-    <div class="calendar-container">
-        <div class="calendar-navigation">
-            <?php
-                $currentMonth = isset($_GET['month']) ? $_GET['month'] : date('n');
-                $currentYear = isset($_GET['year']) ? $_GET['year'] : date('Y');
-
-                // Navigasi bulan sebelumnya
-                $prevMonth = $currentMonth - 1;
-                $prevYear = $currentYear;
-                if ($prevMonth < 1) {
-                    $prevMonth = 12;
-                    $prevYear--;
-                }
-
-                // Navigasi bulan berikutnya
-                $nextMonth = $currentMonth + 1;
-                $nextYear = $currentYear;
-                if ($nextMonth > 12) {
-                    $nextMonth = 1;
-                    $nextYear++;
-                }
-
-                //arrow kiri
-                echo '<a href="?month=' . $prevMonth . '&year=' . $prevYear . '" style="color: black;"><i class="bi bi-arrow-left"></i></a>';
-                //text bulan + tahun di tengah
-                echo '<span class="current-month">' . date("F Y", strtotime("$currentYear-$currentMonth-01")) . '</span>';
-                //arrow kanan
-                echo '<a href="?month=' . $nextMonth . '&year=' . $nextYear . '" style="color: black;"<i class="bi bi-arrow-right"></i></a>';
-            ?>
         </div>
         <?php
     // Ambil bulan dan tahun dari URL, atau defaultkan ke bulan dan tahun sekarang

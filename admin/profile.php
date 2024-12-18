@@ -110,18 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
-        <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">
-            Tabel Master
-            <i class="fas fa-caret-down"> </i>
-        </a>
-        <div class="dropdown" id="dropdown">
-            <a href="crudsiswa.php"> Siswa </a>
-            <a href="crudguru_admin.php"> Guru </a>
-            <a href="crud_kelas.php"> Master Kelas </a>
-            <a href="crudmapel.php"> Master mapel</a>
-            <a href="guruMapel.php"> Guru mapel</a>
-            <a href="kelas.php"> Kelas</a>
-        </div>
+
     </div>
 
     <div class="content">
@@ -138,9 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <?php endif; ?>
                             <div class="col-md-9" id="upload">
                                 <!-- Tombol untuk membuka modal -->
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">Ganti Foto</button>
-                    </div>
-                    
+
                     </div>
                     <div class="right">
                         <div class="info">
@@ -200,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-<script src="../js/script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,29 @@
+<?php
+// Koneksi ke database
+$host = "localhost";  // Ganti sesuai konfigurasi Anda
+$user = "root";       // Ganti dengan user database Anda
+$password = "";       // Ganti dengan password database Anda
+$dbname = "e_learning"; // Nama database
+
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil file dari database
+$result = $conn->query("SELECT id_tugas, jenis_materi, judul_tugas, deskripsi FROM materi");
+$files = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $files[] = $row;
+    }
+}
+
+$conn->close();
+?>
+
 <html>
 
 <head>
@@ -28,6 +54,7 @@
         <a href="kalender.php"><i class="bi bi-calendar-date"></i> Kalender </a>
         <a href="profile.php"><i class="bi bi-person-fill"></i> Profile</a>
         <a href="panduan.php"><i class="fas fa-book"></i> Panduan</a>
+        <a href="pengumpulan_guru.php"><i class="fas fa-book"></i> Pengumpulan Tugas</a>
         <a class="dropdown-btn" href="javascript:void(0);" id="dropdown-btn" onclick="toggleDropdown()">Kelas
             <i class="fas fa-caret-down"> </i>
         </a>
@@ -59,19 +86,42 @@
         </div>
 
         <div class="week">
-            <h2>Minggu 1</h2>
+            <h1>Minggu 1</h1>
+            <?php if (!empty($files)): ?>
+            <?php foreach ($files as $file): ?>
             <div class="lesson">
-                <span>1. Pembelajaran Minggu ini terkait Eksponen dan algoritma silahkan
-                    pelajari terlebih dahulu materi berikut</span><br>
+                <h5><?php echo htmlspecialchars($file['judul_tugas']); ?></h5>
+                <p><?php echo htmlspecialchars($file['deskripsi']); ?></p>
+                <p><?php echo htmlspecialchars($file['jenis_materi']); ?></p>
+                <?php
+         // Periksa apakah file ada di folder uploads
+         $file_path = "uploads/" . htmlspecialchars($file['jenis_materi']);
+
+        // Validasi file sebelum menampilkan tombol
+         if (file_exists($file_path)): ?>
+                <!-- Tombol Lihat -->
+                <a href="<?= $file_path; ?>" target="_blank" class="btn btn-info btn-sm">Lihat</a>
+                <!-- Tombol Unduh -->
+                <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
+                <!-- Tombol Hapus -->
+                <form method="POST" action="delete_file.php" style="display:inline-block;">
+                    <input type="hidden" name="file_name" value="<?= htmlspecialchars($file['jenis_materi']); ?>">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Yakin ingin menghapus file ini?');">Hapus</button>
+                </form>
+                <?php else: ?>
+                <p class="text-danger">File tidak ditemukan di server.</p>
+                <?php endif; ?>
             </div>
-            <div class="lesson">
-                <i class="bi bi-file-earmark-pdf-fill"></i><a href="#"> Pembelajaran Minggu ke-1: Materi Al - Jabar</a>
-            </div>
-            <div class="task">
-                <i class="bi bi-file-earmark-pdf-fill"></i><a href="#">Tugas 1</a>
-            </div>
+
+            <?php endforeach; ?>
+            <?php else: ?>
+            <p>Belum ada materi atau tugas yang tersedia.</p>
+            <?php endif; ?>
         </div>
+
     </div>
+
 
     <!-- Modal Tambah Materi -->
     <div class="modal fade" id="materiModal" tabindex="-1" aria-labelledby="materiModalLabel" aria-hidden="true">
@@ -84,11 +134,7 @@
                 <div class="modal-body">
                     <!-- Form Upload Materi -->
                     <form id="materiForm" enctype="multipart/form-data" action="upload.php" method="POST">
-                        <div class="mb-3">
-                            <label for="jenisMateri" class="form-label">Jenis Materi</label>
-                            <input type="text" class="form-control" id="jenisMateri" name="jenis_materi"
-                                placeholder="PDF, Docx, PNG, dll.">
-                        </div>
+
                         <div class="mb-3">
                             <label for="judulTugas" class="form-label">Judul Tugas</label>
                             <input type="text" class="form-control" id="judulTugas" name="judul_tugas"

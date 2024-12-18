@@ -23,17 +23,19 @@ if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] == 0) {
     $target_file = $target_dir . $file_name;
 
     if (move_uploaded_file($_FILES['file_tugas']['tmp_name'], $target_file)) {
-        // Simpan nama file ke database
-        $stmt = $conn->prepare("INSERT INTO pengumpulan (file_tugas) VALUES (?)");
-        $stmt->bind_param("s", $file_name);
-        if ($stmt->execute()) {
-            echo "<script>alert('File berhasil diunggah!'); document.location='pengumpulan_siswa.php';</script>";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+    $id_siswa = $_POST['id_siswa']; // Ambil ID siswa dari input form
+    $id_tugas = $_POST['id_tugas']; // Ambil ID tugas dari input form
+    
+    // Simpan nama file ke database dengan informasi tambahan
+    $stmt = $conn->prepare("INSERT INTO pengumpulan (file_tugas, id_siswa, id_tugas) VALUES (?, ?, ?)");
+    $stmt->bind_param("sii", $file_name, $id_siswa, $id_tugas);
+    if ($stmt->execute()) {
+        echo "<script>alert('File berhasil diunggah!'); document.location='pengumpulan_siswa.php';</script>";
     } else {
-        echo "<script>alert('Gagal mengunggah file ke server!');</script>";
+        echo "Error: " . $stmt->error;
     }
+}
+
 }
 
 }
@@ -151,7 +153,7 @@ $conn->close();
                                         <?php endif; ?>
 
                                         <!-- Tombol Lihat -->
-                                        <a href="<?= $file_path; ?>" target="blank"
+                                        <a href="<?= $file_path; ?>" target="_blank"
                                             class="btn btn-info btn-sm">Lihat</a>
                                         <!-- Tombol Unduh -->
                                         <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
@@ -189,8 +191,8 @@ $conn->close();
                     </div>
 
                     <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
-                        <input type="hidden" name="id_tugas" value="1"> <!-- Ganti sesuai tugas -->
-                        <input type="hidden" name="id_siswa" value="123"> <!-- Ganti sesuai siswa -->
+                        <input type="hidden" name="id_siswa" value="123"> <!-- ID siswa -->
+                        <input type="hidden" name="id_tugas" value="1"> <!-- ID tugas -->
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Masukkan File</label>
