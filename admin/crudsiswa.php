@@ -265,9 +265,9 @@ if (isset($_POST['bubah'])) {
 
             </div>
         </div>
-        <a href="admin.php">
+        <!-- <a href="admin.php">
             <button class="btn btn-danger" id="btn-back">Kembali</button>
-        </a>
+        </a> -->
     </div>
     <footer>
         <div class="footer">

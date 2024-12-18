@@ -185,11 +185,15 @@ body {
   margin-bottom: 10px;
 }
 .card .card-content .button {
-  background-color: #1a3e72;
+  background-color: #154ABC;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
+}
+
+.card-content  .button:hover {
+  background-color: #0a52ed;
 }

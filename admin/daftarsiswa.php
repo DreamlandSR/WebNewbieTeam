@@ -58,6 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $conn->beginTransaction();
 
+            // Periksa apakah email sudah ada
+            $sql_check_email = "SELECT COUNT(*) FROM users WHERE email = :email";
+            $stmt_check_email = $conn->prepare($sql_check_email);
+            $stmt_check_email->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt_check_email->execute();
+            $email_exists = $stmt_check_email->fetchColumn();
+
+            if ($email_exists > 0) {
+                // Email sudah digunakan, rollback transaksi dan kirim error
+                $conn->rollBack();
+                $_SESSION['errors'] = ["Email sudah terdaftar, Silakan gunakan email lain !"];
+                header("Location: daftaradmin.php");
+                exit();
+            }
+
+            // Melakukan hash password dengan default
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Masukkan data ke tabel users

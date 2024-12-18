@@ -36,17 +36,22 @@ document.addEventListener('click', function (event) {
 document.addEventListener('DOMContentLoaded', () => {
   const menuIcon = document.querySelector('.header .menu-icon');
   const sidebar = document.querySelector('.sidebar');
+  const aside = document.querySelector('.aside');
   const content = document.querySelector('.content');
   const container = document.querySelector('.container');
   const footer = document.querySelector('.footer');
   const registerBox = document.querySelector('.register-box');  // Perbaikan selector
-  console.log(menuIcon, sidebar, content, container, footer, registerBox);
+  console.log(menuIcon, sidebar, aside, content, container, footer, registerBox);
   
   menuIcon.addEventListener('click', () => {
     // Toggle kelas untuk sidebar dan konten
+    sidebar.classList.toggle('active');
     sidebar.classList.toggle('sidebar-expanded');
     content.classList.toggle('sidebar-expanded-content'); 
     container.classList.toggle('sidebar-expanded-container');
+    aside.classList.toggle('aside-expanded');
+    content.classList.toggle('aside-expanded-content'); 
+    container.classList.toggle('aside-expanded-container');
     footer.classList.toggle('footer-active'); 
     registerBox.classList.toggle('register-box');  // Perbaikan selector
   });
@@ -125,4 +130,19 @@ function updateCalendar() {
     var month = document.getElementById("month").value;
     var year = document.getElementById("year").value;
     window.location.href = "?month=" + month + "&year=" + year;
+}
+
+
+//show password and hide
+function togglePassword() {
+  var passwordField = document.getElementById("password");
+  var showPasswordText = document.querySelector(".show-password");
+
+  if (passwordField.type === "password") {
+      passwordField.type = "text";
+      showPasswordText.textContent = "Hide"; // Ubah teks tombol menjadi "Hide"
+  } else {
+      passwordField.type = "password";
+      showPasswordText.textContent = "Show"; // Ubah teks tombol kembali menjadi "Show"
+  }
 }

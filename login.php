@@ -32,39 +32,46 @@ if ($auth->isLoggedIn()) {
 
 // Login
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nama = $_POST['nama'];
-    $password = $_POST['password'];
+    // Periksa apakah input 'nama' dan 'password' ada di $_POST
+    if (isset($_POST['nama']) && isset($_POST['password'])) {
+        $nama = $_POST['nama'];
+        $password = $_POST['password'];
 
-    if ($auth->login($nama, $password)) {
-        // Login berhasil, ambil informasi pengguna
-        $user = $auth->getCurrentUser();
+        if ($auth->login($nama, $password)) {
+            // Login berhasil, lanjutkan dengan logika
+            $user = $auth->getCurrentUser();
 
-        // Periksa apakah $user bukan null
-        if ($user) {
-            // Redirect berdasarkan role
-            switch ($user['role_user']) {
-                case 'admin':
-                    header("Location: admin/admin.php");
-                    break;
-                case 'guru':
-                    header("Location: guru/guru.php");
-                    break;
-                case 'siswa':
-                    header("Location: siswa/siswa.php");
-                    break;
-                default:
-                    // Tangani role yang tidak dikenal
-                    header("Location: login.php?error=unknown_role");
-                    exit();
+            // Periksa apakah $user bukan null
+            if ($user) {
+                // Redirect berdasarkan role
+                switch ($user['role_user']) {
+                    case 'admin':
+                        header("Location: admin/admin.php");
+                        break;
+                    case 'guru':
+                        header("Location: guru/guru.php");
+                        break;
+                    case 'siswa':
+                        header("Location: siswa/siswa.php");
+                        break;
+                    default:
+                        // Tangani role yang tidak dikenal
+                        header("Location: login.php?error=unknown_role");
+                        exit();
+                }
+                exit(); // Tambahkan exit setelah redirect
+            } else {
+                $error = "Pengguna tidak ditemukan.";
             }
-            exit(); // Tambahkan exit setelah redirect
         } else {
-            $error = "Pengguna tidak ditemukan.";
+            $error = $auth->getLastError();
         }
     } else {
-        $error = $auth->getLastError();
+        // Jika nama atau password tidak ada dalam $_POST
+        $error = "Nama atau password tidak boleh kosong.";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -72,16 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content ="width=device-width, initial-scale=1.0" />
     <title>Login - SMK Negeri 7 Jember</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- icon boostrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
-    <script src="js/jquery.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-..." crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/style-login.css" />
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/header-sidebar.css">
     <!-- SVG untuk ikon warning -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
@@ -92,9 +99,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
+<nav class="header">
+      <div class="logo">
+        <img src="Foto/smk7 jember.png" alt="School Logo" />
+        <span class="text-elearning">E-Learning</span>
+      </div>
+      <div class="site">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#fitur-web">Fitur</a></li>
+          <li><a href="index.html#panduan">Panduan</a></li>
+        </ul>
+      </div>
+      <a href="login.php" class="login-button">Masuk</a>
+    </nav>
+    
+    <div class="sidebar">
+    <div class="toggle">
+        <a href="#" class="burger js-menu-toggle btn-sm" data-toggle="collapse" data-target="#main-navbar">
+              <span></span>
+            </a>
+      </div>
+      <div class="side-inner">
+
+        <div class="profile">
+          <!-- <img src="images/person_4.jpg" alt="Image" class="img-fluid"> -->
+          <h3 class="name">Account Guest</h3>
+          <span class="country">Akun tamu</span>
+        </div>
+
+        
+        <div class="nav-menu">
+          <ul>
+            <li class="accordion">
+            <li><a href="index.html"><span class="icon-home mr-3"></span>Home</a></li>
+            </li>
+            <li><a href="index.html#fitur-web"><span class="icon-menu mr-3"></span>Fitur</a></li>
+            <li><a href="index.html#panduan"><span class="icon-book mr-3"></span>Panduan</a></li>
+            <li class="accordion">
+            <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsible">
+                <span class="icon-share2 mr-3"></span>Account official
+              </a>
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                <div>
+                  <ul>
+                    <li><a href="#"><span class="icon-instagram mr-3"></span>Instagram</a></li>
+                    <li><a href="#"><span class="icon-youtube mr-3"></span>Youtube</a></li>
+                    <li><a href="#"><span class="icon-twitter mr-3"></span>Twitter</a></li>
+                    <li><a href="#"><span class="icon-facebook-official mr-3"></span>Facebook</a></li>
+                  </ul>
+                </div>
+              </div>
+              </li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+
+<!-- form login -->
     <div class="login-container">
         <div class="login-box">
-            <div class="logo">
+            <div class="logo-smk7">
                 <img src="Foto/smk7 jember.png" alt="Logo SMK Negeri 7 Jember" />
                 <h2>SMK Negeri 7 Jember</h2>
             </div>
@@ -117,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <span class="show-password" onclick="togglePassword()">Show</span>
                 </div>
                 <div class="forgot-password">
-                    <a href="forgot_password.php">Lupa Nama siswa atau password?</a>
+                    <a href="forgot-password.php">Lupa Nama siswa atau password?</a>
                     <p>Kuki harus diaktifkan pada browser anda</p>
                 </div>
                 <button type="submit" class="btn_input" id="submit" name="kirim">Masuk</button>
@@ -139,6 +205,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </footer>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>

@@ -21,7 +21,7 @@ if (!$currentUser) {
 }
 
 // Ambil foto user dari tabel siswa
-$userId = $_SESSION['id']; 
+$userId = $_SESSION['id_siswa']; 
 
 $sqlFoto = "SELECT foto FROM siswa WHERE id_siswa = :id_siswa";
 try {
@@ -38,6 +38,12 @@ try {
 
 } catch(PDOException $e) {
     die("Query gagal: " . $e->getMessage());
+}
+
+$currentUser = $user->getCurrentUser();
+if (!$currentUser) {
+    echo "Error: Gagal mengambil data pengguna.";
+    exit;
 }
 
 ?>
@@ -90,10 +96,11 @@ try {
                 <!-- Menampilkan foto profil dalam format base64 -->
                 <div class="name">
                     <?php if ($fotoData): ?>
-                    <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil"
-                        class="img-fluid rounded-circle" width="50">
+                        <!-- Menampilkan foto profil jika ada -->
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="rounded-circle" width="50" height="50">
                     <?php else: ?>
-                    <p>Foto tidak ditemukan.</p>
+                        <!-- Menampilkan foto default jika tidak ada foto -->
+                        <img src="../Foto/account.png" alt="Foto profil" class="rounded-circle" width="50" height="50">
                     <?php endif; ?>
                 </div>
                 <div class="profile-text">
@@ -107,7 +114,7 @@ try {
         </div>
         <div class="grid-container">
             <div class="card">
-                <a href="materi.">
+                <a href="#">
                     <h3>Matematika</h3>
                 </a>
                 <ul>

@@ -1,67 +1,84 @@
 <?php
 session_start();
+
 require_once "../Auth.php";
 require_once "../dbconfig.php";
 
 $user = new Auth();
+
 // Cek status login user
 if (!$user->isLoggedIn()) {  
-    header("location: login.php"); // Redirect ke halaman login  
-    exit; // Tambahkan exit setelah header
+    header("location: login.php");
+    exit;
 }
 
 $db = new Database();
-$conn = $db ->getConnection();
+$conn = $db->getConnection();
 
-$userId = $_SESSION['id']; // Mengambil ID user dari session
+// Periksa apakah session ID ada
+if (!isset($_SESSION['id_guru']) || empty($_SESSION['id_guru'])) {
+    echo "Session ID tidak ditemukan atau kosong.";
+    exit;
+}
 
-// Koneksi ke database
+$userId = $_SESSION['id_guru']; // ID pengguna dari session
+
 try {
-    $conn = new PDO("mysql:host=".'localhost'.";dbname=".'e_learning', 'root', '');
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Mendapatkan foto user yang ada
-    $query = "SELECT foto FROM guru WHERE id_guru = :id_guru";
+    // Mendapatkan data pengguna
+    $query = "SELECT id_guru, nama, email, nip, foto FROM guru WHERE id_guru = :id_guru";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':id_guru', $userId, PDO::PARAM_INT);
     $stmt->execute();
-    $userFoto = $stmt->fetchColumn(); // Menyimpan data foto yang ada
-    
-    // Mengupdate foto jika ada file baru yang diupload
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_FILES['fotoProfil']) && $_FILES['fotoProfil']['error'] == 0) {
-            // Mendapatkan file yang di-upload
-            $foto = $_FILES['fotoProfil']['tmp_name'];
-            $fotoData = file_get_contents($foto); // Membaca file dan mengubahnya ke dalam format biner
 
-            // Query untuk memperbarui foto di database
+    $currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$currentUser) {
+        echo "Data pengguna dengan ID $userId tidak ditemukan di database.";
+        exit;
+    }
+
+    // Periksa apakah kolom foto NULL
+    $userFoto = $currentUser['foto'];
+    if (is_null($userFoto)) {
+        $userFoto = '../Foto/zeta.jpg'; // Nama file foto default
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
+
+// Proses upload foto
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_FILES['fotoProfil']) && $_FILES['fotoProfil']['error'] == 0) {
+        $foto = $_FILES['fotoProfil']['tmp_name'];
+        $fotoData = file_get_contents($foto);
+
+        if (!$fotoData) {
+            echo "Foto tidak valid atau tidak terbaca.";
+            exit;
+        }
+
+        try {
+            // Query untuk memperbarui foto di database menggunakan id_guru
             $query = "UPDATE guru SET foto = :foto WHERE id_guru = :id_guru";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':foto', $fotoData, PDO::PARAM_LOB);
             $stmt->bindParam(':id_guru', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
-            // Mengecek apakah foto berhasil diperbarui
             if ($stmt->rowCount() > 0) {
                 echo "Foto berhasil diperbarui!";
-                // Refresh halaman untuk melihat perubahan
                 header("Location: profile.php");
                 exit;
             } else {
-                echo "Gagal memperbarui foto. Mungkin tidak ada perubahan!";
+                echo "Gagal memperbarui foto. Mungkin tidak ada perubahan atau ID tidak valid!";
             }
-        } else {
-            echo "Tidak ada foto yang di-upload atau terjadi kesalahan saat upload.";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
+    } else {
+        echo "Tidak ada foto yang di-upload atau terjadi kesalahan saat upload.";
     }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
-$currentUser = $user->getUserGuru();
-if (!$currentUser) {
-    echo "Error: Gagal mengambil data pengguna.";
-    exit;
 }
 ?>
 
@@ -73,6 +90,8 @@ if (!$currentUser) {
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/profile.css">
 </head>
 

@@ -151,6 +151,11 @@ body {
   .profile-card .profile-info .profile-text .name {
     font-weight: bold;
   }
+
+  .name {
+    margin-right: 20px;
+  }
+
   .profile-card .profile-button {
     background-color: #154ABC;
     color: #fff;

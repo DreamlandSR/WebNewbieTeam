@@ -153,21 +153,40 @@ body {
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex: wrap; 
   height: 100px;
 }
 
-.breadcrumb p {
-  font-size: 20px;
-  font-weight: 600;
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.breadcrumb a {
-  color: #007bff;
-  text-decoration: none;
+.breadcrumb p {
+  font-size: 24px;
+  font-weight: 600;
+  flex-basis: 100%; /* Penuh satu baris */
+  margin: 0 0 10px 0;
 }
+
+.breadcrumb a, .breadcrumb span {
+  text-decoration: none;
+  color: #000;
+  margin-right: 5px;
+}
+
+
+
+
 .breadcrumb a:hover {
   text-decoration: underline;
 }
+
+.breadcrumb span {
+  color: #007bff;
+}
+
 .calendar-container {
   width: 100%;
   max-width: 800px;
@@ -181,6 +200,19 @@ body {
 .calendar-header {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.current-month {
+  text-align: center;
 }
 
 .calendar-header select,

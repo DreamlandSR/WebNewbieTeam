@@ -1,13 +1,7 @@
 <?php
 
-// Panggil Koneksi Database
-require_once "../dbconfig.php";
-
-// Inisialisasi objek Database
-$db = new Database();
-$conn = $db->getConnection();
-
 session_start();
+
 require_once("../Auth.php");
 require_once("../dbconfig.php");
 
@@ -17,6 +11,9 @@ if (!$user->isLoggedIn()) {
     header("location: login.php"); //Redirect ke halaman login  
     exit; // Tambahkan exit setelah header
 }
+
+$db = new Database();
+$conn = $db->getConnection();
 
 // Ambil data user saat ini
 $currentUser = $user->getCurrentUser();
@@ -44,6 +41,26 @@ try {
     $totalMateri = $row['total_materi'];
 
 } catch(PDOException $e){
+    die("Query gagal: " . $e->getMessage());
+}
+
+// Ambil foto user dari tabel admins
+$userId = $_SESSION['id_guru']; 
+
+$sqlFoto = "SELECT foto FROM guru WHERE id_guru = :id_guru";
+try {
+    $stmt = $conn->prepare($sqlFoto);
+    $stmt->bindParam(':id_guru', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $fotoData = $row['foto']; 
+    } else {
+        $fotoData = null;
+    }
+
+} catch(PDOException $e) {
     die("Query gagal: " . $e->getMessage());
 }
 
@@ -103,7 +120,18 @@ if (!$currentUser) {
     <div class="content">
         <div class="profile-card">
             <div class="profile-info">
-                <i class="fas fa-user-circle profile-icon" style="font-size: 70px;"></i>
+
+                <!-- Menampilkan foto profil dalam format base64 -->
+                <div class="name">
+                    <?php if ($fotoData): ?>
+                        <!-- Menampilkan foto profil jika ada -->
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="rounded-circle" width="50" height="50">
+                    <?php else: ?>
+                        <!-- Menampilkan foto default jika tidak ada foto -->
+                        <img src="../Foto/account.png" alt="Foto profil" class="rounded-circle" width="50" height="50">
+                    <?php endif; ?>
+                </div>
+        
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
                     <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
@@ -117,19 +145,19 @@ if (!$currentUser) {
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-title">Kelas yang di ampu</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_kelas_mapel']); ?></div>
+                <div class="stat-value"><?php echo $totalKelasMapel; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Siswa Binaan</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_siswa']); ?></div>
+                <div class="stat-value"><?php echo $totalSiswa; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Mapel yang di ampu</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_mapel']); ?></div>
+                <div class="stat-value"><?php echo $totalMapel; ?></div>
             </div>
             <div class="stat-card">
                 <div class="stat-title">Materi</div>
-                <div class="stat-value"><?php echo htmlspecialchars($row['total_materi']); ?></div>
+                <div class="stat-value"><?php echo $totalMateri; ?></div>
             </div>
         </div>
         <div class="grid-container">
