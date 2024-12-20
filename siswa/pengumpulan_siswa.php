@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Periksa apakah file diunggah
 if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] == 0) {
     $file_name = basename($_FILES['file_tugas']['name']); // Nama file
-    $target_dir = "uploads/"; // Folder penyimpanan
+    $target_dir = "../uploads/"; // Folder penyimpanan
     $target_file = $target_dir . $file_name;
 
     if (move_uploaded_file($_FILES['file_tugas']['tmp_name'], $target_file)) {
@@ -213,49 +213,8 @@ $conn->close();
         </div>
         <!-- Akhir Modal Tambah -->
 
-
-        <!-- Awal Modal Update -->
-        <div class="modal fade" id="modalUbah" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <form method="POST" action="pengumpulan_siswa.php" enctype="multipart/form-data">
-                        <!-- Input hidden untuk ID -->
-                        <input type="hidden" name="id"><input type="hidden" name="id_siswa" value="123">
-                        <!-- ID siswa -->
-                        <input type="hidden" name="id_tugas" value="1"> <!-- ID tugas -->
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Masukkan File Baru</label>
-                                <input class="form-control" type="file" id="formFile" name="file_tugas">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Nama File Lama</label>
-                                <input type="text" class="form-control" name="file_tugas">
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" name="bubah">Update File</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Keluar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Akhir Modal Update -->
-
-    </div>
     </div>
 
-    </div>
     <script src="../js/script.js"></script>
 </body>
 

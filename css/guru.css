@@ -189,6 +189,10 @@ body {
   font-weight: bold;
 }
 
+.name {
+  margin-right: 20px;
+}
+
 .profile-card .profile-button {
   background-color: #154abc;
   color: #fff;

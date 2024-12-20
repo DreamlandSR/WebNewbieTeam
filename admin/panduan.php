@@ -55,23 +55,24 @@ if (!$user->isLoggedIn()) {
         <div class="card-content">
           <h2>Guru</h2>
           <p>Menambahkan Tugas, form quiz, memberikan materi, serta melakukan komentar terhadap tugas</p>
-          <a class="button" href="#"> Lihat Panduan </a>
+          <a class="button" href="../panduan/Akun.pdf" download="Panduan-Guru.pdf">Lihat Panduan</a>
         </div>
+
       </div>
       <div class="card">
         <img alt="Murid Icon" height="80" src="../Foto/graduation.png" width="80" />
         <div class="card-content">
           <h2>Murid</h2>
           <p>Mengumpulkan tugas, melihat mata pelajaran dan jadwal pelajaran</p>
-          <a class="button" href="#"> Lihat Panduan </a>
+          <a class="button" href="../panduan/Cobak.pdf" download="Panduan-Murid.pdf">Lihat Panduan</a>
         </div>
       </div>
       <div class="card">
         <img alt="Teknisi Icon" height="80" src="../Foto/engineer.png" width="80" />
         <div class="card-content">
-          <h2>Teknisi</h2>
+          <h2>Admin</h2>
           <p>Melakukan perubahan pada jadwal dan mata pelajaran</p>
-          <a class="button" href="#"> Lihat Panduan </a>
+          <a class="button" href="../panduan/Info.pdf" download="Panduan-Admin.pdf">Lihat Panduan</a>
         </div>
       </div>
     </div>
