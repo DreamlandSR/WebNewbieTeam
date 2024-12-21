@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deskripsi = $_POST['deskripsi'];
     $deadline = $_POST['deadline'];
     $video_url = $_POST['video_url'];
+    $minggu = $_POST['minggu'];
 
     // Periksa apakah file diunggah
     if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
@@ -38,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file_data = file_get_contents($file_path);
 
            // Query untuk menyimpan data ke database
-            $stmt = $conn->prepare("INSERT INTO materi (jenis_materi, judul_tugas, deskripsi, deadline, video_url) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $file_name, $judul_tugas, $deskripsi, $deadline, $video_url);
+            $stmt = $conn->prepare("INSERT INTO materi (jenis_materi, judul_tugas, deskripsi, deadline, video_url, minggu) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $file_name, $judul_tugas, $deskripsi, $deadline, $video_url, $minggu);
 
             if ($stmt->execute()) {
                 echo "<script>alert('File berhasil diunggah!'); document.location='menu_kelas.php';</script>";

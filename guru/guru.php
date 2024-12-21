@@ -44,9 +44,8 @@ try {
     die("Query gagal: " . $e->getMessage());
 }
 
-// Ambil foto user dari tabel admins
-$userId = $_SESSION['id_guru']; 
-
+// Ambil foto user dari tabel guru
+ 
 $sqlFoto = "SELECT foto FROM guru WHERE id_guru = :id_guru";
 try {
     $stmt = $conn->prepare($sqlFoto);
@@ -124,14 +123,15 @@ if (!$currentUser) {
                 <!-- Menampilkan foto profil dalam format base64 -->
                 <div class="name">
                     <?php if ($fotoData): ?>
-                        <!-- Menampilkan foto profil jika ada -->
-                        <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil" class="rounded-circle" width="50" height="50">
+                    <!-- Menampilkan foto profil jika ada -->
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($fotoData); ?>" alt="Foto Profil"
+                        class="rounded-circle" width="50" height="50">
                     <?php else: ?>
-                        <!-- Menampilkan foto default jika tidak ada foto -->
-                        <img src="../Foto/account.png" alt="Foto profil" class="rounded-circle" width="50" height="50">
+                    <!-- Menampilkan foto default jika tidak ada foto -->
+                    <img src="../Foto/account.png" alt="Foto profil" class="rounded-circle" width="50" height="50">
                     <?php endif; ?>
                 </div>
-        
+
                 <div class="profile-text">
                     <div class="name"><?php echo htmlspecialchars($currentUser['nama']); ?></div>
                     <div class="role"><?php echo htmlspecialchars($currentUser['role_user']); ?></div>
