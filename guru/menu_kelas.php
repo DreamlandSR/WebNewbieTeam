@@ -16,7 +16,7 @@
     $minggu = isset($_GET['minggu']) ? (int)$_GET['minggu'] : 1;
 
     // Ambil file dari database sesuai minggu
-    $query = "SELECT id_tugas, jenis_materi, judul_tugas, deskripsi, video_url FROM materi WHERE minggu = ?";
+    $query = "SELECT id_tugas, jenis_materi, judul_tugas, deskripsi, deadline, minggu, video_url FROM materi WHERE minggu = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $minggu);
     $stmt->execute();

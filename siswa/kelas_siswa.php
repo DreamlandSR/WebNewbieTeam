@@ -95,15 +95,16 @@ $conn->close();
                 <div class="lesson">
                     <h5><?php echo htmlspecialchars($item['judul_tugas']); ?></h5>
                     <p><?php echo htmlspecialchars($item['deskripsi']); ?></p>
-                    <?php if (!empty($item['file_path']) && file_exists($item['file_path'])): ?>
-                    <a href="<?php echo htmlspecialchars($item['file_path']); ?>" target="_blank"
-                        class="btn btn-info">Lihat</a>
-                    <a href="<?php echo htmlspecialchars($item['file_path']); ?>" class="btn btn-success"
-                        download>Unduh</a>
+                    <p><?php echo htmlspecialchars($item['jenis_materi']); ?></p>
+                    <?php 
+                $file_path = "../guru/uploads/" . htmlspecialchars($item['jenis_materi']);
+            if (file_exists($file_path)): ?>
+                    <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh File</a>
                     <?php else: ?>
                     <p class="text-danger">File tidak ditemukan.</p>
-                    <p><?php echo htmlspecialchars($item['video_url']); ?></p>
                     <?php endif; ?>
+
+                    <p><?php echo htmlspecialchars($item['video_url']); ?></p>
                 </div>
                 <?php endforeach; ?>
                 <?php else: ?>

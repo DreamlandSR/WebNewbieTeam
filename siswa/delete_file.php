@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $file_name = $_POST['file_name'];  // Ganti menjadi 'file_name' sesuai dengan input field di form
-    $file_path = "uploads/" . $file_name;
+    $file_path = "upload_siswa/" . $file_name;
 
     if (file_exists($file_path)) {
         // Coba hapus file dari server

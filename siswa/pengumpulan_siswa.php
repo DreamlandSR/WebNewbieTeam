@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Periksa apakah file diunggah
 if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] == 0) {
     $file_name = basename($_FILES['file_tugas']['name']); // Nama file
-    $target_dir = "../uploads/"; // Folder penyimpanan
+    $target_dir = "upload_siswa/"; // Folder penyimpanan
     $target_file = $target_dir . $file_name;
 
     if (move_uploaded_file($_FILES['file_tugas']['tmp_name'], $target_file)) {
@@ -143,7 +143,7 @@ $conn->close();
                                     <td><?= htmlspecialchars($file['file_tugas']); ?></td>
                                     <td>
                                         <?php
-                $file_path = "uploads/" . htmlspecialchars($file['file_tugas']);
+                $file_path = "upload_siswa/" . htmlspecialchars($file['file_tugas']);
                 $file_ext = pathinfo($file_path, PATHINFO_EXTENSION);
 
                 // Cek jenis file dan tampilkan opsi sesuai
@@ -151,10 +151,6 @@ $conn->close();
                                         <img src="<?= $file_path; ?>" alt="Gambar" width="100">
                                         <?php elseif (strtolower($file_ext) === 'pdf'): ?>
                                         <?php endif; ?>
-
-                                        <!-- Tombol Lihat -->
-                                        <a href="<?= $file_path; ?>" target="_blank"
-                                            class="btn btn-info btn-sm">Lihat</a>
                                         <!-- Tombol Unduh -->
                                         <a href="<?= $file_path; ?>" class="btn btn-success btn-sm" download>Unduh</a>
                                         <!-- Tombol Hapus -->
