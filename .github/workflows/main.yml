@@ -9,13 +9,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          sdk: stable
+          php-version: '8.3'  # Ganti dengan versi PHP yang kamu gunakan
 
       - name: Install dependencies
-        run: dart pub get
+        run: composer install  # Jalankan jika proyek menggunakan Composer
 
       - name: Run tests
-        run: dart test
+        run: vendor/bin/phpunit  # Jalankan unit test jika menggunakan PHPUnit
