@@ -12,13 +12,20 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'  # Ganti sesuai dengan versi PHP proyekmu
+          php-version: '8.3'
+          coverage: none  # Matikan coverage jika tidak diperlukan
 
       - name: Install dependencies
-        run: composer install  # Jalankan jika proyek menggunakan Composer
+        run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Grant execute permission to PHPUnit
-        run: chmod +x vendor/bin/phpunit  # Memberikan izin eksekusi ke PHPUnit
+      - name: Check vendor directory
+        run: ls -la vendor/
+
+      - name: Check PHPUnit version
+        run: php vendor/bin/phpunit --version
+
+      - name: Make PHPUnit executable
+        run: chmod +x vendor/bin/phpunit
 
       - name: Run tests
-        run: php vendor/bin/phpunit  # Menjalankan PHPUnit dengan PHP
+        run: php vendor/bin/phpunit
