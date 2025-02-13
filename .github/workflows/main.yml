@@ -12,7 +12,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'  # Ganti sesuai dengan versi PHP proyekmu
+          php-version: '8.3'  # Ganti sesuai dengan versi PHP proyekmu
 
       - name: Install dependencies
         run: composer install  # Jalankan jika proyek menggunakan Composer
