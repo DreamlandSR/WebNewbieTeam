@@ -1,0 +1,24 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'  # Ganti sesuai dengan versi PHP proyekmu
+
+      - name: Install dependencies
+        run: composer install  # Jalankan jika proyek menggunakan Composer
+
+      - name: Grant execute permission to PHPUnit
+        run: chmod +x vendor/bin/phpunit  # Memberikan izin eksekusi ke PHPUnit
+
+      - name: Run tests
+        run: php vendor/bin/phpunit  # Menjalankan PHPUnit dengan PHP
